@@ -27,8 +27,8 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
   const isYearSelected = selectedYear !== 'ALL';
 
   return (
-    <Card className="w-full lg:w-3/5 bg-zinc-900 text-white shadow-xl border border-zinc-800 rounded-lg overflow-hidden lg:sticky lg:top-8 lg:h-[calc(100vh-8rem)]">
-      <CardHeader className="p-6 bg-zinc-800">
+    <Card className="w-full bg-zinc-900 text-white shadow-xl border border-zinc-800 rounded-lg overflow-hidden">
+      <CardHeader className="p-4 bg-zinc-800">
         <p className="text-sm text-zinc-400">{platformName}</p>
         <p className="text-5xl font-bold text-yellow-500">{formatCurrency(totalInvestment, currency)}</p>
         <p className="text-sm text-green-400">{`↑`}</p>
@@ -72,9 +72,9 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="h-[calc(100%-13rem)] p-6">
+      <CardContent className="h-[60vh] sm:h-[50vh] p-1 sm:p-4">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={cumulativeData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <LineChart data={cumulativeData} margin={{ top: 10, right: 10, left: 5, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#333" />
             <XAxis 
               dataKey="date" 
@@ -82,12 +82,18 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
               tickFormatter={formatXAxis}
               interval="preserveStartEnd"
               stroke="#444"
+              angle={-45}
+              textAnchor="end"
+              height={60}
+              tickMargin={5}
             />
             <YAxis 
               tick={{ fontSize: 12, fill: '#888' }} 
               tickFormatter={(value) => formatCurrency(value, currency)}
               domain={['dataMin', 'dataMax']}
               stroke="#444"
+              width={50}
+              tickMargin={5}
             />
             <Tooltip
               formatter={(value, name) => [
