@@ -7,7 +7,7 @@ const RetroWebpage: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setVisitorCount(prevCount => prevCount + 1);
-    }, 10000); // Increment every 10 seconds
+    }, 10000);
 
     return () => clearInterval(timer);
   }, []);
@@ -36,12 +36,17 @@ const RetroWebpage: React.FC = () => {
           </li>
         </ul>
       </div>
-      <p className="mb-4">Welcome to my new homepage!</p>
-      
+      <div className="mb-4">
+        <h3 className="text-xl font-bold mb-2">My Resume:</h3>
+        <ul className="list-disc list-inside">
+          <li>
+            <a href="/resume" className="text-blue-400 hover:text-blue-300 underline">View My Resume</a>
+          </li>
+        </ul>
+      </div>
       <div className="mb-4">
         <img src="/api/placeholder/100/100" alt="House with newspaper" className="inline-block" />
       </div>
-      
       <div className="mb-4">
         <span>You are visitor </span>
         <span className="bg-green-500 text-black px-1">{visitorCount.toString().padStart(7, '0')}</span>

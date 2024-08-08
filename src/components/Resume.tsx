@@ -19,7 +19,7 @@ export default function Resume() {
             </div>
             <div className="flex items-center space-x-2">
               <GlobeIcon className="w-4 h-4 text-gray-600" />
-              <span>www.juantamayo.xyz</span>
+              <span>www.tamayotchi.com</span>
             </div>
             <div className="flex items-center space-x-2">
               <MapPinIcon className="w-4 h-4 text-gray-600" />
@@ -140,20 +140,13 @@ export default function Resume() {
               <div className="flex flex-wrap">
                 {[
                   "C/C++",
-                  "Javascript",
-                  "HTML/CSS",
                   "Typescript",
                   "Python",
                   "SQL",
-                  "Unix",
                   "React",
-                  "GraphQL",
                   "NodeJS",
                   "AWS",
-                  "Git",
-                  "TailwindCSS",
-                  "GatsbyJS",
-                  "Express",
+                  "Firebase",
                 ].map((skill) => (
                   <span key={skill} className="bg-gray-200 text-gray-800 text-sm font-semibold mr-2 mb-2 px-4 py-2 rounded">
                     {skill}
