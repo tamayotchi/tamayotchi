@@ -34,7 +34,7 @@ export default function RetroWebpage() {
               <span className="sr-only">Toggle dark mode</span>
             </Button>
             <h1 className="text-2xl font-bold mb-2">TAMAYOTCHI</h1>
-            <p className="mb-4">Personal website</p>
+            <p className="mb-4"></p>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p>Version: v0.1.0</p>
