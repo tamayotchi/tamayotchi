@@ -1,25 +1,24 @@
-import { usePDF } from 'react-to-pdf';
+import { PhoneIcon } from 'lucide-react';
 
 export default function Resume() {
-  const { toPDF, targetRef } = usePDF({filename: 'resume.pdf'});
-
   return (
     <div>
-      <button onClick={() => toPDF()} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-        Download PDF
-      </button>
-      <div ref={targetRef} className="max-w-4xl mx-auto p-6 bg-white">
+      <div className="max-w-4xl mx-auto p-6 bg-white">
         <header className="flex flex-col items-center text-center mb-8">
           <h1 className="text-4xl font-bold">JUAN TAMAYO</h1>
           <h2 className="text-xl text-gray-600">Software Developer</h2>
           <div className="flex flex-wrap justify-center items-center gap-4 mt-2">
+            <div className="flex items-center space-x-2">
+              <PhoneIcon className="w-4 h-4 text-gray-600" />
+              <span>3174444258</span>
+            </div>
             <div className="flex items-center space-x-2">
               <MailIcon className="w-4 h-4 text-gray-600" />
               <span>juancyepest@gmail.com</span>
             </div>
             <div className="flex items-center space-x-2">
               <GlobeIcon className="w-4 h-4 text-gray-600" />
-              <span>www.tamayotchi.com</span>
+              <span>https://tamayotchi.com/</span>
             </div>
             <div className="flex items-center space-x-2">
               <MapPinIcon className="w-4 h-4 text-gray-600" />
@@ -32,18 +31,36 @@ export default function Resume() {
             <section className="mb-8">
               <h3 className="text-2xl font-bold border-b-2 border-gray-800 pb-2 mb-4">SUMMARY</h3>
               <p>
-                A passionate developer who brings creative ideas from areas including networking, data storages,
-                optimization and web applications. Looking for growth opportunities to try new technologies and grow my
-                technical skills.
+                A passionate developer who brings creative ideas from areas such as web applications, optimizations, infrastructure and data storage. Seeking opportunities to explore new technologies and further develop my technical skills.
               </p>
             </section>
             <section className="mb-8">
               <h3 className="text-2xl font-bold border-b-2 border-gray-800 pb-2 mb-4">EXPERIENCE</h3>
               <div className="mb-4">
+                <h4 className="text-xl font-semibold">Backend Engineer</h4>
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <CalendarIcon className="w-4 h-4" />
+                  <span>07/2021 - Present</span>
+                  <MapPinIcon className="w-4 h-4" />
+                  <span>Remote</span>
+                </div>
+                <p className="text-gray-600">Instaleap - https://instaleap.io/</p>
+                <ul className="list-disc list-inside">
+                  <li>Focus on developing and optimizing scalable systems that support last-mile logistics and e-commerce operations for large retailers, ensuring smooth delivery processes and enhancing overall system performance.</li>
+                  <li>Applied design patterns and best coding practices to maintain clean, maintainable code.</li>
+                  <li>Built horizontally scalable systems using Terraform, PostgreSQL, and AWS to support high-demand operations.</li>
+                  <li>Optimized processes and queries, significantly improving system performance, stability, and speed.</li>
+                  <li>Debugged and resolved critical issues reported by users, identifying edge cases and improving system resilience.</li>
+                  <li>Designed and developed new features.</li>
+                  <li>Contributed innovative ideas to improve workflows and optimize development processes within the team.</li>
+                  <li>Developed algorithms to optimize delivery workflows, enhancing operational efficiency and scalability within Instaleap's platform.</li>
+                </ul>
+              </div>
+              <div className="mb-4">
                 <h4 className="text-xl font-semibold">Competitive Programming</h4>
                 <div className="flex items-center space-x-2 text-gray-600">
                   <CalendarIcon className="w-4 h-4" />
-                  <span>07/2019 - Ongoing</span>
+                  <span>07/2019 - 11/2023</span>
                   <MapPinIcon className="w-4 h-4" />
                   <span>Pereira, Colombia</span>
                 </div>
@@ -51,7 +68,7 @@ export default function Resume() {
                 <ul className="list-disc list-inside">
                   <li>Active participant in competitive programming contest in Latinoamerica such as RPC and ICPC.</li>
                   <li>Ability to solve problems in team using algorithms, math and creative strategies.</li>
-                  <li>High experience in C++.</li>
+                  <li>High experience in C++ and Python.</li>
                 </ul>
               </div>
               <div>
@@ -77,9 +94,7 @@ export default function Resume() {
                 <p className="text-gray-600">Technological University of Pereira</p>
                 <div className="flex items-center space-x-2 text-gray-600">
                   <CalendarIcon className="w-4 h-4" />
-                  <span>12/2018 - 2023</span>
-                  <MapPinIcon className="w-4 h-4" />
-                  <span>Pereira, Colombia</span>
+                  <span>12/2018</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <span>GPA</span>
@@ -103,9 +118,9 @@ export default function Resume() {
                   <h4 className="text-xl font-semibold">English</h4>
                   <div className="relative pt-1">
                     <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-                      <div className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-800 w-3/5" />
+                      <div className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-800 w-4/5" />
                     </div>
-                    <span className="text-gray-600">Proficient</span>
+                    <span className="text-gray-600">Advanced</span>
                   </div>
                 </div>
               </div>
@@ -117,7 +132,7 @@ export default function Resume() {
                   <LinkedinIcon className="w-6 h-6 text-gray-600" />
                   <div>
                     <p className="text-gray-600">LinkedIn</p>
-                    <a href="#" className="text-blue-600">
+                    <a href="https://www.linkedin.com/in/juantamayo26/" className="text-blue-600">
                       www.linkedin.com/in/juantamayo26/
                     </a>
                   </div>
@@ -126,8 +141,8 @@ export default function Resume() {
                   <GlobeIcon className="w-6 h-6 text-gray-600" />
                   <div>
                     <p className="text-gray-600">Website</p>
-                    <a href="#" className="text-blue-600">
-                      www.juantamayo.xyz
+                    <a href="https://tamayotchi.com/" className="text-blue-600">
+                      https://tamayotchi.com/
                     </a>
                   </div>
                 </div>
@@ -139,14 +154,15 @@ export default function Resume() {
               <h3 className="text-2xl font-bold border-b-2 border-gray-800 pb-2 mb-4">SKILLS</h3>
               <div className="flex flex-wrap">
                 {[
-                  "C/C++",
                   "Typescript",
-                  "Python",
-                  "SQL",
-                  "React",
-                  "NodeJS",
                   "AWS",
-                  "Firebase",
+                  "React",
+                  "PostgreSQL",
+                  "C/C++",
+                  "GCP",
+                  "Terraform",
+                  "Python",
+                  "DynamoDB"
                 ].map((skill) => (
                   <span key={skill} className="bg-gray-200 text-gray-800 text-sm font-semibold mr-2 mb-2 px-4 py-2 rounded">
                     {skill}
@@ -158,44 +174,21 @@ export default function Resume() {
               <h3 className="text-2xl font-bold border-b-2 border-gray-800 pb-2 mb-4">PROJECTS</h3>
               <div className="space-y-4">
                 <div>
+                  <h4 className="text-xl font-semibold">WhatsApp Reminders</h4>
+                  <ul className="list-disc list-inside">
+                    <li>Built a WhatsApp Bot that allows users to set reminders via natural language messages using ChatGPT and Whisper API.</li>
+                    <li>Utilized GCP Runner for processing incoming messages.</li>
+                    <li>Implemented AWS Lambda on Rust to manage reminders.</li>
+                    <li>Employed DynamoDB for storing and managing reminder data efficiently.</li>
+                  </ul>
+                </div>
+                <div>
                   <h4 className="text-xl font-semibold">CodTracker</h4>
-                  <p>A discord bot implemented with codAPI for track user statistics of Warzone game.</p>
                   <ul className="list-disc list-inside">
+                    <li>A discord bot implemented with codAPI for track user statistics of Warzone game.</li>
                     <li>The information is saved in sqlite to optimize processes.</li>
-                    <li>Implemented it as a service, running live on ec2.</li>
-                    <li>When the api doesn't work, scrapped data and encoded to JSON.</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="text-xl font-semibold">My react website</h4>
-                  <p>Full Stack Javascript Developer.</p>
-                  <ul className="list-disc list-inside">
-                    <li>
-                      Fixed bugs and memory leaks with periodic code reviews among peers following the agile methodology.
-                    </li>
-                    <li>My website where I upload all my experience.</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="text-xl font-semibold">Algorithms</h4>
-                  <p>More than a project is all my learning in algorithms.</p>
-                  <ul className="list-disc list-inside">
-                    <li>Skills in advance algorithms like KMP and DP optimizations.</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="text-xl font-semibold">Snake Game</h4>
-                  <p>Snake game implemented with Genetic Algorithm.</p>
-                  <ul className="list-disc list-inside">
-                    <li>Using graphical computation with python.</li>
-                    <li>The process of the genetic algorithm is saved in an .npy file.</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="text-xl font-semibold">LoreTriends</h4>
-                  <p>A page for a client in which a database is implemented to follow processes.</p>
-                  <ul className="list-disc list-inside">
-                    <li>Develop a web application to create an interactive platform between organization and customers.</li>
+                    <li>Implemented it as a service, running live on EC2.</li>
+                    <li>When the API doesn't work, scrapped data and encoded to JSON.</li>
                   </ul>
                 </div>
               </div>
@@ -206,7 +199,8 @@ export default function Resume() {
     </div>
   )
 }
-  
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function CalendarIcon(props: any) {
   return (
     <svg
@@ -228,8 +222,8 @@ function CalendarIcon(props: any) {
     </svg>
   )
 }
-  
-  
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function GlobeIcon(props: any) {
   return (
     <svg
@@ -250,8 +244,8 @@ function GlobeIcon(props: any) {
     </svg>
   )
 }
-  
-  
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function LinkedinIcon(props: any) {
   return (
     <svg
@@ -272,8 +266,8 @@ function LinkedinIcon(props: any) {
     </svg>
   )
 }
-  
-  
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function MailIcon(props: any) {
   return (
     <svg
@@ -294,7 +288,7 @@ function MailIcon(props: any) {
   )
 }
   
-  
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function MapPinIcon(props: any) {
   return (
     <svg
