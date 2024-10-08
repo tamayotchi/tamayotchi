@@ -42,7 +42,7 @@ export const etoroData: InvestmentData[] = [
   { date: '2024-09-26', amount: 100 },
   { date: '2024-09-27', amount: 150 },
   { date: '2024-09-29', amount: 100 },
-  { date: '2024-10-02', amount: 100 },
+  { date: '2024-10-02', amount: 700 },
 ];
 
 export const a2censoData: InvestmentData[] = [
