@@ -61,6 +61,7 @@ export default function RetroWebpage() {
                 { path: 'a2censo', name: 'A2Censo' },
                 { path: 'bricksave', name: 'Bricksave' },
                 { path: 'trii', name: 'Trii' },
+                { path: 'xtb', name: 'Xtb' },
               ].map(({ path, name }) => (
                 <li key={path}>
                   <a href={`/${path}`} className="text-blue-400 hover:text-blue-300 underline">
