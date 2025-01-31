@@ -72,7 +72,7 @@ export default function RetroWebpage() {
           backgroundSize: "20px 20px",
         }}
       />
-      <div className="max-w-4xl mx-auto p-4 relative z-10">
+      <div className="max-w-4xl mx-auto p-2 sm:p-4 relative z-10">
         <div className={`border ${isDarkMode ? 'border-gray-700' : 'border-gray-300'} p-4`}>
           <header className="mb-8 relative">
             <Button
@@ -86,7 +86,7 @@ export default function RetroWebpage() {
             </Button>
             <h1 className="text-2xl font-bold mb-2">TAMAYOTCHI</h1>
             <p className="mb-4"></p>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <p>Version: v0.1.0</p>
                 <p>Updated: 18/09/2024</p>
@@ -134,12 +134,12 @@ export default function RetroWebpage() {
                 isDarkMode ? "bg-gray-700" : "bg-gray-300"
               } rounded-lg`}
             >
-              <h2 className="text-2xl font-bold mb-6 text-center">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">
                 INVESTMENT PLATFORMS
               </h2>
-              <div className="grid grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                 <div
-                  className={`border rounded-lg p-6 ${
+                    className={`border rounded-lg p-3 sm:p-6 ${
                     isDarkMode ? "bg-gray-800" : "bg-gray-200"
                   }`}
                 >
