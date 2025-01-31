@@ -1,6 +1,6 @@
 import { InvestmentData } from "../types";
 
-export const etoroData: InvestmentData[] = [
+export const etoroUSDData: InvestmentData[] = [
   { date: "2023-10-15", amount: 200 },
   { date: "2023-10-29", amount: 50 },
   { date: "2023-10-30", amount: 150 },
@@ -49,19 +49,19 @@ export const etoroData: InvestmentData[] = [
   { date: "2025-01-31", amount: 50 },
 ];
 
-export const a2censoData: InvestmentData[] = [
+export const a2censoCOPData: InvestmentData[] = [
   { date: "2023-06-17", amount: 1000000 },
 ];
 
-export const bricksaveData: InvestmentData[] = [
+export const bricksaveUSDData: InvestmentData[] = [
   { date: "2024-07-30", amount: 1000 },
 ];
 
-export const triiData: InvestmentData[] = [
+export const triiCOPData: InvestmentData[] = [
   { date: "2025-01-27", amount: 500000 },
 ];
 
-export const xtbData: InvestmentData[] = [
+export const xtbUSDData: InvestmentData[] = [
   { date: "2024-10-19", amount: 50 },
   { date: "2025-01-31", amount: 50 },
 ];

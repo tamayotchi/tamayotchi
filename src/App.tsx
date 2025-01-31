@@ -1,14 +1,14 @@
 import { Route, Routes } from 'react-router-dom'
 import RetroWebpage from './Retro'
 import PortfolioChart from './components/PortfolioChart'
-import { a2censoData, bricksaveData, etoroData, triiData, xtbData } from './data'
+import { a2censoCOPData, bricksaveUSDData, etoroUSDData, triiCOPData, xtbUSDData } from './data'
 
 const portfolioRoutes = [
-  { path: 'etoro', name: 'ETORO', data: etoroData, currency: 'USD' },
-  { path: 'bricksave', name: 'BRICKSAVE', data: bricksaveData, currency: 'USD' },
-  { path: 'a2censo', name: 'A2CENSO', data: a2censoData, currency: 'COP' },
-  { path: 'trii', name: 'TRII', data: triiData, currency: 'COP' },
-  { path: 'xtb', name: 'XTB', data: xtbData, currency: 'USD' },
+  { path: 'etoro', name: 'ETORO', data: etoroUSDData, currency: 'USD' },
+  { path: 'bricksave', name: 'BRICKSAVE', data: bricksaveUSDData, currency: 'USD' },
+  { path: 'a2censo', name: 'A2CENSO', data: a2censoCOPData, currency: 'COP' },
+  { path: 'trii', name: 'TRII', data: triiCOPData, currency: 'COP' },
+  { path: 'xtb', name: 'XTB', data: xtbUSDData, currency: 'USD' },
 ]
 import KanbanBoard from './components/KanbanBoard'
 import Todo from './components/Todo'
