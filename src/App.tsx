@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import RetroWebpage from './Retro'
 import PortfolioChart from './components/PortfolioChart'
-import { a2censoData, bricksaveData, etoroData } from './data'
+import { a2censoData, bricksaveData, etoroData, triiData } from './data'
 import KanbanBoard from './components/KanbanBoard'
 import Todo from './components/Todo'
 import Resume from './components/Resume'
@@ -28,6 +28,13 @@ function App() {
         <PortfolioChart
           platformName="A2CENSO"
           investmentData={a2censoData}
+          currency="COP"
+        />
+      } />
+      <Route path="/trii" element={
+        <PortfolioChart
+          platformName="TRII"
+          investmentData={triiData}
           currency="COP"
         />
       } />

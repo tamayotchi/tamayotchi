@@ -43,6 +43,9 @@ export const etoroData: InvestmentData[] = [
   { date: '2024-09-27', amount: 150 },
   { date: '2024-09-29', amount: 100 },
   { date: '2024-10-02', amount: 700 },
+  { date: '2024-10-08', amount: 50 },
+  { date: '2025-01-06', amount: 50 },
+  { date: '2025-01-18', amount: 50 },
 ];
 
 export const a2censoData: InvestmentData[] = [
@@ -51,4 +54,8 @@ export const a2censoData: InvestmentData[] = [
 
 export const bricksaveData: InvestmentData[] = [
   { date: '2024-07-30', amount: 1000 },
+]
+
+export const triiData: InvestmentData[] = [
+  { date: '2025-01-27', amount: 500000 },
 ]
