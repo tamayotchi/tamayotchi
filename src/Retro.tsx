@@ -56,18 +56,18 @@ export default function RetroWebpage() {
           <nav className="mb-8">
             <h2 className="text-xl font-bold mb-2">CONTENTS</h2>
             <ul className="list-disc list-inside">
-              <li>
-                <a href="/etoro" className="text-blue-400 hover:text-blue-300 underline">eToro Portfolio</a>
-              </li>
-              <li>
-                <a href="/a2censo" className="text-blue-400 hover:text-blue-300 underline">A2Censo Portfolio</a>
-              </li>
-              <li>
-                <a href="/bricksave" className="text-blue-400 hover:text-blue-300 underline">Bricksave Portfolio</a>
-              </li>
-              <li>
-                <a href="/resume" className="text-blue-400 hover:text-blue-300 underline">View My Resume</a>
-              </li>
+              {[
+                { path: 'etoro', name: 'eToro' },
+                { path: 'a2censo', name: 'A2Censo' },
+                { path: 'bricksave', name: 'Bricksave' },
+                { path: 'trii', name: 'Trii' },
+              ].map(({ path, name }) => (
+                <li key={path}>
+                  <a href={`/${path}`} className="text-blue-400 hover:text-blue-300 underline">
+                    {name} Portfolio
+                  </a>
+                </li>
+              ))}
             </ul>
           </nav>
 
