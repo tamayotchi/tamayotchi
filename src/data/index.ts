@@ -46,7 +46,9 @@ export const etoroUSDData: InvestmentData[] = [
   { date: "2024-10-08", amount: 50 },
   { date: "2025-01-06", amount: 50 },
   { date: "2025-01-18", amount: 50 },
-  { date: "2025-01-31", amount: 50 },
+  { date: "2025-01-29", amount: 50 },
+  { date: "2025-02-01", amount: 100 },
+  { date: "2025-02-02", amount: 50 },
 ];
 
 export const a2censoCOPData: InvestmentData[] = [
@@ -64,4 +66,5 @@ export const triiCOPData: InvestmentData[] = [
 export const xtbUSDData: InvestmentData[] = [
   { date: "2024-10-19", amount: 50 },
   { date: "2025-01-31", amount: 50 },
+  { date: "2025-02-01", amount: 100 },
 ];
