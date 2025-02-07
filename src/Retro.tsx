@@ -14,8 +14,28 @@ export default function RetroWebpage() {
   const [totalBalanceUSD, setTotalBalanceUSD] = useState(0);
   const [totalBalanceCOP, setTotalBalanceCOP] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);
+  const [lastUpdate, setLastUpdate] = useState<string>("");
 
   useEffect(() => {
+    const fetchLastCommit = async () => {
+      try {
+        const response = await fetch(
+          "https://api.github.com/repos/Juantamayo26/tamayotchi/commits?per_page=1"
+        );
+        const [latestCommit] = await response.json();
+        const commitDate = new Date(latestCommit.commit.committer.date);
+        const formattedDate = commitDate.toLocaleDateString('en-US', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+        setLastUpdate(formattedDate);
+      } catch (error) {
+        console.error("ERROR_FETCHING_LAST_COMMIT:", error);
+        setLastUpdate("Unable to fetch update date");
+      }
+    };
+
     const fetchExchangeRate = async () => {
       try {
         const response = await fetch(
@@ -44,6 +64,7 @@ export default function RetroWebpage() {
     };
 
     fetchExchangeRate();
+  fetchLastCommit();
   }, []);
 
   const toggleDarkMode = () => {
@@ -88,11 +109,7 @@ export default function RetroWebpage() {
             <p className="mb-4"></p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <p>Version: v0.1.0</p>
-                <p>Updated: 18/09/2024</p>
-              </div>
-              <div>
-                <p>Author: Juan Tamayo</p>
+                <p>Updated: {lastUpdate}</p>
                 <p>Visitor Count: 8</p>
               </div>
             </div>
