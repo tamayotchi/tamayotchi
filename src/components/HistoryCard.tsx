@@ -20,7 +20,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ investmentData, currency }) =
     }
   }, [cumulativeData]);
 
-  const totalInvestment = cumulativeData[cumulativeData.length - 1]?.cumulativeAmount || 0;
+  const totalInvestment = investmentData.reduce((sum, item) => sum + item.amount, 0);
 
   return (
     <Card className="w-full lg:w-2/5 bg-zinc-900 text-white shadow-xl border border-zinc-800 rounded-lg overflow-hidden">
@@ -43,7 +43,16 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ investmentData, currency }) =
               <TableBody>
                 {cumulativeData.map((item, index) => (
                   <TableRow key={index} className="border-b border-zinc-800 hover:bg-zinc-800">
-                    <TableCell>{formatDate(item.date)}</TableCell>
+                    <TableCell>
+                      {(() => {
+                        const date = new Date(item.date);
+                        // Use UTC methods but format as Month Day, Year
+                        const month = date.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
+                        const day = date.getUTCDate();
+                        const year = date.getUTCFullYear();
+                        return `${month} ${day}, ${year}`;
+                      })()}
+                    </TableCell>
                     <TableCell className="text-right text-green-400">{formatCurrency(item.amount, currency)}</TableCell>
                     <TableCell className="text-right text-yellow-500">{formatCurrency(item.cumulativeAmount, currency)}</TableCell>
                   </TableRow>

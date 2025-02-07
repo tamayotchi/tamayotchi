@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Card, CardHeader, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { InvestmentData } from '../types';
-import { formatCurrency, formatDate, formatXAxis } from '../utils/formatters';
+import { formatCurrency } from '../utils/formatters';
 import { useInvestmentData } from '../hooks/useInvestmentData'
 
 interface ChartCardProps {
@@ -23,7 +23,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
     cumulativeData,
   } = useInvestmentData(investmentData);
 
-  const totalInvestment = cumulativeData[cumulativeData.length - 1]?.cumulativeAmount || 0;
+  const totalInvestment = investmentData.reduce((sum, item) => sum + item.amount, 0);
   const isYearSelected = selectedYear !== 'ALL';
 
   return (
@@ -79,13 +79,17 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
             <XAxis 
               dataKey="date" 
               tick={{ fontSize: 12, fill: '#888' }} 
-              tickFormatter={formatXAxis}
+              tickFormatter={(value) => {
+                const date = new Date(value);
+                return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
+              }}
               interval="preserveStartEnd"
               stroke="#444"
               angle={-45}
               textAnchor="end"
               height={60}
               tickMargin={5}
+            type="category"
             />
             <YAxis 
               tick={{ fontSize: 12, fill: '#888' }} 
@@ -100,7 +104,11 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
                 formatCurrency(value as number, currency), 
                 name === 'amount' ? 'Investment' : 'Total Accumulated'
               ]}
-              labelFormatter={(label) => `Date: ${formatDate(label as string)}`}
+              labelFormatter={(label) => {
+                const date = new Date(label);
+                // Force UTC date in tooltip
+                return `Date: ${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
+              }}
               contentStyle={{ backgroundColor: '#222', border: 'none', color: '#fff' }}
             />
             <Line 
