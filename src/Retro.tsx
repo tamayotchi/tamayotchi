@@ -24,10 +24,13 @@ export default function RetroWebpage() {
         );
         const [latestCommit] = await response.json();
         const commitDate = new Date(latestCommit.commit.committer.date);
-        const formattedDate = commitDate.toLocaleDateString('en-US', {
+        const formattedDate = commitDate.toLocaleString('en-US', {
           day: '2-digit',
           month: '2-digit',
-          year: 'numeric'
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
         });
         setLastUpdate(formattedDate);
       } catch (error) {
