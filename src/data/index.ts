@@ -67,4 +67,5 @@ export const xtbUSDData: InvestmentData[] = [
   { date: "2024-10-19", amount: 50 },
   { date: "2025-01-31", amount: 50 },
   { date: "2025-02-01", amount: 100 },
+  { date: "2025-02-07", amount: 100 },
 ];
