@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Card, CardHeader, CardContent } from './ui/card';
 import { Button } from './ui/button';
-import { InvestmentData } from '../types';
+import { InvestmentContent } from '../types';
 import { formatCurrency } from '../utils/formatters';
 import { useInvestmentData } from '../hooks/useInvestmentData'
 
 interface ChartCardProps {
   platformName: string;
-  investmentData: InvestmentData[];
+  investmentData: InvestmentContent[];
   currency: string;
 }
 

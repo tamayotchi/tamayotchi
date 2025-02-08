@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  etoroUSDData,
-  a2censoCOPData,
-  bricksaveUSDData,
-  triiCOPData,
-  xtbUSDData,
-} from "@/data";
+import { investmentData } from "@/data";
 
 export default function RetroWebpage() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -48,15 +42,15 @@ export default function RetroWebpage() {
         const rate = data.rates.COP;
         setExchangeRate(rate);
 
-        const usdTotal = [...etoroUSDData, ...bricksaveUSDData, ...xtbUSDData].reduce(
-          (sum, investment) => sum + investment.amount,
-          0
-        );
+        const usdTotal = Object.values(investmentData)
+          .filter(provider => provider.currencyCode === "USD")
+          .flatMap(provider => provider.content)
+          .reduce((sum, record) => sum + record.amount, 0);
 
-        const copTotal = [...a2censoCOPData, ...triiCOPData].reduce(
-          (sum, investment) => sum + investment.amount,
-          0
-        );
+        const copTotal = Object.values(investmentData)
+          .filter(provider => provider.currencyCode === "COP")
+          .flatMap(provider => provider.content)
+          .reduce((sum, record) => sum + record.amount, 0);
 
         const copToUSD = copTotal / rate;
         setTotalBalanceUSD(usdTotal + copToUSD);

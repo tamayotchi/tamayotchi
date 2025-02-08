@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { Card, CardHeader, CardContent } from './ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { InvestmentData } from '../types';
+import { InvestmentContent } from '../types';
 import { formatCurrency } from '../utils/formatters';
 import { useInvestmentData } from '../hooks/useInvestmentData';
 
 interface HistoryCardProps {
-  investmentData: InvestmentData[];
+  investmentData: InvestmentContent[];
   currency: string;
 }
 

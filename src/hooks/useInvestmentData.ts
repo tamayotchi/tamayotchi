@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
-import { InvestmentData } from "../types";
+import { InvestmentContent } from "../types";
 
-export const useInvestmentData = (investmentData: InvestmentData[]) => {
+export const useInvestmentData = (investmentData: InvestmentContent[]) => {
   const [timeRange, setTimeRange] = useState("ALL");
   const [selectedYear, setSelectedYear] = useState("ALL");
 
