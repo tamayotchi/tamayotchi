@@ -1,16 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { InvestmentContent } from "../types";
 
-interface DataPoint {
-  date: string;
-  amount: number | null;
-  cumulativeAmount: number | null;
-  yearEndValue: number | null;
-}
-
 export const useInvestmentData = (
   investmentData: InvestmentContent[],
-  yearEndValues: InvestmentContent[] = [],
 ) => {
   const [timeRange, setTimeRange] = useState("ALL");
   const [selectedYear, setSelectedYear] = useState("ALL");
@@ -86,47 +78,6 @@ export const useInvestmentData = (
     }));
   }, [filteredData]);
 
-  const filteredYearEndValues = useMemo(() => {
-    if (selectedYear !== "ALL") {
-      const year = parseInt(selectedYear);
-      return yearEndValues.filter(
-        (item) => new Date(item.date).getFullYear() === year,
-      );
-    }
-
-    const now = new Date();
-    const startDate = new Date(now);
-
-    switch (timeRange) {
-      case "1M":
-        startDate.setMonth(now.getMonth() - 1);
-        break;
-      case "3M":
-        startDate.setMonth(now.getMonth() - 3);
-        break;
-      case "6M":
-        startDate.setMonth(now.getMonth() - 6);
-        break;
-      case "YTD":
-        startDate.setMonth(0);
-        startDate.setDate(1);
-        break;
-      case "12M":
-        startDate.setFullYear(now.getFullYear() - 1);
-        break;
-      case "ALL":
-        return yearEndValues;
-    }
-
-    return yearEndValues.filter((item) => {
-      const itemDate = new Date(item.date);
-      itemDate.setHours(0, 0, 0, 0);
-      const compareDate = new Date(startDate);
-      compareDate.setHours(0, 0, 0, 0);
-      return itemDate >= compareDate;
-    });
-  }, [yearEndValues, timeRange, selectedYear]);
-
   useEffect(() => {
     setTimeRange("ALL");
   }, [selectedYear]);
@@ -139,6 +90,5 @@ export const useInvestmentData = (
     years,
     filteredData,
     cumulativeData,
-    filteredYearEndValues,
   };
 };
