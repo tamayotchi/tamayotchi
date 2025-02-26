@@ -66,6 +66,11 @@
         "amount": 100
       },
       {
+        "date": "2023-12-31",
+        "amount": 4013,
+        "isYearEndValue": true
+      },
+      {
         "date": "2024-01-10",
         "amount": 50
       },
@@ -170,6 +175,11 @@
         "amount": 700
       },
       {
+        "date": "2024-12-31",
+        "amount": 9760,
+        "isYearEndValue": true
+      },
+      {
         "date": "2024-10-08",
         "amount": 50
       },
@@ -200,6 +210,14 @@
       {
         "date": "2025-02-11",
         "amount": 60
+      },
+      {
+        "date": "2025-02-20",
+        "amount": 100
+      },
+      {
+        "date": "2025-02-24",
+        "amount": 400
       }
     ],
     "currencyCode": "USD"
@@ -233,6 +251,22 @@
       {
         "date": "2025-02-18",
         "amount": 70
+      },
+      {
+        "date": "2025-02-20",
+        "amount": 120
+      },
+      {
+        "date": "2025-02-21",
+        "amount": 110
+      },
+      {
+        "date": "2025-02-23",
+        "amount": 200
+      },
+      {
+        "date": "2025-02-23",
+        "amount": 439
       }
     ],
     "currencyCode": "USD"

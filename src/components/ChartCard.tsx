@@ -23,7 +23,9 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
     cumulativeData,
   } = useInvestmentData(investmentData);
 
-  const totalInvestment = investmentData.reduce((sum, item) => sum + item.amount, 0);
+  const totalInvestment = investmentData.filter((data) => {
+    return !data.isYearEndValue;
+  }).reduce((sum, item) => sum + item.amount, 0);
   const isYearSelected = selectedYear !== 'ALL';
 
   return (
@@ -89,7 +91,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
               textAnchor="end"
               height={60}
               tickMargin={5}
-            type="category"
+              type="category"
             />
             <YAxis 
               tick={{ fontSize: 12, fill: '#888' }} 
@@ -100,13 +102,12 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
               tickMargin={5}
             />
             <Tooltip
-              formatter={(value, name) => [
-                formatCurrency(value as number, currency), 
-                name === 'amount' ? 'Investment' : 'Total Accumulated'
-              ]}
+              formatter={(value, name) => {
+                const formattedValue = formatCurrency(value as number, currency);
+                return [formattedValue, name]
+              }}
               labelFormatter={(label) => {
                 const date = new Date(label);
-                // Force UTC date in tooltip
                 return `Date: ${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
               }}
               contentStyle={{ backgroundColor: '#222', border: 'none', color: '#fff' }}
@@ -114,21 +115,35 @@ const ChartCard: React.FC<ChartCardProps> = ({ platformName, investmentData, cur
             <Line 
               type="stepAfter" 
               dataKey="amount" 
-              stroke="#10B981" 
-              strokeWidth={2} 
-              dot={{ r: 3, fill: '#10B981' }}
-              activeDot={{ r: 8, fill: '#10B981', stroke: '#222', strokeWidth: 2 }}
+              stroke="#64B5F6" 
+              strokeWidth={1} 
+              dot={{ r: 3, fill: '#64B5F6' }}
+              activeDot={{ r: 8, fill: '#64B5F6'}}
+              name="Investment"
+              connectNulls={true}
             />
             {showTotal && (
               <Line 
-                type="monotone" 
+                type="natural" 
                 dataKey="cumulativeAmount" 
-                stroke="#FFD700" 
-                strokeWidth={2} 
-                dot={{ r: 3, fill: '#FFD700' }}
-                activeDot={{ r: 8, fill: '#FFD700', stroke: '#222', strokeWidth: 2 }}
+                stroke="#FFA726" 
+                strokeWidth={1} 
+                dot={{ r: 3, fill: '#FFA726' }}
+                activeDot={{ r: 8, fill: '#FFA726'}}
+                name="Total Accumulated"
+                connectNulls={true}
               />
             )}
+            <Line
+              type="natural" 
+              dataKey="cumulativeYearAmount"
+              stroke="#9575CD" 
+              strokeWidth={1}
+              name="Year End Value"
+              connectNulls={true}
+              dot={{ r: 3, fill: '#9575CD' }}
+              activeDot={{ r: 8, fill: '#9575CD' }}
+            />
           </LineChart>
         </ResponsiveContainer>
       </CardContent>

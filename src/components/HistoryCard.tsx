@@ -20,7 +20,9 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ investmentData, currency }) =
     }
   }, [cumulativeData]);
 
-  const totalInvestment = investmentData.reduce((sum, item) => sum + item.amount, 0);
+  const totalInvestment = investmentData.filter((data) => {
+    return !data.isYearEndValue;
+  }).reduce((sum, item) => sum + item.amount, 0);
 
   return (
     <Card className="w-full lg:w-2/5 bg-zinc-900 text-white shadow-xl border border-zinc-800 rounded-lg overflow-hidden">
@@ -53,8 +55,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ investmentData, currency }) =
                         return `${month} ${day}, ${year}`;
                       })()}
                     </TableCell>
-                    <TableCell className="text-right text-green-400">{formatCurrency(item.amount, currency)}</TableCell>
-                    <TableCell className="text-right text-yellow-500">{formatCurrency(item.cumulativeAmount, currency)}</TableCell>
+                    <TableCell className="text-right text-green-400">{item.amount !== null ? formatCurrency(item.amount, currency) : '-'}</TableCell> 
+                    <TableCell className="text-right text-yellow-500">{item.cumulativeAmount !== null ? formatCurrency(item.cumulativeAmount, currency) : '-'}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -14,11 +14,11 @@ export enum CurrencyCode {
 export interface InvestmentContent {
   date: string;
   amount: number;
+  isYearEndValue?: boolean;
 }
 
 export interface InvestmentProvider {
   content: InvestmentContent[];
-  yearEndValues: InvestmentContent[];
   currencyCode: string;
 }
 
