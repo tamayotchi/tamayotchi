@@ -45,11 +45,13 @@ export default function RetroWebpage() {
         const usdTotal = Object.values(investmentData)
           .filter(provider => provider.currencyCode === "USD")
           .flatMap(provider => provider.content)
+          .filter(record => !record.isYearEndValue)
           .reduce((sum, record) => sum + record.amount, 0);
 
         const copTotal = Object.values(investmentData)
           .filter(provider => provider.currencyCode === "COP")
           .flatMap(provider => provider.content)
+          .filter(record => !record.isYearEndValue)
           .reduce((sum, record) => sum + record.amount, 0);
 
         const copToUSD = copTotal / rate;
