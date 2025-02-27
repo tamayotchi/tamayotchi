@@ -62,13 +62,13 @@
         "amount": 600
       },
       {
-        "date": "2024-01-04",
-        "amount": 100
-      },
-      {
         "date": "2023-12-31",
         "amount": 4013,
         "isYearEndValue": true
+      },
+      {
+        "date": "2024-01-04",
+        "amount": 100
       },
       {
         "date": "2024-01-10",
@@ -175,13 +175,13 @@
         "amount": 700
       },
       {
+        "date": "2024-10-08",
+        "amount": 50
+      },
+      {
         "date": "2024-12-31",
         "amount": 9760,
         "isYearEndValue": true
-      },
-      {
-        "date": "2024-10-08",
-        "amount": 50
       },
       {
         "date": "2025-01-06",
@@ -271,15 +271,6 @@
     ],
     "currencyCode": "USD"
   },
-  "TRII": {
-    "content": [
-      {
-        "date": "2025-01-27",
-        "amount": 500000
-      }
-    ],
-    "currencyCode": "COP"
-  },
   "A2CENSO": {
     "content": [
       {
@@ -297,5 +288,14 @@
       }
     ],
     "currencyCode": "USD"
+  },
+  "TRII": {
+    "content": [
+      {
+        "date": "2025-01-27",
+        "amount": 500000
+      }
+    ],
+    "currencyCode": "COP"
   }
 }
