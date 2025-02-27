@@ -218,10 +218,6 @@
       {
         "date": "2025-02-24",
         "amount": 400
-      },
-      {
-        "date": "2025-02-27",
-        "amount": 300
       }
     ],
     "currencyCode": "USD"
@@ -271,10 +267,6 @@
       {
         "date": "2025-02-23",
         "amount": 439
-      },
-      {
-        "date": "2025-02-27",
-        "amount": 500
       }
     ],
     "currencyCode": "USD"
