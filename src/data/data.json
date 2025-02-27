@@ -1,4 +1,84 @@
 {
+  "XTB": {
+    "content": [
+      {
+        "date": "2024-10-19",
+        "amount": 50
+      },
+      {
+        "date": "2025-01-30",
+        "amount": 50
+      },
+      {
+        "date": "2025-02-02",
+        "amount": 100
+      },
+      {
+        "date": "2025-02-07",
+        "amount": 100
+      },
+      {
+        "date": "2025-02-10",
+        "amount": 80
+      },
+      {
+        "date": "2025-02-12",
+        "amount": 300
+      },
+      {
+        "date": "2025-02-18",
+        "amount": 70
+      },
+      {
+        "date": "2025-02-20",
+        "amount": 120
+      },
+      {
+        "date": "2025-02-21",
+        "amount": 110
+      },
+      {
+        "date": "2025-02-23",
+        "amount": 200
+      },
+      {
+        "date": "2025-02-23",
+        "amount": 439
+      },
+      {
+        "date": "2025-02-27",
+        "amount": 500
+      }
+    ],
+    "currencyCode": "USD"
+  },
+  "A2CENSO": {
+    "content": [
+      {
+        "date": "2023-06-17",
+        "amount": 1000000
+      }
+    ],
+    "currencyCode": "COP"
+  },
+  "BRICKSAVE": {
+    "content": [
+      {
+        "date": "2024-07-30",
+        "amount": 1000
+      }
+    ],
+    "currencyCode": "USD"
+  },
+  "TRII": {
+    "content": [
+      {
+        "date": "2025-01-27",
+        "amount": 500000
+      }
+    ],
+    "currencyCode": "COP"
+  },
   "ETORO": {
     "content": [
       {
@@ -221,81 +301,5 @@
       }
     ],
     "currencyCode": "USD"
-  },
-  "XTB": {
-    "content": [
-      {
-        "date": "2024-10-19",
-        "amount": 50
-      },
-      {
-        "date": "2025-01-30",
-        "amount": 50
-      },
-      {
-        "date": "2025-02-02",
-        "amount": 100
-      },
-      {
-        "date": "2025-02-07",
-        "amount": 100
-      },
-      {
-        "date": "2025-02-10",
-        "amount": 80
-      },
-      {
-        "date": "2025-02-12",
-        "amount": 300
-      },
-      {
-        "date": "2025-02-18",
-        "amount": 70
-      },
-      {
-        "date": "2025-02-20",
-        "amount": 120
-      },
-      {
-        "date": "2025-02-21",
-        "amount": 110
-      },
-      {
-        "date": "2025-02-23",
-        "amount": 200
-      },
-      {
-        "date": "2025-02-23",
-        "amount": 439
-      }
-    ],
-    "currencyCode": "USD"
-  },
-  "A2CENSO": {
-    "content": [
-      {
-        "date": "2023-06-17",
-        "amount": 1000000
-      }
-    ],
-    "currencyCode": "COP"
-  },
-  "BRICKSAVE": {
-    "content": [
-      {
-        "date": "2024-07-30",
-        "amount": 1000
-      }
-    ],
-    "currencyCode": "USD"
-  },
-  "TRII": {
-    "content": [
-      {
-        "date": "2025-01-27",
-        "amount": 500000
-      }
-    ],
-    "currencyCode": "COP"
   }
 }
