@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint '*/**/*.{ts,tsx}' && prettier --check '*/**/*.{ts,yml}'",
+    "lint:fix": "eslint '*/**/*.{ts,tsx}' --fix && prettier --write '*/**/*.{ts,tsx,yml}'"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.1",
@@ -27,11 +29,16 @@
     "@types/node": "^22.1.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/parser": "^8.26.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
+    "eslint": "^9.21.0",
     "postcss": "^8.4.40",
+    "prettier": "^3.5.3",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.2.2",
+    "typescript-eslint": "^8.26.0",
     "vite": "^5.3.4"
   }
 }

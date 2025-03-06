@@ -6,8 +6,9 @@ export const investmentData: InvestmentData = Object.entries(rawData).reduce(
     ...acc,
     [provider]: {
       content: data.content,
-      currencyCode: CurrencyCode[data.currencyCode as keyof typeof CurrencyCode],
+      currencyCode:
+        CurrencyCode[data.currencyCode as keyof typeof CurrencyCode],
     },
   }),
-  {} as InvestmentData
+  {} as InvestmentData,
 );

@@ -1,9 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { InvestmentContent } from "../types";
 
-export const useInvestmentData = (
-  investmentData: InvestmentContent[],
-) => {
+export const useInvestmentData = (investmentData: InvestmentContent[]) => {
   const [timeRange, setTimeRange] = useState("ALL");
   const [selectedYear, setSelectedYear] = useState("ALL");
 
@@ -61,7 +59,6 @@ export const useInvestmentData = (
   }, [investmentData, timeRange, selectedYear]);
 
   const cumulativeData = useMemo(() => {
-    // Ordenar los datos por fecha primero
     const sortedData = [...filteredData].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
