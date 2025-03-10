@@ -287,6 +287,10 @@
       {
         "date": "2025-03-09",
         "amount": 260
+      },
+      {
+        "date": "2025-03-09",
+        "amount": 240
       }
     ],
     "currencyCode": "USD"
