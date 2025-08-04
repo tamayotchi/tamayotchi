@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { investmentData } from "@/data";
+import SalaryCounter from "@/components/SalaryCounter";
 
 export default function RetroWebpage() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -9,6 +10,9 @@ export default function RetroWebpage() {
   const [totalBalanceCOP, setTotalBalanceCOP] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);
   const [lastUpdate, setLastUpdate] = useState<string>("");
+  
+  // Check if salary parameter is in URL
+  const showSalaryCounter = new URLSearchParams(window.location.search).get('salary') === 'yes';
 
   useEffect(() => {
     const fetchLastCommit = async () => {
@@ -123,7 +127,7 @@ export default function RetroWebpage() {
           <div
             className={`text-center p-4 ${
               isDarkMode ? "bg-gray-700" : "bg-gray-300"
-            } rounded-lg`}
+            } rounded-lg mb-6`}
           >
             <h3 className="text-xl font-bold mb-2">Total Portfolio Balance</h3>
             <p className="text-lg">
@@ -212,6 +216,14 @@ export default function RetroWebpage() {
               </div>
             </div>
           </nav>
+
+          {showSalaryCounter && (
+            <div className="mb-8 flex justify-center">
+              <div className="w-full max-w-md">
+                <SalaryCounter isDarkMode={isDarkMode} />
+              </div>
+            </div>
+          )}
 
           <main>
             <section className="mb-8">
