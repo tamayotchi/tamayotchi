@@ -220,7 +220,7 @@ export default function RetroWebpage() {
           {showSalaryCounter && (
             <div className="mb-8 flex justify-center">
               <div className="w-full max-w-md">
-                <SalaryCounter isDarkMode={isDarkMode} />
+                <SalaryCounter isDarkMode={isDarkMode} exchangeRate={exchangeRate} />
               </div>
             </div>
           )}

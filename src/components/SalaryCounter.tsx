@@ -3,13 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface SalaryCounterProps {
   isDarkMode: boolean;
+  exchangeRate: number;
 }
 
-export default function SalaryCounter({ isDarkMode }: SalaryCounterProps) {
+export default function SalaryCounter({ isDarkMode, exchangeRate }: SalaryCounterProps) {
   const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [startTime] = useState(Date.now());
 
   const MONTHLY_SALARY = 12_112_514;
+  const MONTHLY_SALARY_USD = exchangeRate > 0 ? MONTHLY_SALARY / exchangeRate : 0;
   const SECONDS_PER_MONTH = 30 * 24 * 60 * 60;
   const SALARY_PER_SECOND = MONTHLY_SALARY / SECONDS_PER_MONTH;
 
@@ -59,6 +61,9 @@ export default function SalaryCounter({ isDarkMode }: SalaryCounterProps) {
       <CardHeader className="pb-3">
         <CardTitle className="text-center text-lg">💰 SALARY COUNTER</CardTitle>
         <p className="text-center text-sm opacity-75">Monthly Salary: ${formatCurrency(MONTHLY_SALARY)} COP</p>
+        {exchangeRate > 0 && (
+          <p className="text-center text-sm opacity-75">Monthly Salary on USD: ${formatCurrency(MONTHLY_SALARY_USD)} USD</p>
+        )}
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="text-center">
