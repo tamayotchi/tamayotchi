@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { investmentData } from "@/data";
 import SalaryCounter from "@/components/SalaryCounter";
 
 export default function RetroWebpage() {
+  const [searchParams] = useSearchParams();
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [totalBalanceUSD, setTotalBalanceUSD] = useState(0);
   const [totalBalanceCOP, setTotalBalanceCOP] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);
   const [lastUpdate, setLastUpdate] = useState<string>("");
   
-  // Check if salary parameter is in URL
-  const showSalaryCounter = new URLSearchParams(window.location.search).get('salary') === 'yes';
+  // Check if salary parameter is in URL using React Router hook
+  const showSalaryCounter = searchParams.get('salary') === 'yes';
 
   useEffect(() => {
     const fetchLastCommit = async () => {
