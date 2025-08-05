@@ -78,38 +78,26 @@ export default function SalaryCounter({ isDarkMode, exchangeRate }: SalaryCounte
           </p>
         </div>
 
-        <div className="space-y-1">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-            <div className={`text-center py-1 px-2 rounded border ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-              <p className="opacity-75">Per second</p>
-            </div>
-            <div className={`text-center py-1 px-2 rounded border ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-              <p className="opacity-75">Per minute</p>
-            </div>
-            <div className={`text-center py-1 px-2 rounded border ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-              <p className="opacity-75">Per hour</p>
-            </div>
-            <div className={`text-center py-1 px-2 rounded border ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-              <p className="opacity-75">Per day</p>
-            </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
+            <p className="font-bold text-sm">${formatCurrency(SALARY_PER_SECOND)}</p>
+            <p className="text-xs opacity-60">COP</p>
+            <p className="opacity-75 text-xs mt-1">Per second</p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-            <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-              <p className="font-bold text-sm">${formatCurrency(SALARY_PER_SECOND)}</p>
-              <p className="text-xs opacity-60">COP</p>
-            </div>
-            <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-              <p className="font-bold text-sm">${formatCurrency(earningsPerMinute)}</p>
-              <p className="text-xs opacity-60">COP</p>
-            </div>
-            <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-              <p className="font-bold text-sm">${formatCurrency(earningsPerHour)}</p>
-              <p className="text-xs opacity-60">COP</p>
-            </div>
-            <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-              <p className="font-bold text-sm">${formatCurrency(earningsPerDay)}</p>
-              <p className="text-xs opacity-60">COP</p>
-            </div>
+          <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
+            <p className="font-bold text-sm">${formatCurrency(earningsPerMinute)}</p>
+            <p className="text-xs opacity-60">COP</p>
+            <p className="opacity-75 text-xs mt-1">Per minute</p>
+          </div>
+          <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
+            <p className="font-bold text-sm">${formatCurrency(earningsPerHour)}</p>
+            <p className="text-xs opacity-60">COP</p>
+            <p className="opacity-75 text-xs mt-1">Per hour</p>
+          </div>
+          <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
+            <p className="font-bold text-sm">${formatCurrency(earningsPerDay)}</p>
+            <p className="text-xs opacity-60">COP</p>
+            <p className="opacity-75 text-xs mt-1">Per day</p>
           </div>
         </div>
       </CardContent>
