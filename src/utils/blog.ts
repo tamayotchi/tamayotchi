@@ -61,17 +61,22 @@ function parseFrontmatter(content: string): {
 }
 
 export function getAllBlogPosts(): BlogMetadata[] {
-  const posts = Object.entries(blogPosts).map(([path, content]) => {
-    const { data } = parseFrontmatter(content);
-    const filename = path.split("/").pop()?.replace(".md", "") || "";
+  const posts = Object.entries(blogPosts)
+    .filter(([path]) => {
+      const filename = path.split("/").pop()?.replace(".md", "") || "";
+      return filename !== "template";
+    })
+    .map(([path, content]) => {
+      const { data } = parseFrontmatter(content);
+      const filename = path.split("/").pop()?.replace(".md", "") || "";
 
-    return {
-      title: data.title || "Untitled",
-      date: data.date || new Date().toISOString().split("T")[0],
-      excerpt: data.excerpt || "No excerpt available",
-      slug: data.slug || filename,
-    };
-  });
+      return {
+        title: data.title || "Untitled",
+        date: data.date || new Date().toISOString().split("T")[0],
+        excerpt: data.excerpt || "No excerpt available",
+        slug: data.slug || filename,
+      };
+    });
 
   return posts.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
