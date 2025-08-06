@@ -6,12 +6,16 @@ interface SalaryCounterProps {
   exchangeRate: number;
 }
 
-export default function SalaryCounter({ isDarkMode, exchangeRate }: SalaryCounterProps) {
+export default function SalaryCounter({
+  isDarkMode,
+  exchangeRate,
+}: SalaryCounterProps) {
   const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [startTime] = useState(Date.now());
 
   const MONTHLY_SALARY = 12_112_514;
-  const MONTHLY_SALARY_USD = exchangeRate > 0 ? MONTHLY_SALARY / exchangeRate : 0;
+  const MONTHLY_SALARY_USD =
+    exchangeRate > 0 ? MONTHLY_SALARY / exchangeRate : 0;
   const SECONDS_PER_MONTH = 30 * 24 * 60 * 60;
   const SALARY_PER_SECOND = MONTHLY_SALARY / SECONDS_PER_MONTH;
 
@@ -46,7 +50,7 @@ export default function SalaryCounter({ isDarkMode, exchangeRate }: SalaryCounte
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    
+
     if (hours > 0) {
       return `${hours}h ${minutes}m ${secs}s`;
     } else if (minutes > 0) {
@@ -57,12 +61,18 @@ export default function SalaryCounter({ isDarkMode, exchangeRate }: SalaryCounte
   };
 
   return (
-    <Card className={`${isDarkMode ? "bg-gray-700 border-gray-600" : "bg-gray-300 border-gray-400"} font-mono`}>
+    <Card
+      className={`${isDarkMode ? "bg-gray-700 border-gray-600" : "bg-gray-300 border-gray-400"} font-mono`}
+    >
       <CardHeader className="pb-3">
         <CardTitle className="text-center text-lg">💰 SALARY COUNTER</CardTitle>
-        <p className="text-center text-sm opacity-75">Monthly Salary: ${formatCurrency(MONTHLY_SALARY)} COP</p>
+        <p className="text-center text-sm opacity-75">
+          Monthly Salary: ${formatCurrency(MONTHLY_SALARY)} COP
+        </p>
         {exchangeRate > 0 && (
-          <p className="text-center text-sm opacity-75">Monthly Salary on USD: ${formatCurrency(MONTHLY_SALARY_USD)} USD</p>
+          <p className="text-center text-sm opacity-75">
+            Monthly Salary on USD: ${formatCurrency(MONTHLY_SALARY_USD)} USD
+          </p>
         )}
       </CardHeader>
       <CardContent className="space-y-3">
@@ -70,8 +80,10 @@ export default function SalaryCounter({ isDarkMode, exchangeRate }: SalaryCounte
           <p className="text-sm opacity-75">Time on page:</p>
           <p className="text-xl font-bold">{formatTime(secondsElapsed)}</p>
         </div>
-        
-        <div className={`text-center p-3 rounded ${isDarkMode ? "bg-gray-800" : "bg-gray-200"}`}>
+
+        <div
+          className={`text-center p-3 rounded ${isDarkMode ? "bg-gray-800" : "bg-gray-200"}`}
+        >
           <p className="text-sm opacity-75">Earned so far:</p>
           <p className="text-2xl font-bold text-green-400">
             ${formatCurrency(totalEarned)} COP
@@ -79,23 +91,39 @@ export default function SalaryCounter({ isDarkMode, exchangeRate }: SalaryCounte
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-          <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-            <p className="font-bold text-sm">${formatCurrency(SALARY_PER_SECOND)}</p>
+          <div
+            className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}
+          >
+            <p className="font-bold text-sm">
+              ${formatCurrency(SALARY_PER_SECOND)}
+            </p>
             <p className="text-xs opacity-60">COP</p>
             <p className="opacity-75 text-xs mt-1">Per second</p>
           </div>
-          <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-            <p className="font-bold text-sm">${formatCurrency(earningsPerMinute)}</p>
+          <div
+            className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}
+          >
+            <p className="font-bold text-sm">
+              ${formatCurrency(earningsPerMinute)}
+            </p>
             <p className="text-xs opacity-60">COP</p>
             <p className="opacity-75 text-xs mt-1">Per minute</p>
           </div>
-          <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-            <p className="font-bold text-sm">${formatCurrency(earningsPerHour)}</p>
+          <div
+            className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}
+          >
+            <p className="font-bold text-sm">
+              ${formatCurrency(earningsPerHour)}
+            </p>
             <p className="text-xs opacity-60">COP</p>
             <p className="opacity-75 text-xs mt-1">Per hour</p>
           </div>
-          <div className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}>
-            <p className="font-bold text-sm">${formatCurrency(earningsPerDay)}</p>
+          <div
+            className={`text-center p-3 rounded border flex flex-col justify-center ${isDarkMode ? "bg-gray-800 border-gray-600" : "bg-gray-200 border-gray-400"}`}
+          >
+            <p className="font-bold text-sm">
+              ${formatCurrency(earningsPerDay)}
+            </p>
             <p className="text-xs opacity-60">COP</p>
             <p className="opacity-75 text-xs mt-1">Per day</p>
           </div>
