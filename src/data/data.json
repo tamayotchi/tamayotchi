@@ -278,6 +278,10 @@
       {
         "date": "2025-10-01",
         "amount": 200
+      },
+      {
+        "date": "2025-10-07",
+        "amount": 50
       }
     ],
     "currencyCode": "USD"
