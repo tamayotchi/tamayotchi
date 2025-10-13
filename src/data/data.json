@@ -355,6 +355,10 @@
       {
         "date": "2025-05-08",
         "amount": 51
+      },
+      {
+        "date": "2025-10-13",
+        "amount": 10
       }
     ],
     "currencyCode": "USD"
