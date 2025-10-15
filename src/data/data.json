@@ -363,6 +363,10 @@
       {
         "date": "2025-10-13",
         "amount": 10
+      },
+      {
+        "date": "2025-10-14",
+        "amount": 20
       }
     ],
     "currencyCode": "USD"
