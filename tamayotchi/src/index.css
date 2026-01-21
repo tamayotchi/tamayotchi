@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Scrollbar for Retro Design */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937; /* gray-800 for dark mode */
+  border: 1px solid #374151; /* gray-700 border */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563; /* gray-600 */
+  border: 1px solid #374151; /* gray-700 border */
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280; /* gray-500 */
+}
+
+/* Light mode scrollbar */
+@media (prefers-color-scheme: light) {
+  html:not(.dark) ::-webkit-scrollbar-track {
+    background: #f3f4f6; /* gray-100 */
+    border: 1px solid #d1d5db; /* gray-300 border */
+  }
+  
+  html:not(.dark) ::-webkit-scrollbar-thumb {
+    background: #9ca3af; /* gray-400 */
+    border: 1px solid #d1d5db; /* gray-300 border */
+  }
+  
+  html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280; /* gray-500 */
+  }
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 #1f2937;
+}
