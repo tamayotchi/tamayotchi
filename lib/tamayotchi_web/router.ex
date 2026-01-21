@@ -17,10 +17,10 @@ defmodule TamayotchiWeb.Router do
   scope "/", TamayotchiWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
-
     get "/posts", BlogController, :index
     get "/posts/:id", BlogController, :show
+
+    get "/*path", SpaController, :index
   end
 
   # Other scopes may use custom stacks.
