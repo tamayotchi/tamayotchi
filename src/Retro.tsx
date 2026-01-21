@@ -4,8 +4,6 @@ import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { investmentData } from "@/data";
 import SalaryCounter from "@/components/SalaryCounter";
-import { getAllBlogPosts } from "@/utils/blog";
-import type { BlogMetadata } from "@/types/blog";
 import { useTheme } from "@/contexts/ThemeContext";
 
 export default function RetroWebpage() {
@@ -15,7 +13,6 @@ export default function RetroWebpage() {
   const [totalBalanceCOP, setTotalBalanceCOP] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);
   const [lastUpdate, setLastUpdate] = useState<string>("");
-  const [blogPosts, setBlogPosts] = useState<BlogMetadata[]>([]);
 
   // Check if salary parameter is in URL using React Router hook
   const showSalaryCounter = searchParams.get("salary") === "yes";
@@ -74,15 +71,6 @@ export default function RetroWebpage() {
 
     fetchExchangeRate();
     fetchLastCommit();
-  }, []);
-
-  useEffect(() => {
-    try {
-      const posts = getAllBlogPosts();
-      setBlogPosts(posts);
-    } catch (error) {
-      console.error("Error loading blog posts:", error);
-    }
   }, []);
 
 
@@ -239,59 +227,6 @@ export default function RetroWebpage() {
               </div>
             </div>
           )}
-
-          <main>
-            <section className="mb-8">
-              <div
-                className={`p-6 ${
-                  isDarkMode ? "bg-gray-700" : "bg-gray-300"
-                } rounded-lg`}
-              >
-                <h2 className="text-xl font-bold mb-4 text-center">BLOG</h2>
-                {blogPosts.length > 0 ? (
-                  <div className="space-y-4">
-                    {blogPosts.slice(0, 3).map((post) => (
-                      <div
-                        key={post.slug}
-                        className={`border rounded-lg p-4 ${
-                          isDarkMode ? "bg-gray-800" : "bg-gray-200"
-                        }`}
-                      >
-                        <h3 className="font-bold mb-2">
-                          <a
-                            href={`/blog/${post.slug}`}
-                            className="text-blue-400 hover:text-blue-300 underline"
-                          >
-                            {post.title}
-                          </a>
-                        </h3>
-                        <p className="text-sm text-gray-500 mb-2">
-                          {new Date(post.date).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
-                        </p>
-                        <p className="text-sm">{post.excerpt}</p>
-                      </div>
-                    ))}
-                    <div className="text-center mt-4">
-                      <a
-                        href="/blog"
-                        className="text-blue-400 hover:text-blue-300 underline font-bold"
-                      >
-                        View All Blog Posts →
-                      </a>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <p className="mb-4">Loading blog posts...</p>
-                  </div>
-                )}
-              </div>
-            </section>
-          </main>
         </div>
       </div>
     </div>

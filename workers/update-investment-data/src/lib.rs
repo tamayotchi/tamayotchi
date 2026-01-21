@@ -6,7 +6,7 @@ use std::{collections::BTreeMap, fmt, str::FromStr};
 use strum_macros::EnumString;
 use worker::*;
 
-const GITHUB_REPO_PATH: &str = "Juantamayo26/tamayotchi";
+const GITHUB_REPO_PATH: &str = "tamayotchi/tamayotchi";
 const DATA_FILE_PATH: &str = "src/data/data.json";
 
 #[derive(Debug, Deserialize, EnumString, Hash, Eq, PartialEq, Clone, Serialize, Ord, PartialOrd)]

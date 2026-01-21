@@ -1,9 +1,7 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import RetroWebpage from "./Retro";
 import PortfolioChart from "./components/PortfolioChart";
 import { investmentData } from "./data";
-import BlogList from "./components/BlogList";
-import BlogPost from "./components/BlogPost";
 import Resume from "./components/Resume";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
@@ -27,8 +25,6 @@ function App() {
             element={<PortfolioChart platformName={name} investmentData={data} />}
           />
         ))}
-        <Route path="/blog" element={<BlogList />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/resume" element={<Resume />} />
       </Routes>
     </ThemeProvider>
