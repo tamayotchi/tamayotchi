@@ -7,7 +7,7 @@ image: tamayotchi/tamayotchi
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.1.19
+    - home-server
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -18,12 +18,16 @@ servers:
 #
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
-  ssl: true
+  ssl: false
   host: beta.tamayotchi.com
   # Proxy connects to your container on port 80 by default.
   app_port: 4000
+  run:
+    bind_ips:
+      - 127.0.0.1
 
 registry:
+  server: ghcr.io
   username: tamayotchi
   password:
     - KAMAL_REGISTRY_PASSWORD
@@ -32,12 +36,12 @@ builder:
   arch: amd64
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
-#
-# env:
-#   clear:
-#     DB_HOST: 192.168.0.2
-#   secret:
-#     - RAILS_MASTER_KEY
+env:
+  clear:
+    PHX_HOST: beta.tamayotchi.com
+    PORT: 4000
+  secret:
+    - SECRET_KEY_BASE
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal app logs -r job" will tail logs from the first server in the job section.
@@ -71,17 +75,13 @@ builder:
 accessories:
   cloudflared:
     image: cloudflare/cloudflared:2026.2.0
-    host: 192.168.1.19
-    port: 10801
+    host: home-server
     env:
       secret:
         - TUNNEL_TOKEN
     cmd: tunnel run
-# Configure custom arguments for Traefik. Be sure to reboot traefik when you modify it.
-traefik:
-  host_port: 18081
-  args:
-    accesslog: true
+    options:
+      network: host
 
 # Use accessory services (secrets come from .kamal/secrets).
 #
