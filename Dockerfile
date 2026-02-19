@@ -22,7 +22,7 @@ FROM ${BUILDER_IMAGE} AS builder
 
 # install build dependencies
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends build-essential git \
+  && apt-get install -y --no-install-recommends build-essential git nodejs npm \
   && rm -rf /var/lib/apt/lists/*
 
 # prepare build dir
@@ -52,10 +52,18 @@ COPY priv priv
 
 COPY lib lib
 
+# Install SPA dependencies with Docker layer caching.
+COPY tamayotchi/package.json tamayotchi/package-lock.json tamayotchi/
+RUN cd tamayotchi && npm ci
+
 # Compile the release
 RUN mix compile
 
 COPY assets assets
+COPY tamayotchi tamayotchi
+
+# Build SPA static files into /app/priv/static before digesting assets.
+RUN cd tamayotchi && npm run build
 
 # compile assets
 RUN mix assets.deploy

@@ -80,8 +80,6 @@ accessories:
       secret:
         - TUNNEL_TOKEN
     cmd: tunnel run
-    options:
-      network: host
 
 # Use accessory services (secrets come from .kamal/secrets).
 #
