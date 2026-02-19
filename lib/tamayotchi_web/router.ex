@@ -17,10 +17,9 @@ defmodule TamayotchiWeb.Router do
   scope "/", TamayotchiWeb do
     pipe_through :browser
 
+    get "/", PageController, :index
     get "/posts", BlogController, :index
     get "/posts/:id", BlogController, :show
-
-    get "/*path", SpaController, :index
   end
 
   # Other scopes may use custom stacks.
@@ -42,5 +41,11 @@ defmodule TamayotchiWeb.Router do
 
       live_dashboard "/dashboard", metrics: TamayotchiWeb.Telemetry
     end
+  end
+
+  scope "/", TamayotchiWeb do
+    pipe_through :browser
+
+    get "/*path", SpaController, :index
   end
 end

@@ -111,21 +111,21 @@ body {
   font-family: "IBM Plex Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-.blog-page {
+.site-page {
   min-height: 100vh;
   background: #030403;
   color: #c9ffb5;
   padding: 2.5rem 1.25rem 3rem;
 }
 
-.blog-container {
+.site-container {
   max-width: 960px;
   margin: 0 auto;
   border-left: 1px dashed rgba(126, 255, 170, 0.4);
   padding-left: 1.75rem;
 }
 
-.blog-header {
+.site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -134,26 +134,40 @@ body {
   border-bottom: 1px dotted rgba(126, 255, 170, 0.35);
 }
 
-.blog-inline-link {
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dotted rgba(126, 255, 170, 0.25);
+}
+
+.site-nav-link {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.site-inline-link {
   font-size: 1rem;
   font-weight: 500;
 }
 
-.blog-kicker {
+.site-kicker {
   text-transform: uppercase;
   letter-spacing: 0.25em;
   font-size: 0.72rem;
   color: rgba(126, 255, 170, 0.7);
 }
 
-.blog-title {
+.site-title {
   font-size: clamp(2rem, 3vw, 2.6rem);
   font-weight: 700;
   letter-spacing: -0.01em;
   color: #e7ffd8;
 }
 
-.blog-count {
+.site-count {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -164,13 +178,13 @@ body {
   background: rgba(6, 16, 8, 0.9);
 }
 
-.blog-list {
+.site-list {
   list-style: none;
   padding: 0;
   margin: 1.25rem 0 0;
 }
 
-.blog-list-item {
+.site-list-item {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.9rem 1.5rem;
@@ -178,18 +192,18 @@ body {
   border-bottom: 1px dotted rgba(126, 255, 170, 0.25);
 }
 
-.blog-list-body {
+.site-list-body {
   display: grid;
   gap: 0.35rem;
 }
 
-.blog-list-title {
+.site-list-title {
   font-size: 1.45rem;
   font-weight: 600;
   color: #e0ffd2;
 }
 
-.blog-link {
+.site-link {
   color: #9afc9d;
   text-decoration: underline;
   text-decoration-style: dashed;
@@ -199,29 +213,29 @@ body {
   transition: color 120ms ease, text-decoration-color 120ms ease;
 }
 
-.blog-link:hover {
+.site-link:hover {
   color: #c8ffbf;
   text-decoration-color: rgba(126, 255, 170, 0.95);
 }
 
-.blog-list-desc {
+.site-list-desc {
   font-size: 0.95rem;
   color: rgba(201, 255, 181, 0.78);
   line-height: 1.6;
 }
 
-.blog-tags {
+.site-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.blog-year-block {
+.site-year-block {
   padding: 1.5rem 0;
   border-bottom: 1px dotted rgba(126, 255, 170, 0.35);
 }
 
-.blog-year-label {
+.site-year-label {
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -229,7 +243,7 @@ body {
   margin-bottom: 0.75rem;
 }
 
-.blog-year-list {
+.site-year-list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -237,17 +251,95 @@ body {
   gap: 0.8rem;
 }
 
-.blog-year-item {
+.site-year-item {
   display: grid;
   grid-template-columns: 3rem 1fr;
   gap: 0.9rem;
   align-items: baseline;
 }
 
-.blog-day {
+.site-day {
   font-size: 0.9rem;
   color: rgba(126, 255, 170, 0.8);
   letter-spacing: 0.05em;
+}
+
+.home-metrics {
+  display: grid;
+  gap: 0.5rem;
+  color: #dcffd8;
+  line-height: 1.6;
+}
+
+.home-metric-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.home-metric-label {
+  color: rgba(201, 255, 181, 0.82);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.76rem;
+}
+
+.home-metric-value {
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: #baffb3;
+  text-shadow: 0 0 10px rgba(122, 255, 156, 0.5), 0 0 24px rgba(122, 255, 156, 0.2);
+  background: linear-gradient(180deg, rgba(8, 22, 14, 0.95), rgba(8, 18, 12, 0.65));
+  border: 1px solid rgba(122, 255, 156, 0.35);
+  border-radius: 0.4rem;
+  padding: 0.1rem 0.45rem;
+}
+
+.home-total-board {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.16rem 0.6rem;
+}
+
+.home-total-divider {
+  color: rgba(174, 248, 180, 0.7);
+  text-shadow: none;
+}
+
+.home-exchange-board {
+  padding: 0.16rem 0.6rem;
+}
+
+.home-overview-card {
+  border: 1px dotted rgba(126, 255, 170, 0.35);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(8, 18, 11, 0.5);
+}
+
+.home-platform-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.home-platform-card {
+  border: 1px dotted rgba(126, 255, 170, 0.3);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: rgba(10, 20, 12, 0.6);
+}
+
+.home-platform-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #e8ffd7;
 }
 
 .article-body {
@@ -340,4 +432,19 @@ body {
 .article-body hr {
   margin: 2.25rem 0;
   border-color: rgba(126, 255, 170, 0.25);
+}
+
+@media (max-width: 800px) {
+  .site-container {
+    padding-left: 1rem;
+  }
+
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .home-platform-columns {
+    grid-template-columns: 1fr;
+  }
 }

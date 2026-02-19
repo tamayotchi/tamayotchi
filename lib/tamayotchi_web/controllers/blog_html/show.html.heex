@@ -1,19 +1,16 @@
-<section class="blog-page">
-  <div class="blog-container space-y-6">
-    <div class="flex items-center justify-between gap-3">
-      <.link href={~p"/posts"} class="blog-link flex items-center gap-2">
-        <.icon name="hero-arrow-left" class="size-4" />
-        Back to posts
-      </.link>
-    </div>
-
-    <div class="space-y-2">
-      <p class="blog-kicker">{Calendar.strftime(@post.date, "%Y-%m-%d")}</p>
-      <h1 class="blog-title">{@post.title}</h1>
-    </div>
-
-    <div class="article-body">
-      {raw(@post.body)}
-    </div>
+<Layouts.navbar_shell>
+  <div class="flex items-center justify-between gap-3">
+    <.link href={~p"/posts"} class="site-link flex items-center gap-2">
+      <.icon name="hero-arrow-left" class="size-4" /> Back to posts
+    </.link>
   </div>
-</section>
+
+  <div class="space-y-2">
+    <p class="site-kicker">{Calendar.strftime(@post.date, "%Y-%m-%d")}</p>
+    <h1 class="site-title">{@post.title}</h1>
+  </div>
+
+  <div class="article-body">
+    {raw(@post.body)}
+  </div>
+</Layouts.navbar_shell>

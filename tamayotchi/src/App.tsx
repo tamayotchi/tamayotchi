@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import RetroWebpage from "./Retro";
 import PortfolioChart from "./components/PortfolioChart";
 import { investmentData } from "./data";
-import Resume from "./components/Resume";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const portfolioRoutes = [
@@ -25,7 +24,6 @@ function App() {
             element={<PortfolioChart platformName={name} investmentData={data} />}
           />
         ))}
-        <Route path="/resume" element={<Resume />} />
       </Routes>
     </ThemeProvider>
   );

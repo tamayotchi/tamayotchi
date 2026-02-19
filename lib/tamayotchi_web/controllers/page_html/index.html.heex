@@ -1,0 +1,69 @@
+<Layouts.navbar_shell>
+  <header class="site-header">
+    <div>
+      <p class="site-kicker">tamayotchi</p>
+      <h1 class="site-title">Tamayotchi</h1>
+    </div>
+    <span class="site-count">Updated {@last_update}</span>
+  </header>
+
+  <section class="home-overview-card space-y-6">
+    <div class="space-y-3">
+      <h2 class="site-year-label">Total Portfolio Balance</h2>
+      <div class="home-metrics" id="portfolio-totals">
+        <p class="home-metric-row">
+          <span class="home-metric-label">Total</span>
+          <span class={["home-metric-value", "home-total-board"]}>
+            <span>{format_currency(@totals.usd, 2)} USD</span>
+            <span class="home-total-divider">|</span>
+            <span>{format_currency(@totals.cop, 0)} COP</span>
+          </span>
+        </p>
+        <%= if @exchange_rate do %>
+          <p class="home-metric-row">
+            <span class="home-metric-label">Current Exchange Rate:</span>
+            <span class={["home-metric-value", "home-exchange-board"]}>
+              1 USD = {format_currency(@exchange_rate, 2)} COP
+            </span>
+          </p>
+        <% else %>
+          <p class="home-metric-row">
+            <span class="home-metric-label">Current Exchange Rate:</span>
+            <span class="home-metric-value">UNAVAILABLE</span>
+          </p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <h2 class="site-year-label">Investment Platforms</h2>
+      <div class="home-platform-columns">
+        <div class="home-platform-card" id="platforms-usd">
+          <h3 class="home-platform-title">USD Investments</h3>
+          <ul class="site-year-list">
+            <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "USD")) do %>
+              <li>
+                <.link href={"/" <> platform.path} class={["site-link", "site-inline-link"]}>
+                  {platform.name}
+                </.link>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="home-platform-card" id="platforms-cop">
+          <h3 class="home-platform-title">COP Investments</h3>
+          <ul class="site-year-list">
+            <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "COP")) do %>
+              <li>
+                <.link href={"/" <> platform.path} class={["site-link", "site-inline-link"]}>
+                  {platform.name}
+                </.link>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layouts.navbar_shell>

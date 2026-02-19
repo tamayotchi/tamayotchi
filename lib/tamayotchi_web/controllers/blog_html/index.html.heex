@@ -1,31 +1,29 @@
-<section class="blog-page">
-  <div class="blog-container">
-    <header class="blog-header">
-      <div>
-        <p class="blog-kicker">tamayotchi · notes, how‑tos, experiments</p>
-        <h1 class="blog-title">Posts</h1>
-      </div>
-      <span class="blog-count">{length(@posts)} total</span>
-    </header>
+<Layouts.navbar_shell>
+  <header class="site-header">
+    <div>
+      <p class="site-kicker">tamayotchi · notes, how‑tos, experiments</p>
+      <h1 class="site-title">Posts</h1>
+    </div>
+    <span class="site-count">{length(@posts)} total</span>
+  </header>
 
-    <% sorted_posts = Enum.sort(@posts, fn a, b -> Date.compare(a.date, b.date) != :lt end) %>
+  <% sorted_posts = Enum.sort(@posts, fn a, b -> Date.compare(a.date, b.date) != :lt end) %>
 
-    <%= for year_posts <- Enum.chunk_by(sorted_posts, & &1.date.year) do %>
-      <% year = hd(year_posts).date.year %>
-      <section class="blog-year-block">
-        <h2 class="blog-year-label">{year}</h2>
-        <ul class="blog-year-list">
-          <%= for post <- year_posts do %>
-            <% day = Calendar.strftime(post.date, "%m-%d") %>
-            <li id={post.id} class="blog-year-item">
-              <span class="blog-day">{day}</span>
-              <.link href={~p"/posts/#{post.id}"} class="blog-link blog-inline-link">
-                {post.title}
-              </.link>
-            </li>
-          <% end %>
-        </ul>
-      </section>
-    <% end %>
-  </div>
-</section>
+  <%= for year_posts <- Enum.chunk_by(sorted_posts, & &1.date.year) do %>
+    <% year = hd(year_posts).date.year %>
+    <section class="site-year-block">
+      <h2 class="site-year-label">{year}</h2>
+      <ul class="site-year-list">
+        <%= for post <- year_posts do %>
+          <% day = Calendar.strftime(post.date, "%m-%d") %>
+          <li id={post.id} class="site-year-item">
+            <span class="site-day">{day}</span>
+            <.link href={~p"/posts/#{post.id}"} class="site-link site-inline-link">
+              {post.title}
+            </.link>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+</Layouts.navbar_shell>
