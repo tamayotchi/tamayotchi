@@ -20,7 +20,9 @@ defmodule TamayotchiWeb.EtoroController do
 
     points = build_points(filtered_contributions)
 
-    render(conn, :index,
+    conn
+    |> put_view(html: TamayotchiWeb.ProviderHTML)
+    |> render(:index,
       platform_name: platform_name,
       currency_code: currency_code,
       chart: chart_payload(points, filtered_year_end),

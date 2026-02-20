@@ -1,28 +1,21 @@
-defmodule TamayotchiWeb.EtoroHTML do
-  use TamayotchiWeb, :html
+defmodule TamayotchiWeb.Formatters do
+  @moduledoc false
 
-  embed_templates "etoro_html/*"
-
-  def format_currency(value, decimals, currency_code)
-      when is_number(value) and is_integer(decimals) and is_binary(currency_code) do
+  def format_number(value, decimals) when is_number(value) and is_integer(decimals) do
     value
     |> to_float()
     |> :erlang.float_to_binary(decimals: decimals)
     |> add_delimiters()
-    |> Kernel.<>(" " <> currency_code)
+  end
+
+  def format_number(_value, _decimals), do: "0"
+
+  def format_currency(value, decimals, currency_code)
+      when is_number(value) and is_integer(decimals) and is_binary(currency_code) do
+    format_number(value, decimals) <> " " <> currency_code
   end
 
   def format_currency(_value, _decimals, currency_code), do: "0 " <> currency_code
-
-  def format_history_date(date) when is_binary(date) do
-    with {:ok, parsed_date} <- Date.from_iso8601(date) do
-      Calendar.strftime(parsed_date, "%B %-d, %Y")
-    else
-      _ -> date
-    end
-  end
-
-  def format_history_date(_date), do: "-"
 
   defp to_float(value) when is_integer(value), do: value * 1.0
   defp to_float(value) when is_float(value), do: value

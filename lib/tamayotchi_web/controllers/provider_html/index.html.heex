@@ -1,51 +1,51 @@
 <Layouts.navbar_shell>
-  <header class="site-header etoro-header">
+  <header class="site-header provider-header">
     <div>
       <p class="site-kicker">tamayotchi · portfolio telemetry</p>
-      <h1 class="site-title etoro-title">{@platform_name}</h1>
+      <h1 class="site-title provider-title">{@platform_name}</h1>
     </div>
     <span class="site-count">{format_currency(@stats.latest_value, 2, @currency_code)}</span>
   </header>
 
-  <section class="etoro-grid">
-    <article class="etoro-card">
-      <p class="etoro-card-label">Contributed Capital</p>
-      <p class="etoro-card-value">
+  <section class="provider-grid">
+    <article class="provider-card">
+      <p class="provider-card-label">Contributed Capital</p>
+      <p class="provider-card-value">
         {format_currency(@stats.total_contributed, 2, @currency_code)}
       </p>
     </article>
 
-    <article class="etoro-card">
-      <p class="etoro-card-label">Current Tracked Value</p>
-      <p class="etoro-card-value">{format_currency(@stats.latest_value, 2, @currency_code)}</p>
+    <article class="provider-card">
+      <p class="provider-card-label">Current Tracked Value</p>
+      <p class="provider-card-value">{format_currency(@stats.latest_value, 2, @currency_code)}</p>
     </article>
 
-    <article class="etoro-card">
-      <p class="etoro-card-label">Timeline Records</p>
-      <p class="etoro-card-value">{@stats.records}</p>
+    <article class="provider-card">
+      <p class="provider-card-label">Timeline Records</p>
+      <p class="provider-card-value">{@stats.records}</p>
     </article>
 
-    <article class="etoro-card">
-      <p class="etoro-card-label">Year-End Marks</p>
-      <p class="etoro-card-value">{@stats.year_end_marks}</p>
+    <article class="provider-card">
+      <p class="provider-card-label">Year-End Marks</p>
+      <p class="provider-card-value">{@stats.year_end_marks}</p>
     </article>
   </section>
 
-  <section class="etoro-chart-wrap">
-    <div class="etoro-chart-head">
+  <section class="provider-chart-wrap">
+    <div class="provider-chart-head">
       <h2 class="site-year-label">Performance Curve</h2>
-      <p class="etoro-chart-meta">Contributions and compound growth line</p>
+      <p class="provider-chart-meta">Contributions and compound growth line</p>
     </div>
 
-    <div class="etoro-filters" id="etoro-filters">
-      <div class="etoro-range-group" id="etoro-time-ranges">
+    <div class="provider-filters" id="provider-filters">
+      <div class="provider-range-group" id="provider-time-ranges">
         <%= for range <- @time_ranges do %>
           <.link
             href={~p"/etoro?#{[time_range: range, year: "ALL"]}"}
             class={[
-              "etoro-filter-pill",
+              "provider-filter-pill",
               @selected_time_range == range and @selected_year == "ALL" &&
-                "etoro-filter-pill-active"
+                "provider-filter-pill-active"
             ]}
           >
             {range}
@@ -60,49 +60,51 @@
         }
         method="get"
         action={~p"/etoro"}
-        id="etoro-year-filter-form"
-        class="etoro-year-filter-form"
+        id="provider-year-filter-form"
+        class="provider-year-filter-form"
       >
         <.input
           type="select"
-          id="etoro-year-filter"
+          id="provider-year-filter"
           field={form[:year]}
           options={@year_options}
         />
         <input type="hidden" name={form[:time_range].name} value={form[:time_range].value} />
-        <button type="submit" id="etoro-year-apply" class="etoro-filter-apply">Apply</button>
+        <button type="submit" id="provider-year-apply" class="provider-filter-apply">
+          Apply
+        </button>
       </.form>
     </div>
 
     <% chart_has_data = @chart.points != [] or @chart.compound_points != [] %>
 
     <%= if not chart_has_data do %>
-      <p class="etoro-empty">No {@platform_name} data found yet.</p>
+      <p class="provider-empty">No {@platform_name} data found yet.</p>
     <% else %>
-      <div class="etoro-chart-shell">
+      <div class="provider-chart-shell">
         <svg
           viewBox={"0 0 #{@chart.width} #{@chart.height}"}
-          class="etoro-chart"
+          class="provider-chart"
           role="img"
           aria-label={"#{@platform_name} portfolio growth chart"}
         >
           <defs>
-            <linearGradient id="etoroAreaGlow" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="providerAreaGlow" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="rgba(116,255,203,0.45)" />
               <stop offset="100%" stop-color="rgba(116,255,203,0.02)" />
             </linearGradient>
           </defs>
 
           <%= for tick <- @chart.y_ticks do %>
-            <line x1="54" y1={tick.y} x2="936" y2={tick.y} class="etoro-grid-line" />
-            <text x="8" y={tick.y + 4} class="etoro-axis-label">
+            <line x1="54" y1={tick.y} x2="936" y2={tick.y} class="provider-grid-line" />
+            <text x="8" y={tick.y + 4} class="provider-axis-label">
               {format_currency(tick.value, 0, @currency_code)}
             </text>
           <% end %>
 
-          <path d={@chart.area_path} class="etoro-area" />
-          <path d={@chart.line_path} class="etoro-line" />
-          <path d={@chart.compound_line_path} class="etoro-compound-line" />
+          <path d={@chart.area_path} class="provider-area" />
+          <path d={@chart.line_path} class="provider-line" />
+          <path d={@chart.compound_line_path} class="provider-compound-line" />
 
           <%= for point <- @chart.points do %>
             <%= if not Map.get(point, :synthetic_start?, false) do %>
@@ -110,7 +112,7 @@
                 cx={point.x}
                 cy={point.y}
                 r="2.8"
-                class="etoro-point"
+                class="provider-point"
               />
             <% end %>
           <% end %>
@@ -120,42 +122,42 @@
               cx={point.x}
               cy={point.y}
               r="4.2"
-              class="etoro-compound-point"
+              class="provider-compound-point"
             />
           <% end %>
 
           <%= for label <- @chart.x_labels do %>
-            <text x={label.x} y="350" class="etoro-axis-label" text-anchor="middle">
+            <text x={label.x} y="350" class="provider-axis-label" text-anchor="middle">
               {label.label}
             </text>
           <% end %>
         </svg>
       </div>
 
-      <div class="etoro-legend" id="etoro-legend">
-        <span class="etoro-legend-item">
-          <span class="etoro-legend-dot etoro-legend-dot-contribution"></span> Contributions
+      <div class="provider-legend" id="provider-legend">
+        <span class="provider-legend-item">
+          <span class="provider-legend-dot provider-legend-dot-contribution"></span> Contributions
         </span>
-        <span class="etoro-legend-item">
-          <span class="etoro-legend-dot etoro-legend-dot-compound"></span> Compound
+        <span class="provider-legend-item">
+          <span class="provider-legend-dot provider-legend-dot-compound"></span> Compound
         </span>
       </div>
     <% end %>
   </section>
 
-  <section class="etoro-history-wrap" id="etoro-history">
-    <div class="etoro-chart-head">
+  <section class="provider-history-wrap" id="provider-history">
+    <div class="provider-chart-head">
       <h2 class="site-year-label">Investment History</h2>
-      <p class="etoro-chart-meta">Filtered timeline details</p>
+      <p class="provider-chart-meta">Filtered timeline details</p>
     </div>
 
     <% history_rows = Enum.reject(@chart.points, &Map.get(&1, :synthetic_start?, false)) %>
 
     <%= if history_rows == [] do %>
-      <p class="etoro-empty">No contribution records for this filter.</p>
+      <p class="provider-empty">No contribution records for this filter.</p>
     <% else %>
-      <div class="etoro-history-table-shell">
-        <table class="etoro-history-table" id="etoro-history-table">
+      <div class="provider-history-table-shell">
+        <table class="provider-history-table" id="provider-history-table">
           <thead>
             <tr>
               <th>Date</th>
