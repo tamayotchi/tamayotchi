@@ -24,6 +24,9 @@ defmodule TamayotchiWeb.Layouts do
           <.link href={~p"/"} class={["site-link", "site-nav-link"]}>
             Home
           </.link>
+          <.link href={~p"/etoro"} class={["site-link", "site-nav-link"]}>
+            Etoro
+          </.link>
           <.link href={~p"/posts"} class={["site-link", "site-nav-link"]}>
             Posts
           </.link>

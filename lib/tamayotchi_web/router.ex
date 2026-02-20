@@ -18,6 +18,7 @@ defmodule TamayotchiWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/etoro", EtoroController, :index
     get "/up", HealthController, :show
     get "/posts", BlogController, :index
     get "/posts/:id", BlogController, :show
