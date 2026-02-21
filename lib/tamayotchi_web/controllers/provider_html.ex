@@ -15,4 +15,8 @@ defmodule TamayotchiWeb.ProviderHTML do
   end
 
   def format_history_date(_date), do: "-"
+
+  def time_range_path(platform_path, range) when is_binary(platform_path) and is_binary(range) do
+    platform_path <> "?" <> URI.encode_query(%{time_range: range, year: "ALL"})
+  end
 end

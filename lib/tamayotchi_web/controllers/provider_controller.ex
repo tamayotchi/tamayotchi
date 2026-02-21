@@ -1,15 +1,27 @@
-defmodule TamayotchiWeb.EtoroController do
+defmodule TamayotchiWeb.ProviderController do
   use TamayotchiWeb, :controller
 
   @portfolio_data_path Path.expand("../../../tamayotchi/src/data/data.json", __DIR__)
   @time_ranges ["1M", "3M", "6M", "YTD", "12M", "ALL"]
+  @chart_width 960
+  @chart_height 360
+  @chart_left 54
+  @chart_right 24
+  @chart_top 20
+  @chart_bottom 40
 
-  def index(conn, params), do: render_platform(conn, params, "ETORO")
+  def show(conn, %{"provider" => provider_slug} = params) do
+    platform_name = String.upcase(provider_slug)
 
-  defp render_platform(conn, params, platform_name) do
-    {currency_code, entries} = platform_entries(platform_name)
-    contribution_entries = Enum.reject(entries, & &1.year_end?)
-    year_end_entries = Enum.filter(entries, & &1.year_end?)
+    with {:ok, {currency_code, entries}} <- platform_entries(platform_name) do
+      render_platform(conn, params, platform_name, currency_code, entries)
+    else
+      :error -> send_resp(conn, 404, "Provider not found")
+    end
+  end
+
+  defp render_platform(conn, params, platform_name, currency_code, entries) do
+    {contribution_entries, year_end_entries} = split_entries(entries)
     {selected_time_range, selected_year} = selected_filters(params)
     years = available_years(contribution_entries)
 
@@ -24,6 +36,7 @@ defmodule TamayotchiWeb.EtoroController do
     |> put_view(html: TamayotchiWeb.ProviderHTML)
     |> render(:index,
       platform_name: platform_name,
+      platform_path: "/provider/" <> String.downcase(platform_name),
       currency_code: currency_code,
       chart: chart_payload(points, filtered_year_end),
       stats: stats(points, entries),
@@ -38,11 +51,11 @@ defmodule TamayotchiWeb.EtoroController do
     with {:ok, json} <- File.read(@portfolio_data_path),
          {:ok, data} <- Jason.decode(json),
          %{"content" => content} = platform_data <- Map.get(data, platform_name) do
-      currency_code = Map.get(platform_data, "currencyCode", "USD")
+      currency_code = Map.fetch!(platform_data, "currencyCode")
       entries = normalize_entries(content)
-      {currency_code, entries}
+      {:ok, {currency_code, entries}}
     else
-      _ -> {"USD", []}
+      _ -> :error
     end
   end
 
@@ -86,8 +99,8 @@ defmodule TamayotchiWeb.EtoroController do
 
   defp chart_payload([], _year_end_entries) do
     %{
-      width: 960,
-      height: 360,
+      width: @chart_width,
+      height: @chart_height,
       line_path: "",
       compound_line_path: "",
       area_path: "",
@@ -99,12 +112,12 @@ defmodule TamayotchiWeb.EtoroController do
   end
 
   defp chart_payload(points, year_end_entries) do
-    width = 960
-    height = 360
-    left = 54
-    right = 24
-    top = 20
-    bottom = 40
+    width = @chart_width
+    height = @chart_height
+    left = @chart_left
+    right = @chart_right
+    top = @chart_top
+    bottom = @chart_bottom
     plot_width = width - left - right
     plot_height = height - top - bottom
 
@@ -186,12 +199,12 @@ defmodule TamayotchiWeb.EtoroController do
 
     line_path =
       projected_points
-      |> Enum.map(&"#{svg_float(&1.x)} #{svg_float(&1.y)}")
+      |> Enum.map(&svg_point(&1.x, &1.y))
       |> svg_line_path()
 
     compound_line_path =
       projected_compound_points
-      |> Enum.map(&"#{svg_float(&1.x)} #{svg_float(&1.y)}")
+      |> Enum.map(&svg_point(&1.x, &1.y))
       |> svg_line_path()
 
     baseline = top + plot_height
@@ -204,7 +217,7 @@ defmodule TamayotchiWeb.EtoroController do
         [first | _] = series ->
           line_part =
             series
-            |> Enum.map(&"#{svg_float(&1.x)} #{svg_float(&1.y)}")
+            |> Enum.map(&svg_point(&1.x, &1.y))
             |> Enum.join(" L ")
 
           last = List.last(series)
@@ -228,27 +241,29 @@ defmodule TamayotchiWeb.EtoroController do
   end
 
   defp stats(points, all_entries) do
+    contribution_points = non_synthetic_points(points)
+
     total_contributed =
-      points
-      |> Enum.reject(&Map.get(&1, :synthetic_start?, false))
+      contribution_points
       |> Enum.reduce(0.0, fn point, acc -> acc + point.amount end)
 
-    latest_contribution_value =
-      points
-      |> List.last()
-      |> case do
-        nil -> 0.0
-        point -> point.portfolio_value
-      end
+    latest_contribution_value = latest_contribution_value(points)
 
     latest_total_value = latest_year_end_value(all_entries) || latest_contribution_value
 
     %{
       total_contributed: total_contributed,
       latest_value: latest_total_value,
-      records: Enum.count(points, &(not Map.get(&1, :synthetic_start?, false))),
+      records: length(contribution_points),
       year_end_marks: Enum.count(all_entries, & &1.year_end?)
     }
+  end
+
+  defp latest_contribution_value(points) do
+    case List.last(points) do
+      nil -> 0.0
+      point -> point.portfolio_value
+    end
   end
 
   defp latest_year_end_value(entries) do
@@ -274,22 +289,20 @@ defmodule TamayotchiWeb.EtoroController do
   end
 
   defp selected_filters(params) do
-    selected_time_range =
-      params["time_range"] || get_in(params, ["filters", "time_range"]) || "ALL"
-
-    selected_year = params["year"] || get_in(params, ["filters", "year"]) || "ALL"
+    selected_time_range = params["time_range"] || "ALL"
+    selected_year = params["year"] || "ALL"
 
     normalized_time_range =
       if selected_time_range in @time_ranges, do: selected_time_range, else: "ALL"
 
-    normalized_year = if valid_year_filter?(selected_year), do: selected_year, else: "ALL"
-
-    {normalized_time_range, normalized_year}
+    {normalized_time_range, selected_year}
   end
 
   defp filter_by_period(entries, _time_range, year) when year != "ALL" do
-    year_int = String.to_integer(year)
-    Enum.filter(entries, fn entry -> entry.date_obj.year == year_int end)
+    case Integer.parse(year) do
+      {year_int, ""} -> Enum.filter(entries, fn entry -> entry.date_obj.year == year_int end)
+      _ -> entries
+    end
   end
 
   defp filter_by_period(entries, "ALL", "ALL"), do: entries
@@ -309,20 +322,8 @@ defmodule TamayotchiWeb.EtoroController do
       "6M" -> Date.add(reference_date, -180)
       "YTD" -> Date.new!(reference_date.year, 1, 1)
       "12M" -> Date.add(reference_date, -365)
-      _ -> Date.new!(1900, 1, 1)
     end
   end
-
-  defp valid_year_filter?("ALL"), do: true
-
-  defp valid_year_filter?(year) when is_binary(year) do
-    case Integer.parse(year) do
-      {value, ""} when value >= 1900 and value <= 3000 -> true
-      _ -> false
-    end
-  end
-
-  defp valid_year_filter?(_), do: false
 
   defp project_y(value, floor, ceil, top, plot_height) do
     ratio = if ceil == floor, do: 0.5, else: (value - floor) / (ceil - floor)
@@ -360,6 +361,8 @@ defmodule TamayotchiWeb.EtoroController do
     "M #{head}" <> Enum.map_join(tail, "", &" L #{&1}")
   end
 
+  defp svg_point(x, y), do: "#{svg_float(x)} #{svg_float(y)}"
+
   defp format_date(date) do
     with {:ok, parsed_date} <- Date.from_iso8601(date) do
       Calendar.strftime(parsed_date, "%b %Y")
@@ -383,4 +386,12 @@ defmodule TamayotchiWeb.EtoroController do
 
   defp svg_float(value) when is_float(value), do: :erlang.float_to_binary(value, decimals: 2)
   defp svg_float(value) when is_integer(value), do: Integer.to_string(value)
+
+  defp split_entries(entries) do
+    {Enum.reject(entries, & &1.year_end?), Enum.filter(entries, & &1.year_end?)}
+  end
+
+  defp non_synthetic_points(points) do
+    Enum.reject(points, &Map.get(&1, :synthetic_start?, false))
+  end
 end

@@ -41,7 +41,7 @@
       <div class="provider-range-group" id="provider-time-ranges">
         <%= for range <- @time_ranges do %>
           <.link
-            href={~p"/etoro?#{[time_range: range, year: "ALL"]}"}
+            href={time_range_path(@platform_path, range)}
             class={[
               "provider-filter-pill",
               @selected_time_range == range and @selected_year == "ALL" &&
@@ -55,11 +55,9 @@
 
       <.form
         :let={form}
-        for={
-          to_form(%{"year" => @selected_year, "time_range" => @selected_time_range}, as: :filters)
-        }
+        for={to_form(%{"year" => @selected_year, "time_range" => @selected_time_range})}
         method="get"
-        action={~p"/etoro"}
+        action={@platform_path}
         id="provider-year-filter-form"
         class="provider-year-filter-form"
       >
