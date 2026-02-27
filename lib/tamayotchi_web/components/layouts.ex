@@ -27,9 +27,6 @@ defmodule TamayotchiWeb.Layouts do
           <.link href={~p"/posts"} class={["site-link", "site-nav-link"]}>
             Posts
           </.link>
-          <.link href={~p"/salary"} class={["site-link", "site-nav-link"]}>
-            Salary
-          </.link>
         </nav>
 
         {render_slot(@inner_block)}
