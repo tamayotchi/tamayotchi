@@ -1,7 +1,7 @@
 defmodule TamayotchiWeb.PageController do
   use TamayotchiWeb, :controller
 
-  @portfolio_data_path Path.expand("../../../tamayotchi/src/data/data.json", __DIR__)
+  @portfolio_data_path Path.join([to_string(:code.priv_dir(:tamayotchi)), "data", "data.json"])
 
   def index(conn, _params) do
     %{

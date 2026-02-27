@@ -104,6 +104,7 @@
 
 /* This file is for your main application CSS */
 @import "./provider.css";
+@import "./salary.css";
 
 /* Blog styling */
 body {

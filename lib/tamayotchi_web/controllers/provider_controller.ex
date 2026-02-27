@@ -1,7 +1,7 @@
 defmodule TamayotchiWeb.ProviderController do
   use TamayotchiWeb, :controller
 
-  @portfolio_data_path Path.expand("../../../tamayotchi/src/data/data.json", __DIR__)
+  @portfolio_data_path Path.join([to_string(:code.priv_dir(:tamayotchi)), "data", "data.json"])
   @time_ranges ["1M", "3M", "6M", "YTD", "12M", "ALL"]
   @chart_width 960
   @chart_height 360
