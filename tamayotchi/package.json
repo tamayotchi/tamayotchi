@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint '*/**/*.{ts,tsx}' && prettier --check '*/**/*.{ts,yml}'",
     "lint:fix": "eslint '*/**/*.{ts,tsx}' --fix && prettier --write '*/**/*.{ts,tsx,yml}'",
-    "worker:deploy": "cd workers/update-investment-data && npm run deploy",
-    "worker:build": "cd workers/update-investment-data && npm run build"
+    "worker:deploy": "cd ../workers/update-investment-data && npm run deploy",
+    "worker:build": "cd ../workers/update-investment-data && npm run build"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.1",

@@ -18,6 +18,8 @@ defmodule TamayotchiWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/salary", SalaryController, :index
+    get "/provider/:provider", ProviderController, :show
     get "/up", HealthController, :show
     get "/posts", BlogController, :index
     get "/posts/:id", BlogController, :show

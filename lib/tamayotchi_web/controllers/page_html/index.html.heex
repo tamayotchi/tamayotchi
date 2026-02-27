@@ -1,8 +1,7 @@
 <Layouts.navbar_shell>
   <header class="site-header">
     <div>
-      <p class="site-kicker">tamayotchi</p>
-      <h1 class="site-title">Tamayotchi</h1>
+      <h1 class="site-title home-cyber-title">TAMAYOTCHI</h1>
     </div>
     <span class="site-count">Updated {@last_update}</span>
   </header>
@@ -43,7 +42,10 @@
           <ul class="site-year-list">
             <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "USD")) do %>
               <li>
-                <.link href={"/" <> platform.path} class={["site-link", "site-inline-link"]}>
+                <.link
+                  href={"/provider/" <> platform.path}
+                  class={["site-link", "site-inline-link"]}
+                >
                   {platform.name}
                 </.link>
               </li>
@@ -56,7 +58,10 @@
           <ul class="site-year-list">
             <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "COP")) do %>
               <li>
-                <.link href={"/" <> platform.path} class={["site-link", "site-inline-link"]}>
+                <.link
+                  href={"/provider/" <> platform.path}
+                  class={["site-link", "site-inline-link"]}
+                >
                   {platform.name}
                 </.link>
               </li>

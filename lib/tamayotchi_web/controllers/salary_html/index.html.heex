@@ -1,0 +1,76 @@
+<Layouts.navbar_shell>
+  <header class="site-header salary-header">
+    <div>
+      <p class="site-kicker">tamayotchi · live salary telemetry</p>
+      <h1 class="site-title provider-title">Salary Counter</h1>
+    </div>
+    <span class="site-count">Realtime</span>
+  </header>
+
+  <section
+    class="salary-wrap"
+    id="salary-counter"
+    data-monthly-salary={@salary.monthly_cop}
+  >
+    <div class="salary-grid">
+      <article class="salary-card">
+        <p class="salary-card-label">Monthly Salary</p>
+        <p class="salary-card-value" id="salary-monthly-cop">
+          {format_currency(@salary.monthly_cop, 0)} COP
+        </p>
+      </article>
+
+      <article class="salary-card">
+        <p class="salary-card-label">Monthly Salary (USD)</p>
+        <%= if @salary.monthly_usd do %>
+          <p class="salary-card-value" id="salary-monthly-usd">
+            {format_currency(@salary.monthly_usd, 0)} USD
+          </p>
+        <% else %>
+          <p class="salary-card-value salary-card-value-muted" id="salary-monthly-usd">
+            Unavailable
+          </p>
+        <% end %>
+      </article>
+
+      <article class="salary-card">
+        <p class="salary-card-label">Exchange Rate</p>
+        <%= if @exchange_rate do %>
+          <p class="salary-card-value" id="salary-exchange-rate">
+            1 USD = {format_currency(@exchange_rate, 2)} COP
+          </p>
+        <% else %>
+          <p class="salary-card-value salary-card-value-muted" id="salary-exchange-rate">
+            Unavailable
+          </p>
+        <% end %>
+      </article>
+    </div>
+
+    <article class="salary-earned" id="salary-earned-board">
+      <p class="salary-card-label">Time on page</p>
+      <p class="salary-time" id="salary-time-elapsed">0s</p>
+      <p class="salary-card-label">Earned so far</p>
+      <p class="salary-earned-value" id="salary-earned-cop">0 COP</p>
+    </article>
+
+    <div class="salary-rate-grid" id="salary-rate-grid">
+      <article class="salary-rate-card">
+        <p class="salary-rate-value">{format_currency(@salary.per_second, 2)} COP</p>
+        <p class="salary-rate-label">Per second</p>
+      </article>
+      <article class="salary-rate-card">
+        <p class="salary-rate-value">{format_currency(@salary.per_minute, 0)} COP</p>
+        <p class="salary-rate-label">Per minute</p>
+      </article>
+      <article class="salary-rate-card">
+        <p class="salary-rate-value">{format_currency(@salary.per_hour, 0)} COP</p>
+        <p class="salary-rate-label">Per hour</p>
+      </article>
+      <article class="salary-rate-card">
+        <p class="salary-rate-value">{format_currency(@salary.per_day, 0)} COP</p>
+        <p class="salary-rate-label">Per day</p>
+      </article>
+    </div>
+  </section>
+</Layouts.navbar_shell>

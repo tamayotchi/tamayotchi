@@ -103,6 +103,8 @@
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
 /* This file is for your main application CSS */
+@import "./provider.css";
+@import "./salary.css";
 
 /* Blog styling */
 body {
@@ -165,6 +167,13 @@ body {
   font-weight: 700;
   letter-spacing: -0.01em;
   color: #e7ffd8;
+}
+
+.home-cyber-title {
+  font-family: "Orbitron", "Share Tech Mono", ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(116, 255, 203, 0.34), 0 0 34px rgba(116, 255, 203, 0.15);
 }
 
 .site-count {

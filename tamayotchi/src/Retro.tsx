@@ -180,7 +180,7 @@ export default function RetroWebpage() {
                     ].map(({ path, name }) => (
                       <li key={path}>
                         <a
-                          href={`/${path}`}
+                          href={`/provider/${path}`}
                           className="text-blue-400 hover:text-blue-300 underline"
                         >
                           {name} Portfolio
@@ -204,7 +204,7 @@ export default function RetroWebpage() {
                     ].map(({ path, name }) => (
                       <li key={path}>
                         <a
-                          href={`/${path}`}
+                          href={`/provider/${path}`}
                           className="text-blue-400 hover:text-blue-300 underline"
                         >
                           {name} Portfolio
