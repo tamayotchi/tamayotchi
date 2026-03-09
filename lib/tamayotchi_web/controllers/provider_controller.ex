@@ -1,7 +1,8 @@
 defmodule TamayotchiWeb.ProviderController do
   use TamayotchiWeb, :controller
 
-  @portfolio_data_path Path.join([to_string(:code.priv_dir(:tamayotchi)), "data", "data.json"])
+  alias Tamayotchi.PortfolioData
+
   @time_ranges ["1M", "3M", "6M", "YTD", "12M", "ALL"]
   @chart_width 960
   @chart_height 360
@@ -48,9 +49,8 @@ defmodule TamayotchiWeb.ProviderController do
   end
 
   defp platform_entries(platform_name) do
-    with {:ok, json} <- File.read(@portfolio_data_path),
-         {:ok, data} <- Jason.decode(json),
-         %{"content" => content} = platform_data <- Map.get(data, platform_name) do
+    with {:ok, %{"content" => content} = platform_data} <-
+           PortfolioData.platform(platform_name) do
       currency_code = Map.fetch!(platform_data, "currencyCode")
       entries = normalize_entries(content)
       {:ok, {currency_code, entries}}

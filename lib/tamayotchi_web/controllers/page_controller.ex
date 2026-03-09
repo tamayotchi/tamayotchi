@@ -1,7 +1,7 @@
 defmodule TamayotchiWeb.PageController do
   use TamayotchiWeb, :controller
 
-  @portfolio_data_path Path.join([to_string(:code.priv_dir(:tamayotchi)), "data", "data.json"])
+  alias Tamayotchi.PortfolioData
 
   def index(conn, _params) do
     %{
@@ -35,8 +35,7 @@ defmodule TamayotchiWeb.PageController do
   end
 
   defp portfolio_summary do
-    with {:ok, json} <- File.read(@portfolio_data_path),
-         {:ok, data} <- Jason.decode(json) do
+    with {:ok, data} <- PortfolioData.load() do
       platforms =
         data
         |> Enum.map(fn {provider, details} ->
