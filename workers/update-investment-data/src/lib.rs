@@ -7,7 +7,8 @@ use strum_macros::EnumString;
 use worker::*;
 
 const GITHUB_REPO_PATH: &str = "tamayotchi/tamayotchi";
-const DATA_FILE_PATH: &str = "src/data/data.json";
+const GITHUB_BRANCH: &str = "master";
+const DATA_FILE_PATH: &str = "priv/data/data.json";
 
 #[derive(Debug, Deserialize, EnumString, Hash, Eq, PartialEq, Clone, Serialize, Ord, PartialOrd)]
 enum Provider {
@@ -83,8 +84,8 @@ struct TelegramUpdate {
 
 async fn fetch_investment_data() -> Result<BTreeMap<Provider, InvestmentProvider>> {
     let raw_github_url = format!(
-        "https://raw.githubusercontent.com/{}/main/{}",
-        GITHUB_REPO_PATH, DATA_FILE_PATH
+        "https://raw.githubusercontent.com/{}/{}/{}",
+        GITHUB_REPO_PATH, GITHUB_BRANCH, DATA_FILE_PATH
     );
 
     let mut init = RequestInit::new();
@@ -135,8 +136,8 @@ fn create_investment_entry(timestamp: i64, amount: i64) -> InvestmentContent {
 
 async fn get_github_file_sha(github_token: &str) -> Result<String> {
     let github_api_url = format!(
-        "https://api.github.com/repos/{}/contents/{}",
-        GITHUB_REPO_PATH, DATA_FILE_PATH
+        "https://api.github.com/repos/{}/contents/{}?ref={}",
+        GITHUB_REPO_PATH, DATA_FILE_PATH, GITHUB_BRANCH
     );
 
     let headers = create_github_headers(github_token)?;
@@ -183,7 +184,8 @@ async fn update_github_file(
     let commit = serde_json::json!({
         "message": "Update investment data",
         "content": encoded_content,
-        "sha": sha
+        "sha": sha,
+        "branch": GITHUB_BRANCH
     });
     let headers = create_github_headers(github_token)?;
     let mut init = RequestInit::new();
