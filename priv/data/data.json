@@ -291,6 +291,10 @@
         "date": "2025-12-31",
         "amount": 18225,
         "isYearEndValue": true
+      },
+      {
+        "date": "2026-03-10",
+        "amount": 50
       }
     ],
     "currencyCode": "USD"
