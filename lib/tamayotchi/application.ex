@@ -11,8 +11,7 @@ defmodule Tamayotchi.Application do
       TamayotchiWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:tamayotchi, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Tamayotchi.PubSub},
-      # Start a worker by calling: Tamayotchi.Worker.start_link(arg)
-      # {Tamayotchi.Worker, arg},
+      Tamayotchi.PortfolioDataFetcher,
       # Start to serve requests, typically the last entry
       TamayotchiWeb.Endpoint
     ]
