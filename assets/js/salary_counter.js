@@ -48,9 +48,10 @@ const initSalaryCounter = () => {
   }
 
   const salaryPerSecond = monthlySalary / SECONDS_PER_MONTH
-  const startedAt = Date.now()
+  let startedAt = Date.now()
   const timeElement = document.getElementById("salary-time-elapsed")
   const earnedElement = document.getElementById("salary-earned-cop")
+  const resetBtn = document.getElementById("salary-reset")
 
   const tick = () => {
     const elapsedSeconds = Math.floor((Date.now() - startedAt) / 1000)
@@ -63,6 +64,13 @@ const initSalaryCounter = () => {
     if (earnedElement) {
       earnedElement.textContent = `${formatCurrency(totalEarned)} COP`
     }
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      startedAt = Date.now()
+      tick()
+    })
   }
 
   tick()

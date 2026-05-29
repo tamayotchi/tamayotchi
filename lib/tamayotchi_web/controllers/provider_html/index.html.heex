@@ -44,7 +44,7 @@
             href={time_range_path(@platform_path, range)}
             class={[
               "provider-filter-pill",
-              @selected_time_range == range and @selected_year == "ALL" &&
+              (@selected_time_range == range and @selected_year == "ALL") &&
                 "provider-filter-pill-active"
             ]}
           >

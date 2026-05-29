@@ -20,13 +20,16 @@ defmodule TamayotchiWeb.Layouts do
     ~H"""
     <section class="site-page">
       <div class="site-container space-y-8">
-        <nav id="site-navbar" class="site-nav">
+        <nav id="site-navbar" class="site-nav items-center">
           <.link href={~p"/"} class={["site-link", "site-nav-link"]}>
             Home
           </.link>
           <.link href={~p"/posts"} class={["site-link", "site-nav-link"]}>
             Posts
           </.link>
+          <div class="ml-auto">
+            <.theme_toggle />
+          </div>
         </nav>
 
         {render_slot(@inner_block)}

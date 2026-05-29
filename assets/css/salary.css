@@ -133,3 +133,92 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Light mode salary overrides */
+[data-theme=light] .salary-card {
+  border-color: rgba(50, 170, 80, 0.3);
+  background:
+    radial-gradient(circle at 9% 7%, rgba(60, 220, 100, 0.1), rgba(60, 220, 100, 0) 52%),
+    linear-gradient(160deg, rgba(230, 245, 235, 0.95), rgba(220, 240, 228, 0.85));
+}
+
+[data-theme=light] .salary-card-label {
+  color: rgba(30, 100, 50, 0.75);
+}
+
+[data-theme=light] .salary-card-value {
+  color: #0d5c28;
+  text-shadow: 0 0 12px rgba(50, 220, 100, 0.2);
+}
+
+[data-theme=light] .salary-card-value-muted {
+  color: rgba(30, 100, 50, 0.65);
+}
+
+[data-theme=light] .salary-earned {
+  border-color: rgba(50, 170, 80, 0.35);
+  background:
+    linear-gradient(160deg, rgba(230, 245, 235, 0.92), rgba(220, 240, 228, 0.96)),
+    radial-gradient(circle at 18% 20%, rgba(60, 220, 100, 0.1), rgba(60, 220, 100, 0) 55%);
+}
+
+[data-theme=light] .salary-time {
+  color: #0f3d14;
+}
+
+[data-theme=light] .salary-earned-value {
+  color: #0d5c28;
+  text-shadow: 0 0 16px rgba(50, 220, 100, 0.35), 0 0 28px rgba(50, 220, 100, 0.18);
+}
+
+[data-theme=light] .salary-rate-card {
+  border-color: rgba(50, 170, 80, 0.3);
+  background: linear-gradient(170deg, rgba(230, 245, 235, 0.9), rgba(225, 242, 232, 0.8));
+}
+
+[data-theme=light] .salary-rate-card:hover {
+  border-color: rgba(50, 170, 80, 0.6);
+}
+
+[data-theme=light] .salary-rate-value {
+  color: #0f3d14;
+}
+
+[data-theme=light] .salary-rate-label {
+  color: rgba(30, 100, 50, 0.75);
+}
+
+.salary-reset-btn {
+  margin-top: 0.75rem;
+  border: 1px solid rgba(120, 255, 204, 0.4);
+  border-radius: 0.6rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #c7ffe4;
+  background: linear-gradient(180deg, rgba(14, 34, 23, 0.95), rgba(10, 22, 16, 0.95));
+  cursor: pointer;
+  transition: border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+}
+
+.salary-reset-btn:hover {
+  border-color: rgba(120, 255, 204, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px -4px rgba(44, 205, 145, 0.4);
+}
+
+.salary-reset-btn:active {
+  transform: translateY(0);
+}
+
+[data-theme=light] .salary-reset-btn {
+  border-color: rgba(50, 170, 80, 0.45);
+  color: #0f3d14;
+  background: linear-gradient(180deg, rgba(220, 245, 228, 0.95), rgba(210, 240, 220, 0.95));
+}
+
+[data-theme=light] .salary-reset-btn:hover {
+  border-color: rgba(50, 170, 80, 0.8);
+  box-shadow: 0 4px 14px -4px rgba(60, 200, 100, 0.35);
+}
