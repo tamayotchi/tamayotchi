@@ -10,6 +10,8 @@ import Config
 config :tamayotchi,
   generators: [timestamp_type: :utc_datetime]
 
+config :tamayotchi, :secure_session_cookie, false
+
 # Configures the endpoint
 config :tamayotchi, TamayotchiWeb.Endpoint,
   url: [host: "localhost"],

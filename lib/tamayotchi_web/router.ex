@@ -14,15 +14,25 @@ defmodule TamayotchiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :portfolio_private do
+    plug TamayotchiWeb.Plugs.PortfolioPasswordGate
+  end
+
   scope "/", TamayotchiWeb do
     pipe_through :browser
 
     get "/", PageController, :index
-    get "/salary", SalaryController, :index
-    get "/provider/:provider", ProviderController, :show
+    post "/portfolio/unlock", PageController, :unlock
     get "/up", HealthController, :show
     get "/posts", BlogController, :index
     get "/posts/:id", BlogController, :show
+  end
+
+  scope "/", TamayotchiWeb do
+    pipe_through [:browser, :portfolio_private]
+
+    get "/salary", SalaryController, :index
+    get "/provider/:provider", ProviderController, :show
   end
 
   # Other scopes may use custom stacks.

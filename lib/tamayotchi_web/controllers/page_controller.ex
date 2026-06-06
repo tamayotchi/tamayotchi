@@ -2,6 +2,7 @@ defmodule TamayotchiWeb.PageController do
   use TamayotchiWeb, :controller
 
   alias Tamayotchi.PortfolioData
+  alias TamayotchiWeb.PortfolioAccess
 
   def index(conn, _params) do
     %{
@@ -30,9 +31,29 @@ defmodule TamayotchiWeb.PageController do
       last_update: last_update,
       exchange_rate: exchange_rate,
       totals: totals,
+      totals_unlocked?: PortfolioAccess.unlocked?(conn),
       platforms: platforms
     )
   end
+
+  def unlock(conn, params) do
+    password = submitted_portfolio_password(params)
+
+    if PortfolioAccess.valid_password?(password) do
+      {return_to, conn} = PortfolioAccess.pop_return_to(conn)
+
+      conn
+      |> PortfolioAccess.unlock()
+      |> redirect(to: PortfolioAccess.safe_return_to(return_to))
+    else
+      redirect(conn, to: "/#portfolio-totals")
+    end
+  end
+
+  defp submitted_portfolio_password(%{"portfolio_unlock" => %{"password" => password}}),
+    do: password
+
+  defp submitted_portfolio_password(_params), do: nil
 
   defp portfolio_summary do
     with {:ok, data} <- PortfolioData.load() do

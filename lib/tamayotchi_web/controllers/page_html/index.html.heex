@@ -7,68 +7,147 @@
   </header>
 
   <section class="home-overview-card space-y-6">
-    <div class="space-y-3">
-      <h2 class="site-year-label">Total Portfolio Balance</h2>
-      <div class="home-metrics" id="portfolio-totals">
-        <p class="home-metric-row">
-          <span class="home-metric-label">Total</span>
-          <span class={["home-metric-value", "home-total-board"]}>
-            <span>{format_currency(@totals.usd, 2)} USD</span>
-            <span class="home-total-divider">|</span>
-            <span>{format_currency(@totals.cop, 0)} COP</span>
-          </span>
-        </p>
-        <%= if @exchange_rate do %>
+    <%= if @totals_unlocked? do %>
+      <div class="space-y-3" id="portfolio-totals">
+        <h2 class="site-year-label">Total Portfolio Balance</h2>
+
+        <div class="home-metrics" id="portfolio-totals-values">
           <p class="home-metric-row">
-            <span class="home-metric-label">Current Exchange Rate:</span>
-            <span class={["home-metric-value", "home-exchange-board"]}>
-              1 USD = {format_currency(@exchange_rate, 2)} COP
+            <span class="home-metric-label">Total</span>
+            <span class={["home-metric-value", "home-total-board"]}>
+              <span>{format_currency(@totals.usd, 2)} USD</span>
+              <span class="home-total-divider">|</span>
+              <span>{format_currency(@totals.cop, 0)} COP</span>
             </span>
           </p>
-        <% else %>
-          <p class="home-metric-row">
-            <span class="home-metric-label">Current Exchange Rate:</span>
-            <span class="home-metric-value">UNAVAILABLE</span>
-          </p>
-        <% end %>
-      </div>
-    </div>
-
-    <div class="space-y-3">
-      <h2 class="site-year-label">Investment Platforms</h2>
-      <div class="home-platform-columns">
-        <div class="home-platform-card" id="platforms-usd">
-          <h3 class="home-platform-title">USD Investments</h3>
-          <ul class="site-year-list">
-            <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "USD")) do %>
-              <li>
-                <.link
-                  href={"/provider/" <> platform.path}
-                  class={["site-link", "site-inline-link"]}
-                >
-                  {platform.name}
-                </.link>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-
-        <div class="home-platform-card" id="platforms-cop">
-          <h3 class="home-platform-title">COP Investments</h3>
-          <ul class="site-year-list">
-            <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "COP")) do %>
-              <li>
-                <.link
-                  href={"/provider/" <> platform.path}
-                  class={["site-link", "site-inline-link"]}
-                >
-                  {platform.name}
-                </.link>
-              </li>
-            <% end %>
-          </ul>
+          <%= if @exchange_rate do %>
+            <p class="home-metric-row">
+              <span class="home-metric-label">Current Exchange Rate:</span>
+              <span class={["home-metric-value", "home-exchange-board"]}>
+                1 USD = {format_currency(@exchange_rate, 2)} COP
+              </span>
+            </p>
+          <% else %>
+            <p class="home-metric-row">
+              <span class="home-metric-label">Current Exchange Rate:</span>
+              <span class="home-metric-value">UNAVAILABLE</span>
+            </p>
+          <% end %>
         </div>
       </div>
-    </div>
+
+      <div class="space-y-3" id="investment-platforms">
+        <h2 class="site-year-label">Investment Platforms</h2>
+
+        <div class="home-platform-columns" id="investment-platforms-values">
+          <div class="home-platform-card" id="platforms-usd">
+            <h3 class="home-platform-title">USD Investments</h3>
+            <ul class="site-year-list">
+              <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "USD")) do %>
+                <li>
+                  <.link
+                    href={"/provider/" <> platform.path}
+                    class={["site-link", "site-inline-link"]}
+                  >
+                    {platform.name}
+                  </.link>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+
+          <div class="home-platform-card" id="platforms-cop">
+            <h3 class="home-platform-title">COP Investments</h3>
+            <ul class="site-year-list">
+              <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "COP")) do %>
+                <li>
+                  <.link
+                    href={"/provider/" <> platform.path}
+                    class={["site-link", "site-inline-link"]}
+                  >
+                    {platform.name}
+                  </.link>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="portfolio-private-lock-card" id="portfolio-totals">
+        <div class="portfolio-private-lock-preview" aria-hidden="true">
+          <div class="space-y-3">
+            <h2 class="site-year-label">Total Portfolio Balance</h2>
+            <div class="home-metrics">
+              <p class="home-metric-row">
+                <span class="home-metric-label">Total</span>
+                <span class={["home-metric-value", "home-total-board"]}>
+                  <span>•••••• USD</span>
+                  <span class="home-total-divider">|</span>
+                  <span>•••••• COP</span>
+                </span>
+              </p>
+              <p class="home-metric-row">
+                <span class="home-metric-label">Current Exchange Rate:</span>
+                <span class={["home-metric-value", "home-exchange-board"]}>LOCKED</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="space-y-3" id="investment-platforms">
+            <h2 class="site-year-label">Investment Platforms</h2>
+            <div class="home-platform-columns">
+              <div class="home-platform-card">
+                <h3 class="home-platform-title">USD Investments</h3>
+                <ul class="site-year-list">
+                  <%= for _item <- 1..3 do %>
+                    <li><span class="portfolio-platform-placeholder">████████</span></li>
+                  <% end %>
+                </ul>
+              </div>
+
+              <div class="home-platform-card">
+                <h3 class="home-platform-title">COP Investments</h3>
+                <ul class="site-year-list">
+                  <%= for _item <- 1..2 do %>
+                    <li><span class="portfolio-platform-placeholder">███████</span></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-private-lock-overlay">
+          <div class="portfolio-private-lock-panel">
+            <p class="portfolio-private-lock-kicker">
+              <.icon name="hero-lock-closed" class="portfolio-lock-icon" /> Private telemetry
+            </p>
+
+            <.form
+              :let={form}
+              for={to_form(%{}, as: :portfolio_unlock)}
+              method="post"
+              action={~p"/portfolio/unlock"}
+              id="portfolio-unlock-form"
+              class="portfolio-unlock-form"
+            >
+              <.input
+                type="password"
+                field={form[:password]}
+                label="Password"
+                autocomplete="current-password"
+                placeholder="Enter password"
+                required
+                class="portfolio-unlock-input"
+              />
+              <button type="submit" id="portfolio-unlock-submit" class="portfolio-unlock-button">
+                Unlock
+              </button>
+            </.form>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </section>
 </Layouts.navbar_shell>

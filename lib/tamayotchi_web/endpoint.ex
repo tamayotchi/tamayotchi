@@ -1,14 +1,17 @@
 defmodule TamayotchiWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :tamayotchi
 
-  # The session will be stored in the cookie and signed,
-  # this means its contents can be read but not tampered with.
-  # Set :encryption_salt if you would also like to encrypt it.
+  # The session is stored in a signed and encrypted cookie, which keeps the
+  # portfolio unlock flag tamper-proof and unreadable from the browser.
   @session_options [
     store: :cookie,
     key: "_tamayotchi_key",
+    # TODO: Get this from an environment variable in production
     signing_salt: "20cEJaDx",
-    same_site: "Lax"
+    # TODO: Get this from an environment variable in production
+    encryption_salt: "u4tCP4DM",
+    same_site: "Lax",
+    secure: Application.compile_env(:tamayotchi, :secure_session_cookie, false)
   ]
 
   socket "/live", Phoenix.LiveView.Socket,
