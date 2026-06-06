@@ -33,13 +33,13 @@
               aria-label={"Open " <> project.title}
             >
               <figure class="home-work-media">
-                <img src={project.image} alt={project.title} loading="lazy" />
+                <img src={project.image} alt={project.title} />
               </figure>
             </a>
           <% else %>
             <%= if project.image do %>
               <figure class="home-work-media">
-                <img src={project.image} alt={project.title} loading="lazy" />
+                <img src={project.image} alt={project.title} />
               </figure>
             <% end %>
           <% end %>
