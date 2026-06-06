@@ -756,7 +756,7 @@ body {
 /* Light mode */
 [data-theme=light] body,
 [data-theme=light] .site-page {
-  background: #f5faf3;
+  background: #f0f4f2;
   color: #1b3a1a;
 }
 
@@ -904,12 +904,10 @@ body {
 }
 
 [data-theme=light] .home-work-section {
-  border-color: rgba(34, 197, 94, 0.32);
+  border-color: rgba(34, 197, 94, 0.35);
   background:
-    radial-gradient(circle at 15% 0%, rgba(34, 197, 94, 0.16), transparent 34%),
-    radial-gradient(circle at 92% 10%, rgba(59, 130, 246, 0.12), transparent 30%),
-    linear-gradient(180deg, rgba(240, 253, 244, 0.92), rgba(220, 245, 228, 0.86));
-  box-shadow: 0 24px 70px rgba(20, 83, 45, 0.1), inset 0 0 38px rgba(34, 197, 94, 0.08);
+    linear-gradient(180deg, #ffffff, #f4faf6);
+  box-shadow: 0 24px 70px rgba(20, 83, 45, 0.08);
 }
 
 [data-theme=light] .home-work-section::before {
@@ -917,28 +915,35 @@ body {
 }
 
 [data-theme=light] .home-work-card {
-  border-color: rgba(22, 163, 74, 0.24);
+  border-color: rgba(22, 163, 74, 0.5);
   background:
-    linear-gradient(135deg, rgba(248, 255, 250, 0.95), rgba(225, 246, 232, 0.9)),
-    linear-gradient(90deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.08));
-  box-shadow: 0 20px 48px rgba(20, 83, 45, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    linear-gradient(135deg, #ffffff, #e8f4ed);
+  box-shadow: 0 20px 48px rgba(20, 83, 45, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+[data-theme=light] .home-work-card::after {
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.55) 38%, transparent 58%);
 }
 
 [data-theme=light] .home-work-card:hover {
-  border-color: rgba(22, 163, 74, 0.44);
-  box-shadow: 0 24px 60px rgba(20, 83, 45, 0.12), 0 0 28px rgba(34, 197, 94, 0.12);
+  border-color: rgba(22, 163, 74, 0.8);
+  box-shadow: 0 24px 60px rgba(20, 83, 45, 0.16), 0 0 28px rgba(34, 197, 94, 0.18);
 }
 
 [data-theme=light] .home-work-period {
-  color: rgba(37, 99, 235, 0.7);
+  color: rgba(22, 101, 52, 0.85);
 }
 
 [data-theme=light] .home-work-card-title {
-  color: #0f2e0d;
+  color: #0a1f0c;
 }
 
 [data-theme=light] .home-work-description {
-  color: rgba(20, 80, 25, 0.8);
+  color: #1a3d1f;
+}
+
+[data-theme=light] .home-work-description ul {
+  color: #2d5a35;
 }
 
 [data-theme=light] .home-work-description li::before {
@@ -947,9 +952,9 @@ body {
 }
 
 [data-theme=light] .home-work-media {
-  border-color: rgba(37, 99, 235, 0.26);
+  border-color: rgba(22, 163, 74, 0.55);
   background: rgba(2, 7, 11, 0.96);
-  box-shadow: 0 18px 48px rgba(20, 83, 45, 0.1), 0 0 24px rgba(59, 130, 246, 0.12);
+  box-shadow: 0 18px 48px rgba(20, 83, 45, 0.12), 0 0 28px rgba(34, 197, 94, 0.18);
 }
 
 [data-theme=light] .home-work-media img {
