@@ -20,6 +20,38 @@
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
 import "./salary_counter"
+
+// Theme toggle
+const setTheme = (theme) => {
+  if (theme === "system") {
+    localStorage.removeItem("phx:theme")
+    document.documentElement.removeAttribute("data-theme")
+  } else {
+    localStorage.setItem("phx:theme", theme)
+    document.documentElement.setAttribute("data-theme", theme)
+  }
+}
+
+if (!document.documentElement.hasAttribute("data-theme")) {
+  setTheme(localStorage.getItem("phx:theme") || "system")
+}
+
+window.addEventListener("storage", (event) => {
+  if (event.key === "phx:theme") setTheme(event.newValue || "system")
+})
+
+const bindThemeButtons = () => {
+  document.querySelectorAll("button[data-phx-theme]").forEach((element) => {
+    element.addEventListener("click", () => setTheme(element.dataset.phxTheme))
+  })
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bindThemeButtons)
+} else {
+  bindThemeButtons()
+}
+
 // Establish Phoenix Socket and LiveView configuration.
 // import {Socket} from "phoenix"
 // import {LiveSocket} from "phoenix_live_view"

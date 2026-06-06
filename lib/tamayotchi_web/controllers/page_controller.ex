@@ -2,6 +2,7 @@ defmodule TamayotchiWeb.PageController do
   use TamayotchiWeb, :controller
 
   alias Tamayotchi.PortfolioData
+  alias Tamayotchi.Projects
   alias TamayotchiWeb.PortfolioAccess
 
   def index(conn, _params) do
@@ -32,7 +33,8 @@ defmodule TamayotchiWeb.PageController do
       exchange_rate: exchange_rate,
       totals: totals,
       totals_unlocked?: PortfolioAccess.unlocked?(conn),
-      platforms: platforms
+      platforms: platforms,
+      projects: Projects.all_projects()
     )
   end
 

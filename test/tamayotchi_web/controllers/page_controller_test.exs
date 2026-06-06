@@ -6,6 +6,22 @@ defmodule TamayotchiWeb.PageControllerTest do
     response = html_response(conn, 200)
 
     assert response =~ "TAMAYOTCHI"
+    assert response =~ "project-examples"
+    assert response =~ "Prezio"
+    assert response =~ "https://prezio.tamayotchi.com/"
+    assert response =~ "Elixir-powered"
+    assert response =~ "Robert"
+    assert response =~ "Nativo Studio"
+    assert response =~ "private portfolio telemetry"
+    refute response =~ "Tamayotchi Portfolio OS"
+    assert response =~ "WhatsApp Reminders"
+    assert response =~ "https://github.com/tamayotchi/WhatsAppReminders"
+    assert response =~ "CodTracker Bot"
+    assert response =~ "https://github.com/tamayotchi/CodTracker-Bot"
+    refute response =~ "Open project"
+    refute response =~ "Aleph"
+    refute response =~ "Selected work"
+    refute response =~ "Projects &amp; Experience"
     assert response =~ "portfolio-unlock-form"
     assert response =~ "Private telemetry"
     assert response =~ "•••••• USD"
@@ -15,6 +31,10 @@ defmodule TamayotchiWeb.PageControllerTest do
     refute response =~ "BRICKSAVE"
     refute response =~ "ETORO"
     refute response =~ "/provider/"
+
+    {projects_index, _} = :binary.match(response, "project-examples")
+    {telemetry_index, _} = :binary.match(response, "portfolio-totals")
+    assert projects_index < telemetry_index
   end
 
   test "POST /portfolio/unlock rejects an invalid password", %{conn: conn} do

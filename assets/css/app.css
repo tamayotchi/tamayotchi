@@ -91,17 +91,9 @@
   --noise: 0;
 }
 
-/* Add variants based on LiveView classes */
-@custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
-@custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
-@custom-variant phx-change-loading (.phx-change-loading&, .phx-change-loading &);
-
 /* Use the data attribute for dark mode  */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 @custom-variant light (&:where([data-theme=light], [data-theme=light] *));
-
-/* Make LiveView wrapper divs transparent for layout */
-[data-phx-session], [data-phx-teleported-src] { display: contents }
 
 /* This file is for your main application CSS */
 @import "./provider.css";
@@ -188,31 +180,6 @@ body {
   background: rgba(6, 16, 8, 0.9);
 }
 
-.site-list {
-  list-style: none;
-  padding: 0;
-  margin: 1.25rem 0 0;
-}
-
-.site-list-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.9rem 1.5rem;
-  padding: 1.25rem 0;
-  border-bottom: 1px dotted rgba(126, 255, 170, 0.25);
-}
-
-.site-list-body {
-  display: grid;
-  gap: 0.35rem;
-}
-
-.site-list-title {
-  font-size: 1.45rem;
-  font-weight: 600;
-  color: #e0ffd2;
-}
-
 .site-link {
   color: #9afc9d;
   text-decoration: underline;
@@ -226,18 +193,6 @@ body {
 .site-link:hover {
   color: #c8ffbf;
   text-decoration-color: rgba(126, 255, 170, 0.95);
-}
-
-.site-list-desc {
-  font-size: 0.95rem;
-  color: rgba(201, 255, 181, 0.78);
-  line-height: 1.6;
-}
-
-.site-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
 }
 
 .site-year-block {
@@ -489,6 +444,223 @@ body {
   color: #e8ffd7;
 }
 
+.home-work-section {
+  position: relative;
+  display: grid;
+  gap: 1.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(116, 255, 203, 0.34);
+  border-radius: 1.25rem;
+  padding: clamp(1rem, 3vw, 1.45rem);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(116, 255, 203, 0.16), transparent 34%),
+    radial-gradient(circle at 92% 10%, rgba(67, 127, 255, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(7, 19, 12, 0.82), rgba(3, 8, 5, 0.78));
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28), inset 0 0 38px rgba(116, 255, 203, 0.04);
+}
+
+.home-work-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(126, 255, 170, 0.035) 0, rgba(126, 255, 170, 0.035) 1px, transparent 1px, transparent 18px);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 72%);
+}
+
+.home-work-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1rem;
+}
+
+.home-work-card {
+  position: relative;
+  display: grid;
+  gap: 1.1rem;
+  overflow: visible;
+  scroll-margin-top: 2rem;
+  border: 1px solid rgba(126, 255, 170, 0.28);
+  border-radius: 1.1rem;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  background:
+    linear-gradient(135deg, rgba(11, 27, 16, 0.92), rgba(5, 12, 8, 0.88)),
+    linear-gradient(90deg, rgba(116, 255, 203, 0.12), rgba(67, 127, 255, 0.08));
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(223, 255, 214, 0.06);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.home-work-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(120deg, transparent 0%, rgba(116, 255, 203, 0.08) 38%, transparent 58%);
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.home-work-card:hover {
+  border-color: rgba(116, 255, 203, 0.52);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3), 0 0 28px rgba(116, 255, 203, 0.1);
+  transform: translateY(-2px);
+}
+
+.home-work-card:hover::after {
+  opacity: 1;
+}
+
+.home-work-card-with-media {
+  grid-template-columns: minmax(0, 0.94fr) minmax(17rem, 1.06fr);
+  align-items: center;
+}
+
+.home-work-copy,
+.home-work-media,
+.home-work-media-link {
+  position: relative;
+  z-index: 1;
+}
+
+.home-work-media-link {
+  display: block;
+  align-self: center;
+  border-radius: 0.9rem;
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+.home-work-card-topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.7rem;
+}
+
+.home-work-period {
+  color: rgba(154, 188, 255, 0.78);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.home-work-card-title {
+  color: #f0ffe8;
+  font-size: clamp(1.45rem, 3vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.home-work-description {
+  margin-top: 0.75rem;
+  color: rgba(229, 255, 220, 0.82);
+  line-height: 1.7;
+}
+
+.home-work-description p {
+  margin: 0;
+}
+
+.home-work-description ul {
+  display: grid;
+  gap: 0.62rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: rgba(201, 255, 181, 0.76);
+  line-height: 1.62;
+}
+
+.home-work-description li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.home-work-description li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.66em;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 999px;
+  background: #74ffcb;
+  box-shadow: 0 0 12px rgba(116, 255, 203, 0.65);
+}
+
+.home-work-media {
+  position: relative;
+  display: block;
+  align-self: center;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(74, 178, 255, 0.35);
+  border-radius: 0.9rem;
+  padding: 1.7rem 0 0;
+  background: rgba(2, 7, 11, 0.96);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.42), 0 0 34px rgba(25, 135, 255, 0.16);
+  cursor: zoom-in;
+  transform: translateY(-0.2rem);
+  transform-origin: center;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.home-work-media:hover,
+.home-work-media-link:hover .home-work-media,
+.home-work-media-link:focus-visible .home-work-media {
+  border-color: rgba(116, 255, 203, 0.72);
+  box-shadow: 0 30px 78px rgba(0, 0, 0, 0.48), 0 0 42px rgba(116, 255, 203, 0.2);
+  transform: translateY(-0.6rem) scale(1.045);
+}
+
+.home-work-media-link .home-work-media {
+  cursor: pointer;
+}
+
+.home-work-media::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1.7rem;
+  border-bottom: 1px solid rgba(74, 178, 255, 0.22);
+  background: linear-gradient(180deg, #eef8ff, #dceeff);
+}
+
+.home-work-media::after {
+  content: "";
+  position: absolute;
+  top: 0.58rem;
+  left: 0.8rem;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 999px;
+  background: #ff6b6b;
+  box-shadow: 0.68rem 0 #fbbf24, 1.36rem 0 #74ffcb;
+}
+
+.home-work-media img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0 0 calc(0.9rem - 1px) calc(0.9rem - 1px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.34);
+  transition: filter 220ms ease, transform 220ms ease;
+}
+
+.home-work-media:hover img,
+.home-work-media-link:hover img,
+.home-work-media-link:focus-visible img {
+  filter: saturate(1.08) brightness(1.04);
+  transform: scale(1.015);
+}
+
 .article-body {
   color: #e8ffe5;
   line-height: 1.8;
@@ -731,6 +903,59 @@ body {
   text-shadow: none;
 }
 
+[data-theme=light] .home-work-section {
+  border-color: rgba(34, 197, 94, 0.32);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(34, 197, 94, 0.16), transparent 34%),
+    radial-gradient(circle at 92% 10%, rgba(59, 130, 246, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(240, 253, 244, 0.92), rgba(220, 245, 228, 0.86));
+  box-shadow: 0 24px 70px rgba(20, 83, 45, 0.1), inset 0 0 38px rgba(34, 197, 94, 0.08);
+}
+
+[data-theme=light] .home-work-section::before {
+  background: repeating-linear-gradient(90deg, rgba(20, 83, 45, 0.045) 0, rgba(20, 83, 45, 0.045) 1px, transparent 1px, transparent 18px);
+}
+
+[data-theme=light] .home-work-card {
+  border-color: rgba(22, 163, 74, 0.24);
+  background:
+    linear-gradient(135deg, rgba(248, 255, 250, 0.95), rgba(225, 246, 232, 0.9)),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.08));
+  box-shadow: 0 20px 48px rgba(20, 83, 45, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+[data-theme=light] .home-work-card:hover {
+  border-color: rgba(22, 163, 74, 0.44);
+  box-shadow: 0 24px 60px rgba(20, 83, 45, 0.12), 0 0 28px rgba(34, 197, 94, 0.12);
+}
+
+[data-theme=light] .home-work-period {
+  color: rgba(37, 99, 235, 0.7);
+}
+
+[data-theme=light] .home-work-card-title {
+  color: #0f2e0d;
+}
+
+[data-theme=light] .home-work-description {
+  color: rgba(20, 80, 25, 0.8);
+}
+
+[data-theme=light] .home-work-description li::before {
+  background: #16a34a;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.36);
+}
+
+[data-theme=light] .home-work-media {
+  border-color: rgba(37, 99, 235, 0.26);
+  background: rgba(2, 7, 11, 0.96);
+  box-shadow: 0 18px 48px rgba(20, 83, 45, 0.1), 0 0 24px rgba(59, 130, 246, 0.12);
+}
+
+[data-theme=light] .home-work-media img {
+  box-shadow: 0 14px 30px rgba(20, 83, 45, 0.12);
+}
+
 /* Blog / article light mode */
 [data-theme=light] .article-body {
   color: #1a3d18;
@@ -774,19 +999,7 @@ body {
   border-color: rgba(50, 170, 80, 0.25);
 }
 
-/* List items light mode */
-[data-theme=light] .site-list-item {
-  border-bottom-color: rgba(50, 170, 80, 0.25);
-}
-
-[data-theme=light] .site-list-title {
-  color: #0f2e0d;
-}
-
-[data-theme=light] .site-list-desc {
-  color: rgba(20, 80, 25, 0.8);
-}
-
+/* Year list light mode */
 [data-theme=light] .site-year-block {
   border-bottom-color: rgba(50, 170, 80, 0.35);
 }
@@ -810,6 +1023,10 @@ body {
   }
 
   .home-platform-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .home-work-card-with-media {
     grid-template-columns: 1fr;
   }
 }

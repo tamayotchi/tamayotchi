@@ -6,9 +6,52 @@
     <span class="site-count">Updated {@last_update}</span>
   </header>
 
-  <section class="home-overview-card space-y-6">
+  <section id="projects" class="home-work-section" aria-label="Selected builds">
+    <div class="home-work-grid" id="project-examples">
+      <%= for project <- @projects do %>
+        <article
+          id={project.id}
+          class={["home-work-card", project.image && "home-work-card-with-media"]}
+        >
+          <div class="home-work-copy">
+            <div class="home-work-card-topline">
+              <span class="home-work-period">{project.period}</span>
+            </div>
+
+            <h3 class="home-work-card-title">{project.title}</h3>
+            <div class="home-work-description">
+              {Phoenix.HTML.raw(project.body)}
+            </div>
+          </div>
+
+          <%= if project.image && project.url do %>
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="home-work-media-link"
+              aria-label={"Open " <> project.title}
+            >
+              <figure class="home-work-media">
+                <img src={project.image} alt={project.title} loading="lazy" />
+              </figure>
+            </a>
+          <% else %>
+            <%= if project.image do %>
+              <figure class="home-work-media">
+                <img src={project.image} alt={project.title} loading="lazy" />
+              </figure>
+            <% end %>
+          <% end %>
+        </article>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="home-overview-card space-y-6" aria-label="Private telemetry">
     <%= if @totals_unlocked? do %>
       <div class="space-y-3" id="portfolio-totals">
+        <p class="site-kicker">Private telemetry</p>
         <h2 class="site-year-label">Total Portfolio Balance</h2>
 
         <div class="home-metrics" id="portfolio-totals-values">
@@ -77,6 +120,7 @@
       <div class="portfolio-private-lock-card" id="portfolio-totals">
         <div class="portfolio-private-lock-preview" aria-hidden="true">
           <div class="space-y-3">
+            <p class="site-kicker">Private telemetry</p>
             <h2 class="site-year-label">Total Portfolio Balance</h2>
             <div class="home-metrics">
               <p class="home-metric-row">
