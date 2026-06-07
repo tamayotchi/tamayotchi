@@ -7,6 +7,9 @@ defmodule TamayotchiWeb.PageControllerTest do
 
     assert response =~ "TAMAYOTCHI"
     assert response =~ "project-examples"
+    assert response =~ "Instaleap"
+    assert response =~ "https://instaleap.io"
+    assert response =~ "acquired by Instacart"
     assert response =~ "Prezio"
     assert response =~ "https://prezio.tamayotchi.com/"
     assert response =~ "Elixir-powered"

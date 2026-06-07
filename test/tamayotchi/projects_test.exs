@@ -7,6 +7,7 @@ defmodule Tamayotchi.ProjectsTest do
     projects = Projects.all_projects()
 
     assert Enum.map(projects, & &1.id) == [
+             "project-instaleap",
              "project-prezio",
              "project-robert",
              "project-zapenu",
@@ -16,6 +17,7 @@ defmodule Tamayotchi.ProjectsTest do
            ]
 
     assert Enum.map(projects, & &1.title) == [
+             "Instaleap",
              "Prezio",
              "Nativo Studio",
              "Zapenu",
@@ -27,11 +29,16 @@ defmodule Tamayotchi.ProjectsTest do
 
   test "loads optional project link and image metadata" do
     projects = Projects.all_projects()
+    instaleap = Enum.find(projects, &(&1.id == "project-instaleap"))
     prezio = Enum.find(projects, &(&1.id == "project-prezio"))
     zapenu = Enum.find(projects, &(&1.id == "project-zapenu"))
     whatsapp_reminders = Enum.find(projects, &(&1.id == "project-whatsapp-reminders"))
     codtracker_bot = Enum.find(projects, &(&1.id == "project-codtracker-bot"))
     robert = Enum.find(projects, &(&1.id == "project-robert"))
+
+    assert instaleap.url == "https://instaleap.io"
+    assert instaleap.image == "/images/projects/instaleap-preview.png"
+    assert instaleap.body =~ "acquired by Instacart"
 
     assert prezio.url == "https://prezio.tamayotchi.com/"
     assert prezio.image == "/images/projects/prezio-preview.png"
