@@ -1,6 +1,6 @@
 %{
   title: "Nativo Studio",
-  period: "2026 - Present",
+  period: "2026",
   image: "/images/projects/robert-demo.png"
 }
 ---

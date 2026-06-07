@@ -1,6 +1,6 @@
 %{
   title: "Zapenu",
-  period: "2024 - Present",
+  period: "2025",
   image: "/images/projects/zapenu-preview.png",
   url: "https://zapenu.com/lepancake/gKhixyg"
 }

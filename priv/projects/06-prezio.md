@@ -1,6 +1,6 @@
 %{
   title: "Prezio",
-  period: "2025 - Present",
+  period: "2025",
   image: "/images/projects/prezio-preview.png",
   url: "https://prezio.tamayotchi.com/"
 }
