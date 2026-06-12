@@ -1,0 +1,148 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+% Awesome CV LaTeX Template
+%
+% Template: https://github.com/posquit0/Awesome-CV
+% License: CC BY-SA 4.0
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Configuration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[]{awesome-cv}
+\usepackage{textcomp}
+\fontdir[fonts/]
+\newcommand*{\sectiondir}{resume/}
+\colorlet{awesome}{awesome-red}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Profile
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+  \headerlastnamestyle{Juan Tamayo} \\
+  \vspace{2mm}
+  {\faEnvelope\ \href{mailto:juancyepest@gmail.com}{juancyepest@gmail.com}}  |  {\faMobile\ +57 3174444258}  |  {\faMapMarker\ Colombia} \\
+  {\faGithub\ \href{https://github.com/tamayotchi}{github.com/tamayotchi}}  |  {\faLinkedin\ \href{https://www.linkedin.com/in/juantamayo26/}{linkedin.com/in/juantamayo26}}  |  {\faLink\ \href{https://tamayotchi.com/}{tamayotchi.com}}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Skills
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cvsection{Skills}
+\begin{center}
+  \setlength\tabcolsep{1ex}
+  \setlength{\extrarowheight}{0pt}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} r L{14.7cm}}
+    \skilltypestyle{Languages} & \skillsetstyle{TypeScript, JavaScript, Elixir, Python, C/C++, SQL, HTML/CSS} \\
+    \skilltypestyle{Frameworks} & \skillsetstyle{Node.js, Phoenix/LiveView} \\
+    \skilltypestyle{Cloud \& Data} & \skillsetstyle{AWS, GCP Cloud Run, Cloudflare, PostgreSQL, DynamoDB} \\
+    \skilltypestyle{Tools} & \skillsetstyle{Terraform, Docker, Git, CI/CD} \\
+    \skilltypestyle{Engineering} & \skillsetstyle{Clean code, clean architecture, system design, API design, performance tuning, production debugging} \\
+    \skilltypestyle{Spoken} & \skillsetstyle{Spanish (Native), English (B2)}
+  \end{tabular*}
+\end{center}
+\vspace{-5mm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Experience
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cvsection{Experience}
+\begin{cventries}
+  \cventry
+  {Mid-Level Backend Engineer \textrightarrow{} Senior Backend Engineer}
+  {Instaleap / Instacart}
+  {Remote / Colombia}
+  {Jul. 2021 -- Present}
+  {\begin{cvitems}
+    \item {Joined as a mid-level Backend Engineer and was promoted to Senior Backend Engineer in 2025 after expanding ownership of critical logistics and e-commerce systems.}
+    \item {Build horizontally scalable backend services with Terraform, PostgreSQL, and AWS; improve processes, queries, stability, and latency for high-throughput workflows.}
+    \item {Design delivery-optimization algorithms, debug critical production issues, ship new features, collaborate with cross-functional teams, and mentor junior engineers.}
+  \end{cvitems}}
+
+  \cventry
+  {Teaching Assistant (Part-Time)}
+  {Universidad Tecnológica de Pereira}
+  {Pereira, Colombia}
+  {Feb. 2020 -- Sep. 2022}
+  {\begin{cvitems}
+    \item {Guided students in algorithms and programming concepts through one-on-one support, problem-solving sessions, and code reviews.}
+  \end{cvitems}}
+
+  \cventry
+  {Freelance Web Developer}
+  {Self-employed}
+  {Colombia}
+  {Feb. 2020 -- Feb. 2021}
+  {\begin{cvitems}
+    \item {Built clean, user-friendly WordPress websites tailored to client brands; optimized speed, SEO, and visual design to improve visibility and sales.}
+  \end{cvitems}}
+\end{cventries}
+\vspace{-3mm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Projects
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cvsection{Projects}
+\begin{cventries}
+  \cventry
+  {Elixir}
+  {Prezio}
+  {\href{https://prezio.tamayotchi.com/}{prezio.tamayotchi.com}}
+  {2025}
+  {\begin{cvitems}
+    \item {Built a product price-tracking web app that compares store listings, highlights best prices, shows update timestamps, and keeps purchase links one click away.}
+  \end{cvitems}}
+
+  \cventry
+  {Cloudflare, Mercado Pago}
+  {Zapenu}
+  {\href{https://zapenu.com/lepancake/gKhixyg}{zapenu.com}}
+  {2025}
+  {\begin{cvitems}
+    \item {Built a menu-commerce platform with a back-office console, multi-tenant API, adaptive customer menu, WhatsApp ordering flows, QR codes per table, menu builder, and payment integration.}
+  \end{cvitems}}
+
+  \cventry
+  {OpenAI, Whisper, AWS Lambda, GCP Cloud Run, DynamoDB}
+  {WhatsApp Reminders}
+  {\href{https://github.com/tamayotchi/WhatsAppReminders}{GitHub}}
+  {2024}
+  {\begin{cvitems}
+    \item {Developed a WhatsApp assistant that parses text and voice reminders with OpenAI tool calls and Whisper, stores scheduled reminders, and sends WhatsApp notifications when due.}
+  \end{cvitems}}
+
+  \cventry
+  {Discord, COD API, AWS EC2}
+  {CodTracker Bot}
+  {\href{https://github.com/tamayotchi/CodTracker-Bot}{GitHub}}
+  {2021}
+  {\begin{cvitems}
+    \item {Created a Discord bot that registers Warzone players, fetches Call of Duty stats, renders Discord embeds, persists player data, and falls back to scraping when the API is unavailable.}
+  \end{cvitems}}
+
+  \cventry
+  {Elixir, Phoenix LiveView, PDF generation}
+  {Nativo Studio}
+  {}
+  {2026}
+  {\begin{cvitems}
+    \item {Built an internal project-management system for projects, payments, inventory, extras, expenses, calendar events, and PDF invoicing.}
+  \end{cvitems}}
+\end{cventries}
+\vspace{-3mm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Education
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cvsection{Education}
+\begin{cventries}
+  \cventry
+  {Systems Engineering, GPA: 4.0/5.0}
+  {Universidad Tecnológica de Pereira}
+  {Pereira, Colombia}
+  {}
+  {}
+\end{cventries}
+
+\end{document}

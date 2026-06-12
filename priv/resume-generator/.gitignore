@@ -1,0 +1,5 @@
+# Generated LaTeX output
+*.aux
+*.log
+*.out
+*.pdf
