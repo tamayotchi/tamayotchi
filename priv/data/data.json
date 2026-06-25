@@ -295,6 +295,10 @@
       {
         "date": "2026-03-10",
         "amount": 50
+      },
+      {
+        "date": "2026-06-25",
+        "amount": 210
       }
     ],
     "currencyCode": "USD"
