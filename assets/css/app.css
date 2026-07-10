@@ -444,6 +444,20 @@ body {
   color: #e8ffd7;
 }
 
+.home-platform-endpoint {
+  display: inline-flex;
+  margin-left: 0.35rem;
+  border: 1px solid rgba(255, 220, 135, 0.45);
+  border-radius: 999px;
+  padding: 0.08rem 0.38rem;
+  color: #ffe9bd;
+  background: rgba(34, 27, 11, 0.8);
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
 .home-work-section {
   position: relative;
   display: grid;
@@ -831,6 +845,12 @@ body {
 
 [data-theme=light] .home-platform-title {
   color: #0a2e0d;
+}
+
+[data-theme=light] .home-platform-endpoint {
+  border-color: rgba(200, 160, 60, 0.65);
+  color: #7a5c10;
+  background: rgba(255, 245, 220, 0.95);
 }
 
 [data-theme=light] .portfolio-private-lock-card {

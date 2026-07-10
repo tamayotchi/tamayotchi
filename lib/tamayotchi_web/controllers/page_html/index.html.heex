@@ -86,6 +86,11 @@
           <div class="home-platform-card" id="platforms-usd">
             <h3 class="home-platform-title">USD Investments</h3>
             <ul class="site-year-list">
+              <li id="platforms-usd-aggregate">
+                <.link href={~p"/provider/usd"} class={["site-link", "site-inline-link"]}>
+                  All USD overview <span class="home-platform-endpoint">/provider/usd</span>
+                </.link>
+              </li>
               <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "USD")) do %>
                 <li>
                   <.link
@@ -102,6 +107,11 @@
           <div class="home-platform-card" id="platforms-cop">
             <h3 class="home-platform-title">COP Investments</h3>
             <ul class="site-year-list">
+              <li id="platforms-cop-aggregate">
+                <.link href={~p"/provider/cop"} class={["site-link", "site-inline-link"]}>
+                  All COP overview <span class="home-platform-endpoint">/provider/cop</span>
+                </.link>
+              </li>
               <%= for platform <- Enum.filter(@platforms, &(&1.currency_code == "COP")) do %>
                 <li>
                   <.link

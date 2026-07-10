@@ -4,6 +4,10 @@ defmodule TamayotchiWeb.ProviderController do
   alias Tamayotchi.PortfolioData
 
   @time_ranges ["1M", "3M", "6M", "YTD", "12M", "ALL"]
+  @history_orders [
+    {"Newest first", "newest"},
+    {"Oldest first", "oldest"}
+  ]
   @chart_width 960
   @chart_height 360
   @chart_left 54
@@ -12,57 +16,134 @@ defmodule TamayotchiWeb.ProviderController do
   @chart_bottom 40
 
   def show(conn, %{"provider" => provider_slug} = params) do
-    platform_name = String.upcase(provider_slug)
-
-    with {:ok, {currency_code, entries}} <- platform_entries(platform_name) do
-      render_platform(conn, params, platform_name, currency_code, entries)
+    with {:ok, provider} <- provider_context(provider_slug) do
+      render_platform(conn, params, provider)
     else
       :error -> send_resp(conn, 404, "Provider not found")
     end
   end
 
-  defp render_platform(conn, params, platform_name, currency_code, entries) do
-    {contribution_entries, year_end_entries} = split_entries(entries)
-    {selected_time_range, selected_year} = selected_filters(params)
+  defp render_platform(conn, params, provider) do
+    {contribution_entries, year_end_entries} = split_entries(provider.entries)
+    {selected_time_range, selected_year, selected_history_order} = selected_filters(params)
     years = available_years(contribution_entries)
 
     filtered_contributions =
       filter_by_period(contribution_entries, selected_time_range, selected_year)
 
-    filtered_year_end = filter_by_period(year_end_entries, selected_time_range, selected_year)
+    filtered_year_end =
+      if provider.aggregate? do
+        []
+      else
+        filter_by_period(year_end_entries, selected_time_range, selected_year)
+      end
 
     points = build_points(filtered_contributions)
 
     conn
     |> put_view(html: TamayotchiWeb.ProviderHTML)
     |> render(:index,
-      platform_name: platform_name,
-      platform_path: "/provider/" <> String.downcase(platform_name),
-      currency_code: currency_code,
+      platform_name: provider.platform_name,
+      platform_path: provider.platform_path,
+      currency_code: provider.currency_code,
+      aggregate?: provider.aggregate?,
+      show_compound?: not provider.aggregate?,
       chart: chart_payload(points, filtered_year_end),
-      stats: stats(points, entries),
+      provider_breakdown:
+        provider_breakdown(filtered_contributions, provider.providers, provider.aggregate?),
+      history_rows: history_rows(points, selected_history_order),
+      show_provider_column?: provider.aggregate?,
+      stats: stats(points, provider.entries),
       selected_time_range: selected_time_range,
       selected_year: selected_year,
+      selected_history_order: selected_history_order,
       time_ranges: @time_ranges,
-      year_options: year_options(years)
+      year_options: year_options(years),
+      history_order_options: @history_orders
     )
+  end
+
+  defp provider_context(provider_slug) do
+    normalized_slug = String.downcase(provider_slug)
+
+    cond do
+      normalized_slug in ["usd", "all-usd", "all_usd"] ->
+        aggregate_provider_context("USD")
+
+      normalized_slug in ["cop", "all-cop", "all_cop"] ->
+        aggregate_provider_context("COP")
+
+      true ->
+        platform_name = String.upcase(provider_slug)
+
+        with {:ok, {currency_code, entries}} <- platform_entries(platform_name) do
+          {:ok,
+           %{
+             platform_name: platform_name,
+             platform_path: "/provider/" <> String.downcase(platform_name),
+             currency_code: currency_code,
+             entries: entries,
+             aggregate?: false,
+             providers: [platform_name]
+           }}
+        end
+    end
+  end
+
+  defp aggregate_provider_context(currency_code) do
+    with {:ok, data} <- PortfolioData.load() do
+      platforms =
+        data
+        |> Enum.filter(fn {_provider, details} ->
+          Map.get(details, "currencyCode") == currency_code
+        end)
+        |> Enum.sort_by(fn {provider, _details} -> provider end)
+
+      entries =
+        platforms
+        |> Enum.flat_map(fn {provider, details} ->
+          details
+          |> Map.get("content", [])
+          |> normalize_entries(provider)
+        end)
+        |> sort_entries_by_date()
+
+      case entries do
+        [] ->
+          :error
+
+        _ ->
+          {:ok,
+           %{
+             platform_name: "#{currency_code} INVESTMENTS",
+             platform_path: "/provider/" <> String.downcase(currency_code),
+             currency_code: currency_code,
+             entries: entries,
+             aggregate?: true,
+             providers: Enum.map(platforms, fn {provider, _details} -> provider end)
+           }}
+      end
+    else
+      _ -> :error
+    end
   end
 
   defp platform_entries(platform_name) do
     with {:ok, %{"content" => content} = platform_data} <-
            PortfolioData.platform(platform_name) do
       currency_code = Map.fetch!(platform_data, "currencyCode")
-      entries = normalize_entries(content)
+      entries = normalize_entries(content, platform_name)
       {:ok, {currency_code, entries}}
     else
       _ -> :error
     end
   end
 
-  defp normalize_entries(content) do
+  defp normalize_entries(content, provider_name) do
     content
     |> Enum.map(fn entry ->
       %{
+        provider: provider_name,
         date: Map.get(entry, "date"),
         amount: numeric_amount(Map.get(entry, "amount")),
         year_end?: Map.get(entry, "isYearEndValue", false),
@@ -70,7 +151,11 @@ defmodule TamayotchiWeb.ProviderController do
       }
     end)
     |> Enum.filter(&is_struct(&1.date_obj, Date))
-    |> Enum.sort_by(& &1.date_obj)
+    |> sort_entries_by_date()
+  end
+
+  defp sort_entries_by_date(entries) do
+    Enum.sort_by(entries, fn entry -> {Date.to_erl(entry.date_obj), entry.provider} end)
   end
 
   defp build_points(entries) do
@@ -154,7 +239,7 @@ defmodule TamayotchiWeb.ProviderController do
 
     projected_compound_points =
       year_end_entries
-      |> Enum.sort_by(& &1.date_obj)
+      |> Enum.sort_by(& &1.date_obj, Date)
       |> Enum.map(fn entry ->
         x = project_x(entry.date_obj, first_date, last_date, left, plot_width)
         y = project_y(entry.amount, value_floor, value_ceil, top, plot_height)
@@ -249,13 +334,12 @@ defmodule TamayotchiWeb.ProviderController do
 
     latest_contribution_value = latest_contribution_value(points)
 
-    latest_total_value = latest_year_end_value(all_entries) || latest_contribution_value
-
     %{
       total_contributed: total_contributed,
-      latest_value: latest_total_value,
+      latest_value: latest_total_value(all_entries, latest_contribution_value),
       records: length(contribution_points),
-      year_end_marks: Enum.count(all_entries, & &1.year_end?)
+      year_end_marks: Enum.count(all_entries, & &1.year_end?),
+      providers: all_entries |> Enum.map(& &1.provider) |> Enum.uniq() |> length()
     }
   end
 
@@ -266,14 +350,35 @@ defmodule TamayotchiWeb.ProviderController do
     end
   end
 
+  defp latest_total_value(entries, fallback_value) do
+    latest_values =
+      entries
+      |> Enum.group_by(& &1.provider)
+      |> Enum.map(fn {_provider, provider_entries} ->
+        latest_year_end_value(provider_entries) || sum_contributions(provider_entries)
+      end)
+
+    case latest_values do
+      [] -> fallback_value
+      values -> Enum.sum(values)
+    end
+  end
+
   defp latest_year_end_value(entries) do
     entries
     |> Enum.filter(& &1.year_end?)
+    |> Enum.sort_by(& &1.date_obj, Date)
     |> List.last()
     |> case do
       nil -> nil
       entry -> entry.amount
     end
+  end
+
+  defp sum_contributions(entries) do
+    entries
+    |> Enum.reject(& &1.year_end?)
+    |> Enum.reduce(0.0, fn entry, acc -> acc + entry.amount end)
   end
 
   defp available_years(entries) do
@@ -291,11 +396,19 @@ defmodule TamayotchiWeb.ProviderController do
   defp selected_filters(params) do
     selected_time_range = params["time_range"] || "ALL"
     selected_year = params["year"] || "ALL"
+    selected_history_order = params["history_order"] || "newest"
 
     normalized_time_range =
       if selected_time_range in @time_ranges, do: selected_time_range, else: "ALL"
 
-    {normalized_time_range, selected_year}
+    normalized_history_order =
+      if selected_history_order in Enum.map(@history_orders, &elem(&1, 1)) do
+        selected_history_order
+      else
+        "newest"
+      end
+
+    {normalized_time_range, selected_year, normalized_history_order}
   end
 
   defp filter_by_period(entries, _time_range, year) when year != "ALL" do
@@ -389,6 +502,41 @@ defmodule TamayotchiWeb.ProviderController do
 
   defp split_entries(entries) do
     {Enum.reject(entries, & &1.year_end?), Enum.filter(entries, & &1.year_end?)}
+  end
+
+  defp provider_breakdown(_entries, _providers, false), do: []
+
+  defp provider_breakdown(entries, providers, true) do
+    totals_by_provider =
+      Enum.reduce(entries, %{}, fn entry, totals ->
+        Map.update(totals, entry.provider, entry.amount, &(&1 + entry.amount))
+      end)
+
+    max_total =
+      totals_by_provider
+      |> Map.values()
+      |> Enum.max(fn -> 0.0 end)
+
+    providers
+    |> Enum.map(fn provider ->
+      total = Map.get(totals_by_provider, provider, 0.0)
+      percentage = if max_total > 0, do: total / max_total * 100, else: 0.0
+
+      %{
+        provider: provider,
+        total: total,
+        percentage: percentage
+      }
+    end)
+    |> Enum.sort_by(fn breakdown -> {-breakdown.total, breakdown.provider} end)
+  end
+
+  defp history_rows(points, "oldest"), do: non_synthetic_points(points)
+
+  defp history_rows(points, _history_order) do
+    points
+    |> non_synthetic_points()
+    |> Enum.reverse()
   end
 
   defp non_synthetic_points(points) do

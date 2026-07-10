@@ -59,6 +59,10 @@ defmodule TamayotchiWeb.PageControllerTest do
 
     assert response =~ "portfolio-totals-values"
     assert response =~ "investment-platforms-values"
+    assert response =~ "All USD overview"
+    assert response =~ "/provider/usd"
+    assert response =~ "All COP overview"
+    assert response =~ "/provider/cop"
     assert response =~ "ETORO"
     refute response =~ "portfolio-private-lock-card"
   end
@@ -91,6 +95,20 @@ defmodule TamayotchiWeb.PageControllerTest do
     assert get_session(conn, :portfolio_return_to) == "/provider/etoro"
   end
 
+  test "GET /provider/usd redirects locked sessions to the homepage unlock card", %{conn: conn} do
+    conn = get(conn, ~p"/provider/usd?year=2026")
+
+    assert redirected_to(conn) == "/#portfolio-totals"
+    assert get_session(conn, :portfolio_return_to) == "/provider/usd?year=2026"
+  end
+
+  test "GET /provider/cop redirects locked sessions to the homepage unlock card", %{conn: conn} do
+    conn = get(conn, ~p"/provider/cop?year=2026")
+
+    assert redirected_to(conn) == "/#portfolio-totals"
+    assert get_session(conn, :portfolio_return_to) == "/provider/cop?year=2026"
+  end
+
   test "GET /provider/:provider renders after portfolio unlock", %{conn: conn} do
     conn =
       conn
@@ -103,6 +121,110 @@ defmodule TamayotchiWeb.PageControllerTest do
     assert response =~ "Performance Curve"
   end
 
+  test "provider history filters by year and defaults to newest first", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/etoro?year=2026")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "Year 2026"
+    assert response =~ "Newest first"
+    refute response =~ "February 1, 2025"
+
+    assert_response_order(response, [
+      "July 9, 2026",
+      "June 25, 2026",
+      "March 10, 2026"
+    ])
+  end
+
+  test "provider history can be sorted oldest first", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/etoro?year=2026&history_order=oldest")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "Year 2026"
+
+    assert_response_order(response, [
+      "March 10, 2026",
+      "June 25, 2026",
+      "July 9, 2026"
+    ])
+  end
+
+  test "provider USD aggregate shows a breakdown for USD platforms only", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/usd?year=2026")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "USD INVESTMENTS"
+    assert response =~ "USD Provider Breakdown"
+    assert response =~ "Year 2026"
+    assert response =~ "1,360.00 USD"
+    assert response =~ "ETORO"
+    assert response =~ "1,260.00 USD"
+    assert response =~ "XTB"
+    assert response =~ "100.00 USD"
+    assert response =~ "BRICKSAVE"
+    refute response =~ "TRII"
+
+    assert_response_order(response, [
+      "July 9, 2026",
+      "June 25, 2026",
+      "April 16, 2026",
+      "March 10, 2026"
+    ])
+  end
+
+  test "provider USD aggregate supports oldest-first history", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/usd?year=2026&history_order=oldest")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "USD INVESTMENTS"
+
+    assert_response_order(response, [
+      "March 10, 2026",
+      "April 16, 2026",
+      "June 25, 2026",
+      "July 9, 2026"
+    ])
+  end
+
+  test "provider COP aggregate shows a breakdown for COP platforms only", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/cop?year=2026")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "COP INVESTMENTS"
+    assert response =~ "COP Provider Breakdown"
+    assert response =~ "Year 2026"
+    assert response =~ "1,000,000.00 COP"
+    assert response =~ "TRII"
+    assert response =~ "A2CENSO"
+    refute response =~ "ETORO"
+    refute response =~ "XTB"
+
+    assert_response_order(response, [
+      "May 14, 2026",
+      "Total"
+    ])
+  end
+
   test "provider return path is used after a successful unlock", %{conn: conn} do
     conn = get(conn, ~p"/provider/etoro")
 
@@ -113,5 +235,17 @@ defmodule TamayotchiWeb.PageControllerTest do
 
     assert redirected_to(conn) == "/provider/etoro"
     assert get_session(conn, :portfolio_unlocked) == true
+  end
+
+  defp assert_response_order(response, expected_values) do
+    indexes =
+      Enum.map(expected_values, fn value ->
+        case :binary.match(response, value) do
+          {index, _length} -> index
+          :nomatch -> flunk("Expected #{inspect(value)} to be present in the response")
+        end
+      end)
+
+    assert indexes == Enum.sort(indexes)
   end
 end
