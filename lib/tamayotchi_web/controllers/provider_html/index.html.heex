@@ -46,7 +46,7 @@
   <section class="provider-chart-wrap">
     <div class="provider-chart-head">
       <h2 class="site-year-label">Performance Curve</h2>
-      <p class="provider-chart-meta">Contributions and compound growth line</p>
+      <p class="provider-chart-meta">Contributions and {@compound_label} line</p>
     </div>
 
     <div class="provider-filters" id="provider-filters">
@@ -84,6 +84,15 @@
             {range}
           </.link>
         <% end %>
+      </div>
+
+      <div class="provider-range-group" id="provider-growth-option">
+        <a
+          href="#provider-yearly-growth"
+          class="provider-filter-pill provider-filter-pill-secondary"
+        >
+          Yearly Growth
+        </a>
       </div>
 
       <.form
@@ -172,10 +181,78 @@
         </span>
         <%= if @show_compound? do %>
           <span class="provider-legend-item">
-            <span class="provider-legend-dot provider-legend-dot-compound"></span> Compound
+            <span class="provider-legend-dot provider-legend-dot-compound"></span> {@compound_label}
           </span>
         <% end %>
       </div>
+    <% end %>
+  </section>
+
+  <section class="provider-growth-wrap" id="provider-yearly-growth">
+    <div class="provider-chart-head">
+      <h2 class="site-year-label">Year-End Growth</h2>
+      <p class="provider-chart-meta">
+        Generated gain as share of end balance plus yearly gain excluding deposits
+      </p>
+    </div>
+
+    <%= if @annual_growth_rows == [] do %>
+      <p class="provider-empty">
+        No year-end growth records yet. Add Dec 31 entries marked as year-end values to track
+        yearly percentage growth.
+      </p>
+    <% else %>
+      <div class="provider-growth-table-shell">
+        <table class="provider-growth-table" id="provider-yearly-growth-table">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th class="is-right">End Value</th>
+              <th class="is-right">Contributed</th>
+              <th class="is-right">Generated</th>
+              <th class="is-right">Gain Share %</th>
+              <th class="is-right">Year Generated</th>
+              <th class="is-right">Year %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for row <- @annual_growth_rows do %>
+              <tr>
+                <td>
+                  <span class="provider-growth-year">{row.year}</span>
+                  <%= if row.previous_year do %>
+                    <span class="provider-growth-compare">vs {row.previous_year}</span>
+                  <% else %>
+                    <span class="provider-growth-compare">vs contributed total</span>
+                  <% end %>
+                </td>
+                <td class="is-right">
+                  {format_currency(row.end_value, 2, @currency_code)}
+                </td>
+                <td class="is-right">
+                  {format_currency(row.contributed_to_date, 2, @currency_code)}
+                </td>
+                <td class={["is-right", growth_tone_class(row.increase_amount)]}>
+                  {format_signed_currency(row.increase_amount, 2, @currency_code)}
+                </td>
+                <td class={["is-right", growth_tone_class(row.increase_percentage)]}>
+                  {format_growth_percentage(row.increase_percentage)}
+                </td>
+                <td class={["is-right", growth_tone_class(row.year_increase_amount)]}>
+                  {format_signed_currency(row.year_increase_amount, 2, @currency_code)}
+                </td>
+                <td class={["is-right", growth_tone_class(row.year_increase_percentage)]}>
+                  {format_growth_percentage(row.year_increase_percentage)}
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <p class="provider-growth-note">
+        Gain Share % = Generated / End Value. Year % excludes new deposits from the yearly
+        result.
+      </p>
     <% end %>
   </section>
 

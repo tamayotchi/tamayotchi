@@ -1,0 +1,255 @@
+<Layouts.navbar_shell>
+  <header class="site-header experiment-header">
+    <div>
+      <p class="site-kicker">tamayotchi · private experiment</p>
+      <h1 class="site-title provider-title">Projection Lab</h1>
+    </div>
+    <span class="site-count">Projection</span>
+  </header>
+
+  <section class="experiment-hero experiment-hero-compact" id="projection-lab">
+    <div class="experiment-hero-metric">
+      <span class="experiment-hero-label">Projected final balance</span>
+      <strong>{format_currency(@summary.projected_balance, 2, @currency_code)}</strong>
+      <span>by {@target_year}</span>
+    </div>
+  </section>
+
+  <section class="experiment-summary-grid" aria-label="Projection summary">
+    <article class="experiment-card">
+      <p class="experiment-card-label">Starting Balance</p>
+      <p class="experiment-card-value">
+        {format_currency(@starting_balance, 2, @currency_code)}
+      </p>
+    </article>
+
+    <article class="experiment-card">
+      <p class="experiment-card-label">Historical Avg Year %</p>
+      <p class="experiment-card-value">{format_percentage(@historical_average_rate)}</p>
+    </article>
+
+    <article class="experiment-card">
+      <p class="experiment-card-label">Planned Investment</p>
+      <p class="experiment-card-value">
+        {format_currency(@summary.total_planned, 2, @currency_code)}
+      </p>
+    </article>
+
+    <article class="experiment-card experiment-card-highlight">
+      <p class="experiment-card-label">Estimated Gain</p>
+      <p class="experiment-card-value">
+        {format_currency(@summary.total_gain, 2, @currency_code)}
+      </p>
+    </article>
+  </section>
+
+  <.form
+    :let={form}
+    for={to_form(@form_values)}
+    method="get"
+    action={~p"/experiments"}
+    id="projection-form"
+    class="experiment-form"
+  >
+    <section class="experiment-controls" id="projection-controls">
+      <div class="experiment-control-grid">
+        <.input
+          type="select"
+          id="projection-currency"
+          field={form[:currency]}
+          label="Currency"
+          options={Enum.map(@currencies, &{&1, &1})}
+          class="experiment-input"
+        />
+
+        <.input
+          type="number"
+          id="projection-expected-rate"
+          field={form[:expected_rate]}
+          label="Expected annual return %"
+          step="0.01"
+          min="-99"
+          class="experiment-input"
+        />
+
+        <.input
+          type="number"
+          id="projection-target-year"
+          field={form[:target_year]}
+          label="Project until"
+          step="1"
+          min={@start_year}
+          class="experiment-input"
+        />
+
+        <.input
+          type="number"
+          id="projection-default-investment"
+          field={form[:default_investment]}
+          label="Default yearly investment"
+          step="100"
+          min="0"
+          class="experiment-input"
+        />
+      </div>
+
+      <div class="experiment-control-actions">
+        <p class="experiment-form-note">
+          Expected annual return is prefilled with your historical average, but you can override it
+          for any experiment.
+        </p>
+        <button type="submit" id="projection-run" class="experiment-run-button">
+          Run projection
+        </button>
+      </div>
+    </section>
+
+    <section class="experiment-chart-wrap" id="projection-chart">
+      <div class="provider-chart-head">
+        <h2 class="site-year-label">Future Curve</h2>
+        <p class="provider-chart-meta">
+          Balance compounds by {@form_values["expected_rate"]}% each year after planned investment
+        </p>
+      </div>
+
+      <div class="experiment-chart-shell">
+        <svg
+          viewBox={"0 0 #{@chart.width} #{@chart.height}"}
+          class="experiment-chart"
+          role="img"
+          aria-label={"#{@currency_code} projection graph"}
+        >
+          <defs>
+            <linearGradient id="experimentAreaGlow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(255,216,143,0.38)" />
+              <stop offset="100%" stop-color="rgba(255,216,143,0.02)" />
+            </linearGradient>
+          </defs>
+
+          <%= for tick <- @chart.y_ticks do %>
+            <line x1="74" y1={tick.y} x2="934" y2={tick.y} class="experiment-grid-line" />
+            <text x="10" y={tick.y + 4} class="experiment-axis-label">
+              {format_currency(tick.value, 0, @currency_code)}
+            </text>
+          <% end %>
+
+          <%= for bar <- @chart.bars do %>
+            <rect
+              x={bar.x}
+              y={bar.y}
+              width={bar.width}
+              height={bar.height}
+              rx="6"
+              class="experiment-investment-bar"
+            />
+          <% end %>
+
+          <path d={@chart.area_path} class="experiment-area" />
+          <path d={@chart.line_path} class="experiment-line" />
+
+          <%= for point <- @chart.line_points do %>
+            <circle cx={point.x} cy={point.y} r="4.2" class="experiment-line-point" />
+          <% end %>
+
+          <%= for label <- @chart.x_labels do %>
+            <text x={label.x} y="342" class="experiment-axis-label" text-anchor="middle">
+              {label.label}
+            </text>
+          <% end %>
+        </svg>
+      </div>
+
+      <div class="experiment-legend" id="projection-legend">
+        <span class="experiment-legend-item">
+          <span class="experiment-legend-dot experiment-legend-dot-balance"></span>
+          Projected balance
+        </span>
+        <span class="experiment-legend-item">
+          <span class="experiment-legend-dot experiment-legend-dot-investment"></span>
+          Planned investment
+        </span>
+      </div>
+    </section>
+
+    <section class="experiment-plan-wrap" id="projection-plan">
+      <div class="provider-chart-head">
+        <h2 class="site-year-label">Yearly Plan</h2>
+        <p class="provider-chart-meta">Edit each year, then run the projection again</p>
+      </div>
+
+      <div class="experiment-table-shell">
+        <table class="experiment-table" id="projection-plan-table">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th class="is-right">Planned Investment</th>
+              <th class="is-right">Start Balance</th>
+              <th class="is-right">Base</th>
+              <th class="is-right">Estimated Gain</th>
+              <th class="is-right">End Balance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for row <- @projection_rows do %>
+              <tr>
+                <td>
+                  <span class="experiment-year">{row.year}</span>
+                  <span class="experiment-year-sub">{format_percentage(row.expected_rate)}</span>
+                </td>
+                <td class="is-right experiment-investment-cell">
+                  <.input
+                    type="number"
+                    id={"projection-investment-#{row.year}"}
+                    name={"investments[#{row.year}]"}
+                    value={input_number(row.planned_investment)}
+                    step="100"
+                    min="0"
+                    class="experiment-plan-input"
+                  />
+                </td>
+                <td class="is-right">
+                  {format_currency(row.start_balance, 2, @currency_code)}
+                </td>
+                <td class="is-right">
+                  {format_currency(row.base, 2, @currency_code)}
+                </td>
+                <td class="is-right experiment-positive">
+                  {format_currency(row.projected_gain, 2, @currency_code)}
+                </td>
+                <td class="is-right experiment-end-value">
+                  {format_currency(row.end_balance, 2, @currency_code)}
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total</td>
+              <td class="is-right">
+                {format_currency(@summary.total_planned, 2, @currency_code)}
+              </td>
+              <td class="is-right">—</td>
+              <td class="is-right">—</td>
+              <td class="is-right experiment-positive">
+                {format_currency(@summary.total_gain, 2, @currency_code)}
+              </td>
+              <td class="is-right experiment-end-value">
+                {format_currency(@summary.projected_balance, 2, @currency_code)}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="experiment-bottom-actions">
+        <p class="experiment-form-note">
+          Formula: base = start balance + planned investment. Estimated gain = base × expected
+          annual return.
+        </p>
+        <button type="submit" id="projection-run-bottom" class="experiment-run-button">
+          Update experiment
+        </button>
+      </div>
+    </section>
+  </.form>
+</Layouts.navbar_shell>

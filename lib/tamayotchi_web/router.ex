@@ -32,6 +32,7 @@ defmodule TamayotchiWeb.Router do
     pipe_through [:browser, :portfolio_private]
 
     get "/salary", SalaryController, :index
+    get "/experiments", ExperimentController, :index
     get "/provider/:provider", ProviderController, :show
   end
 

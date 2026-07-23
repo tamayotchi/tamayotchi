@@ -63,6 +63,9 @@ defmodule TamayotchiWeb.PageControllerTest do
     assert response =~ "/provider/usd"
     assert response =~ "All COP overview"
     assert response =~ "/provider/cop"
+    assert response =~ "Open lab"
+    assert response =~ "/experiments"
+    refute response =~ "Test future yearly investments against your historical average return."
     assert response =~ "ETORO"
     refute response =~ "portfolio-private-lock-card"
   end
@@ -72,6 +75,53 @@ defmodule TamayotchiWeb.PageControllerTest do
 
     assert redirected_to(conn) == "/#portfolio-totals"
     assert get_session(conn, :portfolio_return_to) == "/salary"
+  end
+
+  test "GET /experiments redirects locked sessions to the homepage unlock card", %{conn: conn} do
+    conn = get(conn, ~p"/experiments")
+
+    assert redirected_to(conn) == "/#portfolio-totals"
+    assert get_session(conn, :portfolio_return_to) == "/experiments"
+  end
+
+  test "GET /experiments renders projection lab after portfolio unlock", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/experiments")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "Projection Lab"
+    assert response =~ "projection-form"
+    assert response =~ "Future Curve"
+    assert response =~ "Yearly Plan"
+    assert response =~ "Historical Avg Year %"
+    assert response =~ "23,575.00 USD"
+    assert response =~ "14.79%"
+    assert response =~ "50,000.00 USD"
+    assert response =~ "value=\"10000\""
+    refute response =~ "Retirement forecast"
+    refute response =~ "Test future investments against your historical annual return."
+    refute response =~ "It is only an experiment"
+  end
+
+  test "GET /experiments applies custom projection inputs", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(
+        ~p"/experiments?expected_rate=20&target_year=2027&investments[2026]=10000&investments[2027]=12000"
+      )
+
+    response = html_response(conn, 200)
+
+    assert response =~ "20% each year"
+    assert response =~ "23,575.00 USD"
+    assert response =~ "40,290.00 USD"
+    assert response =~ "62,748.00 USD"
+    assert response =~ "17,173.00 USD"
+    assert response =~ "10,458.00 USD"
   end
 
   test "GET /salary renders after portfolio unlock", %{conn: conn} do
@@ -121,6 +171,104 @@ defmodule TamayotchiWeb.PageControllerTest do
     assert response =~ "Performance Curve"
   end
 
+  test "provider page shows year-end growth percentages", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/etoro")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "Year-End Growth"
+
+    assert response =~
+             "Generated gain as share of end balance plus yearly gain excluding deposits"
+
+    assert response =~ "provider-yearly-growth-table"
+    assert response =~ "Gain Share %"
+    assert response =~ "Year Generated"
+    assert response =~ "Year %"
+    assert response =~ "18,225.00 USD"
+    assert response =~ "12,430.00 USD"
+    assert response =~ "+5,795.00 USD"
+    assert response =~ "+31.80%"
+    assert response =~ "+3,728.00 USD"
+    assert response =~ "+25.72%"
+    assert response =~ "vs 2024"
+    assert response =~ "9,760.00 USD"
+    assert response =~ "7,693.00 USD"
+    assert response =~ "+2,067.00 USD"
+    assert response =~ "+21.18%"
+    assert response =~ "+1,826.00 USD"
+    assert response =~ "+23.01%"
+    assert response =~ "3,772.00 USD"
+    assert response =~ "+241.00 USD"
+    assert response =~ "+6.01%"
+    assert response =~ "vs contributed total"
+    refute response =~ "N/A"
+    refute response =~ "First year"
+    refute response =~ "first recorded year"
+    refute response =~ "Baseline"
+  end
+
+  test "selected provider year charts the year-end value with prior-year context", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/etoro?year=2024")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "Contributions and Year-End Value line"
+    assert response =~ "Year-End Value"
+    assert response =~ "+1,826.00 USD"
+    assert response =~ "+23.01%"
+    refute response =~ "Contributions and Year Generated line"
+  end
+
+  test "aggregate currency charts include the year-end value line", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/cop")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "COP INVESTMENTS"
+    assert response =~ "Contributions and Year-End Value line"
+    assert response =~ "Year-End Value"
+    assert response =~ "provider-compound-point"
+  end
+
+  test "aggregate selected year charts the year-end value with prior-year context", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/usd?year=2025")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "USD INVESTMENTS"
+    assert response =~ "Contributions and Year-End Value line"
+    assert response =~ "Year-End Value"
+    assert response =~ "+3,213.00 USD"
+    assert response =~ "+17.65%"
+  end
+
+  test "aggregate gain percentage is generated gain divided by end value", %{conn: conn} do
+    conn =
+      conn
+      |> init_test_session(%{portfolio_unlocked: true})
+      |> get(~p"/provider/usd?year=2024")
+
+    response = html_response(conn, 200)
+
+    assert response =~ "10,810.00 USD"
+    assert response =~ "8,743.00 USD"
+    assert response =~ "+2,067.00 USD"
+    assert response =~ "+19.12%"
+  end
+
   test "provider history filters by year and defaults to newest first", %{conn: conn} do
     conn =
       conn
@@ -134,6 +282,7 @@ defmodule TamayotchiWeb.PageControllerTest do
     refute response =~ "February 1, 2025"
 
     assert_response_order(response, [
+      "July 10, 2026",
       "July 9, 2026",
       "June 25, 2026",
       "March 10, 2026"
@@ -168,15 +317,16 @@ defmodule TamayotchiWeb.PageControllerTest do
     assert response =~ "USD INVESTMENTS"
     assert response =~ "USD Provider Breakdown"
     assert response =~ "Year 2026"
-    assert response =~ "1,360.00 USD"
+    assert response =~ "2,160.00 USD"
     assert response =~ "ETORO"
-    assert response =~ "1,260.00 USD"
+    assert response =~ "2,060.00 USD"
     assert response =~ "XTB"
     assert response =~ "100.00 USD"
     assert response =~ "BRICKSAVE"
     refute response =~ "TRII"
 
     assert_response_order(response, [
+      "July 10, 2026",
       "July 9, 2026",
       "June 25, 2026",
       "April 16, 2026",
@@ -198,7 +348,8 @@ defmodule TamayotchiWeb.PageControllerTest do
       "March 10, 2026",
       "April 16, 2026",
       "June 25, 2026",
-      "July 9, 2026"
+      "July 9, 2026",
+      "July 10, 2026"
     ])
   end
 

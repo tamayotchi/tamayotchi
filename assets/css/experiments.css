@@ -1,0 +1,575 @@
+.experiment-header {
+  align-items: flex-end;
+}
+
+.experiment-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.55fr);
+  gap: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(116, 255, 203, 0.34);
+  border-radius: 1.2rem;
+  padding: clamp(1rem, 3vw, 1.4rem);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(116, 255, 203, 0.16), transparent 34%),
+    radial-gradient(circle at 90% 20%, rgba(255, 216, 143, 0.14), transparent 32%),
+    linear-gradient(180deg, rgba(7, 19, 12, 0.84), rgba(3, 8, 5, 0.78));
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28), inset 0 0 38px rgba(116, 255, 203, 0.04);
+}
+
+.experiment-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(126, 255, 170, 0.035) 0, rgba(126, 255, 170, 0.035) 1px, transparent 1px, transparent 18px);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent 72%);
+}
+
+.experiment-hero-compact {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.experiment-hero-compact .experiment-hero-metric {
+  max-width: 30rem;
+}
+
+.experiment-hero-metric {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(255, 216, 143, 0.35);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(34, 27, 11, 0.54);
+  box-shadow: inset 0 0 26px rgba(255, 216, 143, 0.05);
+}
+
+.experiment-hero-label,
+.experiment-card-label {
+  color: rgba(182, 255, 224, 0.7);
+  font-size: 0.72rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.experiment-hero-metric strong {
+  color: #ffe2a8;
+  font-family: "Orbitron", "Share Tech Mono", ui-monospace, monospace;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  line-height: 1;
+  text-shadow: 0 0 18px rgba(255, 216, 143, 0.18);
+}
+
+.experiment-hero-metric span:last-child {
+  color: rgba(255, 234, 191, 0.72);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.experiment-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.experiment-card {
+  border: 1px solid rgba(120, 255, 204, 0.3);
+  border-radius: 0.9rem;
+  padding: 0.9rem 1rem;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(116, 255, 203, 0.18), rgba(116, 255, 203, 0) 55%),
+    linear-gradient(165deg, rgba(6, 16, 12, 0.97), rgba(9, 24, 18, 0.75));
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.experiment-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(120, 255, 204, 0.55);
+  box-shadow: 0 20px 38px -30px rgba(44, 205, 145, 0.9);
+}
+
+.experiment-card-highlight {
+  border-color: rgba(255, 216, 143, 0.42);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 216, 143, 0.16), rgba(255, 216, 143, 0) 55%),
+    linear-gradient(165deg, rgba(24, 18, 8, 0.97), rgba(16, 14, 9, 0.75));
+}
+
+.experiment-card-value {
+  margin-top: 0.5rem;
+  color: #d4ffe8;
+  font-family: "Orbitron", "Share Tech Mono", ui-monospace, monospace;
+  font-size: clamp(1rem, 2.4vw, 1.35rem);
+  font-weight: 700;
+}
+
+.experiment-card-highlight .experiment-card-value {
+  color: #ffe2a8;
+}
+
+.experiment-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.experiment-controls,
+.experiment-chart-wrap,
+.experiment-plan-wrap {
+  border: 1px dotted rgba(126, 255, 170, 0.35);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(6, 16, 12, 0.68), rgba(5, 10, 8, 0.92));
+}
+
+.experiment-control-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.experiment-control-grid .fieldset,
+.experiment-investment-cell .fieldset {
+  margin-bottom: 0;
+}
+
+.experiment-control-grid .label {
+  display: block;
+  margin-bottom: 0.34rem;
+  color: rgba(201, 255, 181, 0.78);
+  font-size: 0.68rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.experiment-input,
+.experiment-plan-input {
+  width: 100%;
+  border: 1px solid rgba(126, 255, 170, 0.42);
+  border-radius: 0.7rem;
+  padding: 0.7rem 0.8rem;
+  background: rgba(2, 8, 4, 0.82);
+  color: #e8ffd7;
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  outline: none;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.experiment-input:focus,
+.experiment-plan-input:focus {
+  border-color: rgba(116, 255, 203, 0.95);
+  box-shadow: 0 0 0 3px rgba(116, 255, 203, 0.12), 0 0 24px rgba(116, 255, 203, 0.12);
+  transform: translateY(-1px);
+}
+
+.experiment-plan-input {
+  min-width: 8.5rem;
+  padding: 0.5rem 0.65rem;
+  text-align: right;
+}
+
+.experiment-control-actions,
+.experiment-bottom-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.experiment-form-note {
+  max-width: 44rem;
+  color: rgba(177, 255, 219, 0.72);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.experiment-run-button {
+  border: 1px solid rgba(255, 216, 143, 0.65);
+  border-radius: 999px;
+  padding: 0.72rem 1.1rem;
+  background: linear-gradient(180deg, rgba(255, 216, 143, 0.22), rgba(255, 216, 143, 0.1));
+  color: #ffe9bd;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.experiment-run-button:hover {
+  border-color: rgba(255, 234, 191, 0.9);
+  background: linear-gradient(180deg, rgba(255, 216, 143, 0.32), rgba(255, 216, 143, 0.16));
+  box-shadow: 0 0 22px rgba(255, 216, 143, 0.14);
+  transform: translateY(-1px);
+}
+
+.experiment-chart-shell,
+.experiment-table-shell {
+  overflow: hidden;
+  border: 1px solid rgba(118, 255, 196, 0.24);
+  border-radius: 0.85rem;
+  background:
+    linear-gradient(180deg, rgba(5, 20, 14, 0.72), rgba(5, 12, 9, 0.95)),
+    repeating-linear-gradient(
+      0deg,
+      rgba(121, 255, 205, 0.04),
+      rgba(121, 255, 205, 0.04) 1px,
+      transparent 1px,
+      transparent 13px
+    );
+}
+
+.experiment-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.experiment-grid-line {
+  stroke: rgba(140, 255, 205, 0.12);
+  stroke-dasharray: 4 4;
+}
+
+.experiment-axis-label {
+  fill: rgba(164, 249, 207, 0.73);
+  font-family: "Share Tech Mono", ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.experiment-investment-bar {
+  fill: rgba(116, 255, 203, 0.22);
+  stroke: rgba(116, 255, 203, 0.42);
+  filter: drop-shadow(0 0 8px rgba(116, 255, 203, 0.18));
+}
+
+.experiment-area {
+  fill: url(#experimentAreaGlow);
+}
+
+.experiment-line {
+  fill: none;
+  stroke: #ffd88f;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 8px rgba(255, 216, 143, 0.75));
+}
+
+.experiment-line-point {
+  fill: #ffd88f;
+  stroke: rgba(36, 27, 8, 0.95);
+  stroke-width: 1;
+  filter: drop-shadow(0 0 10px rgba(255, 216, 143, 0.8));
+}
+
+.experiment-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.95rem;
+  margin-top: 0.6rem;
+}
+
+.experiment-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(177, 255, 219, 0.8);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.experiment-legend-dot {
+  display: inline-block;
+  width: 0.56rem;
+  height: 0.56rem;
+  border-radius: 999px;
+}
+
+.experiment-legend-dot-balance {
+  background: #ffd88f;
+  box-shadow: 0 0 8px rgba(255, 216, 143, 0.8);
+}
+
+.experiment-legend-dot-investment {
+  background: #74ffcb;
+  box-shadow: 0 0 8px rgba(116, 255, 203, 0.8);
+}
+
+.experiment-table-shell {
+  overflow-x: auto;
+}
+
+.experiment-table {
+  width: 100%;
+  min-width: 56rem;
+  border-collapse: collapse;
+}
+
+.experiment-table th,
+.experiment-table td {
+  padding: 0.68rem 0.8rem;
+  border-bottom: 1px solid rgba(118, 255, 196, 0.14);
+  font-size: 0.85rem;
+}
+
+.experiment-table thead th {
+  background: rgba(7, 18, 13, 0.96);
+  color: rgba(180, 255, 225, 0.86);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.experiment-table tbody tr:hover {
+  background: rgba(18, 42, 30, 0.48);
+}
+
+.experiment-table tfoot td {
+  position: sticky;
+  bottom: 0;
+  background: rgba(15, 30, 22, 0.98);
+  color: #d7ffea;
+  font-weight: 700;
+}
+
+.experiment-table .is-right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.experiment-year {
+  display: block;
+  color: #d7ffea;
+  font-family: "Share Tech Mono", ui-monospace, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.experiment-year-sub {
+  display: block;
+  margin-top: 0.14rem;
+  color: rgba(177, 255, 219, 0.62);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.experiment-positive,
+.experiment-end-value {
+  color: #ffe2a8;
+  font-weight: 700;
+}
+
+.experiment-end-value {
+  text-shadow: 0 0 10px rgba(255, 216, 143, 0.16);
+}
+
+@media (max-width: 960px) {
+  .experiment-hero,
+  .experiment-control-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .experiment-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .experiment-hero,
+  .experiment-control-grid,
+  .experiment-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .experiment-control-actions,
+  .experiment-bottom-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .experiment-run-button {
+    width: 100%;
+  }
+}
+
+[data-theme=light] .experiment-hero {
+  border-color: rgba(34, 197, 94, 0.35);
+  background: linear-gradient(180deg, #ffffff, #f4faf6);
+  box-shadow: 0 24px 70px rgba(20, 83, 45, 0.08);
+}
+
+[data-theme=light] .experiment-hero::before {
+  background: repeating-linear-gradient(90deg, rgba(20, 83, 45, 0.045) 0, rgba(20, 83, 45, 0.045) 1px, transparent 1px, transparent 18px);
+}
+
+[data-theme=light] .experiment-hero-metric {
+  border-color: rgba(200, 160, 60, 0.5);
+  background: rgba(255, 245, 220, 0.86);
+}
+
+[data-theme=light] .experiment-hero-metric strong {
+  color: #7a5c10;
+}
+
+[data-theme=light] .experiment-hero-metric span:last-child {
+  color: rgba(122, 92, 16, 0.72);
+}
+
+[data-theme=light] .experiment-hero-label,
+[data-theme=light] .experiment-card-label {
+  color: rgba(30, 110, 50, 0.75);
+}
+
+[data-theme=light] .experiment-card {
+  border-color: rgba(50, 170, 80, 0.35);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(60, 220, 100, 0.12), rgba(60, 220, 100, 0) 55%),
+    linear-gradient(165deg, rgba(230, 245, 235, 0.97), rgba(220, 240, 228, 0.85));
+}
+
+[data-theme=light] .experiment-card-highlight {
+  border-color: rgba(200, 160, 60, 0.5);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 216, 143, 0.26), rgba(255, 216, 143, 0) 55%),
+    linear-gradient(165deg, rgba(255, 252, 240, 0.97), rgba(248, 239, 216, 0.85));
+}
+
+[data-theme=light] .experiment-card-value {
+  color: #0d5c28;
+}
+
+[data-theme=light] .experiment-card-highlight .experiment-card-value {
+  color: #7a5c10;
+}
+
+[data-theme=light] .experiment-controls,
+[data-theme=light] .experiment-chart-wrap,
+[data-theme=light] .experiment-plan-wrap {
+  border-color: rgba(50, 170, 80, 0.35);
+  background: linear-gradient(180deg, rgba(230, 245, 235, 0.75), rgba(220, 240, 228, 0.95));
+}
+
+[data-theme=light] .experiment-control-grid .label {
+  color: rgba(22, 101, 52, 0.72);
+}
+
+[data-theme=light] .experiment-input,
+[data-theme=light] .experiment-plan-input {
+  border-color: rgba(22, 163, 74, 0.46);
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f2e0d;
+}
+
+[data-theme=light] .experiment-input:focus,
+[data-theme=light] .experiment-plan-input:focus {
+  border-color: rgba(22, 163, 74, 0.95);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.14), 0 12px 30px rgba(20, 83, 45, 0.1);
+}
+
+[data-theme=light] .experiment-form-note {
+  color: rgba(30, 100, 50, 0.72);
+}
+
+[data-theme=light] .experiment-run-button {
+  border-color: rgba(200, 160, 60, 0.68);
+  background: linear-gradient(180deg, #fff7dd, #fcefc6);
+  color: #7a5c10;
+}
+
+[data-theme=light] .experiment-run-button:hover {
+  border-color: rgba(180, 135, 40, 0.9);
+  background: linear-gradient(180deg, #fff0be, #f7dfa2);
+}
+
+[data-theme=light] .experiment-chart-shell,
+[data-theme=light] .experiment-table-shell {
+  border-color: rgba(50, 170, 80, 0.3);
+  background:
+    linear-gradient(180deg, rgba(230, 245, 235, 0.85), rgba(220, 240, 228, 0.95)),
+    repeating-linear-gradient(
+      0deg,
+      rgba(50, 170, 80, 0.04),
+      rgba(50, 170, 80, 0.04) 1px,
+      transparent 1px,
+      transparent 13px
+    );
+}
+
+[data-theme=light] .experiment-axis-label {
+  fill: rgba(30, 100, 50, 0.75);
+}
+
+[data-theme=light] .experiment-investment-bar {
+  fill: rgba(45, 184, 92, 0.2);
+  stroke: rgba(45, 184, 92, 0.42);
+}
+
+[data-theme=light] .experiment-line {
+  stroke: #c99430;
+  filter: drop-shadow(0 0 7px rgba(200, 160, 60, 0.6));
+}
+
+[data-theme=light] .experiment-line-point {
+  fill: #c99430;
+}
+
+[data-theme=light] .experiment-legend-item {
+  color: rgba(30, 100, 50, 0.8);
+}
+
+[data-theme=light] .experiment-legend-dot-balance {
+  background: #c99430;
+  box-shadow: 0 0 7px rgba(200, 160, 60, 0.6);
+}
+
+[data-theme=light] .experiment-legend-dot-investment {
+  background: #2db85c;
+  box-shadow: 0 0 7px rgba(50, 200, 100, 0.6);
+}
+
+[data-theme=light] .experiment-table th,
+[data-theme=light] .experiment-table td {
+  border-bottom-color: rgba(50, 170, 80, 0.18);
+}
+
+[data-theme=light] .experiment-table thead th {
+  background: rgba(220, 245, 228, 0.96);
+  color: rgba(30, 100, 50, 0.9);
+}
+
+[data-theme=light] .experiment-table tbody tr:hover {
+  background: rgba(200, 235, 210, 0.45);
+}
+
+[data-theme=light] .experiment-table tfoot td {
+  background: rgba(210, 240, 220, 0.98);
+  color: #0f3d14;
+}
+
+[data-theme=light] .experiment-year {
+  color: #0f3d14;
+}
+
+[data-theme=light] .experiment-year-sub {
+  color: rgba(30, 100, 50, 0.62);
+}
+
+[data-theme=light] .experiment-positive,
+[data-theme=light] .experiment-end-value {
+  color: #7a5c10;
+}

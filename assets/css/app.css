@@ -98,6 +98,7 @@
 /* This file is for your main application CSS */
 @import "./provider.css";
 @import "./salary.css";
+@import "./experiments.css";
 
 /* Blog styling */
 body {
@@ -421,6 +422,35 @@ body {
   color: rgba(186, 255, 179, 0.7);
   letter-spacing: 0.08em;
   text-shadow: 0 0 12px rgba(122, 255, 156, 0.22);
+}
+
+.home-projection-lab-callout {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.home-projection-lab-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(255, 220, 135, 0.58);
+  border-radius: 999px;
+  padding: 0.62rem 0.9rem;
+  color: #ffe9bd;
+  background: rgba(34, 27, 11, 0.78);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.home-projection-lab-link:hover {
+  border-color: rgba(255, 234, 191, 0.9);
+  box-shadow: 0 0 22px rgba(255, 216, 143, 0.14);
+  transform: translateY(-1px);
 }
 
 .home-platform-columns {
@@ -836,6 +866,12 @@ body {
 [data-theme=light] .home-overview-card {
   border-color: rgba(50, 170, 80, 0.4);
   background: rgba(220, 245, 228, 0.75);
+}
+
+[data-theme=light] .home-projection-lab-link {
+  border-color: rgba(200, 160, 60, 0.68);
+  color: #7a5c10;
+  background: rgba(255, 245, 220, 0.92);
 }
 
 [data-theme=light] .home-platform-card {

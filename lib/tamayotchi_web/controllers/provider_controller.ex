@@ -1,6 +1,7 @@
 defmodule TamayotchiWeb.ProviderController do
   use TamayotchiWeb, :controller
 
+  alias Tamayotchi.PortfolioAnalytics
   alias Tamayotchi.PortfolioData
 
   @time_ranges ["1M", "3M", "6M", "YTD", "12M", "ALL"]
@@ -24,7 +25,7 @@ defmodule TamayotchiWeb.ProviderController do
   end
 
   defp render_platform(conn, params, provider) do
-    {contribution_entries, year_end_entries} = split_entries(provider.entries)
+    contribution_entries = PortfolioAnalytics.contribution_entries(provider.entries)
     {selected_time_range, selected_year, selected_history_order} = selected_filters(params)
     years = available_years(contribution_entries)
 
@@ -32,13 +33,15 @@ defmodule TamayotchiWeb.ProviderController do
       filter_by_period(contribution_entries, selected_time_range, selected_year)
 
     filtered_year_end =
-      if provider.aggregate? do
-        []
-      else
-        filter_by_period(year_end_entries, selected_time_range, selected_year)
-      end
+      provider.entries
+      |> compound_entries_for_chart(selected_time_range, selected_year)
 
-    points = build_points(filtered_contributions)
+    points =
+      build_points(
+        filtered_contributions,
+        initial_contribution_value(contribution_entries, selected_year),
+        synthetic_start_date(selected_year)
+      )
 
     conn
     |> put_view(html: TamayotchiWeb.ProviderHTML)
@@ -47,8 +50,10 @@ defmodule TamayotchiWeb.ProviderController do
       platform_path: provider.platform_path,
       currency_code: provider.currency_code,
       aggregate?: provider.aggregate?,
-      show_compound?: not provider.aggregate?,
+      show_compound?: filtered_year_end != [],
+      compound_label: "Year-End Value",
       chart: chart_payload(points, filtered_year_end),
+      annual_growth_rows: annual_growth_rows(provider.entries),
       provider_breakdown:
         provider_breakdown(filtered_contributions, provider.providers, provider.aggregate?),
       history_rows: history_rows(points, selected_history_order),
@@ -104,9 +109,9 @@ defmodule TamayotchiWeb.ProviderController do
         |> Enum.flat_map(fn {provider, details} ->
           details
           |> Map.get("content", [])
-          |> normalize_entries(provider)
+          |> PortfolioAnalytics.normalize_entries(provider)
         end)
-        |> sort_entries_by_date()
+        |> PortfolioAnalytics.sort_entries_by_date()
 
       case entries do
         [] ->
@@ -132,36 +137,17 @@ defmodule TamayotchiWeb.ProviderController do
     with {:ok, %{"content" => content} = platform_data} <-
            PortfolioData.platform(platform_name) do
       currency_code = Map.fetch!(platform_data, "currencyCode")
-      entries = normalize_entries(content, platform_name)
+      entries = PortfolioAnalytics.normalize_entries(content, platform_name)
       {:ok, {currency_code, entries}}
     else
       _ -> :error
     end
   end
 
-  defp normalize_entries(content, provider_name) do
-    content
-    |> Enum.map(fn entry ->
-      %{
-        provider: provider_name,
-        date: Map.get(entry, "date"),
-        amount: numeric_amount(Map.get(entry, "amount")),
-        year_end?: Map.get(entry, "isYearEndValue", false),
-        date_obj: parse_date(Map.get(entry, "date"))
-      }
-    end)
-    |> Enum.filter(&is_struct(&1.date_obj, Date))
-    |> sort_entries_by_date()
-  end
-
-  defp sort_entries_by_date(entries) do
-    Enum.sort_by(entries, fn entry -> {Date.to_erl(entry.date_obj), entry.provider} end)
-  end
-
-  defp build_points(entries) do
+  defp build_points(entries, initial_value, synthetic_start_date) do
     points =
       entries
-      |> Enum.map_reduce(0.0, fn entry, running_total ->
+      |> Enum.map_reduce(initial_value, fn entry, running_total ->
         portfolio_value = running_total + entry.amount
         {Map.put(entry, :portfolio_value, portfolio_value), portfolio_value}
       end)
@@ -169,20 +155,30 @@ defmodule TamayotchiWeb.ProviderController do
 
     case points do
       [] ->
-        []
+        if synthetic_start_date && initial_value > 0 do
+          [synthetic_point(synthetic_start_date, initial_value)]
+        else
+          []
+        end
 
       [first | _] ->
-        [
-          first
-          |> Map.put(:amount, 0.0)
-          |> Map.put(:portfolio_value, 0.0)
-          |> Map.put(:synthetic_start?, true)
-          | points
-        ]
+        start_date = synthetic_start_date || first.date_obj
+        [synthetic_point(start_date, initial_value) | points]
     end
   end
 
-  defp chart_payload([], _year_end_entries) do
+  defp synthetic_point(date, portfolio_value) do
+    %{
+      provider: "SYNTHETIC_START",
+      date: Date.to_iso8601(date),
+      date_obj: date,
+      amount: 0.0,
+      portfolio_value: portfolio_value,
+      synthetic_start?: true
+    }
+  end
+
+  defp chart_payload([], []) do
     %{
       width: @chart_width,
       height: @chart_height,
@@ -247,7 +243,8 @@ defmodule TamayotchiWeb.ProviderController do
         %{
           x: x,
           y: y,
-          amount: entry.amount
+          amount: entry.amount,
+          compound_start?: Map.get(entry, :compound_start?, false)
         }
       end)
 
@@ -256,12 +253,16 @@ defmodule TamayotchiWeb.ProviderController do
         [] ->
           []
 
+        [%{compound_start?: true} | _] = points_with_data ->
+          points_with_data
+
         points_with_data ->
           [
             %{
               x: left,
               y: project_y(0.0, value_floor, value_ceil, top, plot_height),
-              amount: 0.0
+              amount: 0.0,
+              compound_start?: true
             }
             | points_with_data
           ]
@@ -332,53 +333,13 @@ defmodule TamayotchiWeb.ProviderController do
       contribution_points
       |> Enum.reduce(0.0, fn point, acc -> acc + point.amount end)
 
-    latest_contribution_value = latest_contribution_value(points)
-
     %{
       total_contributed: total_contributed,
-      latest_value: latest_total_value(all_entries, latest_contribution_value),
+      latest_value: PortfolioAnalytics.current_tracked_value(all_entries),
       records: length(contribution_points),
       year_end_marks: Enum.count(all_entries, & &1.year_end?),
       providers: all_entries |> Enum.map(& &1.provider) |> Enum.uniq() |> length()
     }
-  end
-
-  defp latest_contribution_value(points) do
-    case List.last(points) do
-      nil -> 0.0
-      point -> point.portfolio_value
-    end
-  end
-
-  defp latest_total_value(entries, fallback_value) do
-    latest_values =
-      entries
-      |> Enum.group_by(& &1.provider)
-      |> Enum.map(fn {_provider, provider_entries} ->
-        latest_year_end_value(provider_entries) || sum_contributions(provider_entries)
-      end)
-
-    case latest_values do
-      [] -> fallback_value
-      values -> Enum.sum(values)
-    end
-  end
-
-  defp latest_year_end_value(entries) do
-    entries
-    |> Enum.filter(& &1.year_end?)
-    |> Enum.sort_by(& &1.date_obj, Date)
-    |> List.last()
-    |> case do
-      nil -> nil
-      entry -> entry.amount
-    end
-  end
-
-  defp sum_contributions(entries) do
-    entries
-    |> Enum.reject(& &1.year_end?)
-    |> Enum.reduce(0.0, fn entry, acc -> acc + entry.amount end)
   end
 
   defp available_years(entries) do
@@ -425,6 +386,29 @@ defmodule TamayotchiWeb.ProviderController do
 
     Enum.filter(entries, fn entry -> Date.compare(entry.date_obj, start_date) in [:eq, :gt] end)
   end
+
+  defp initial_contribution_value(entries, year) when is_binary(year) and year != "ALL" do
+    case Integer.parse(year) do
+      {year_int, ""} ->
+        entries
+        |> Enum.filter(fn entry -> entry.date_obj.year < year_int end)
+        |> Enum.reduce(0.0, fn entry, acc -> acc + entry.amount end)
+
+      _ ->
+        0.0
+    end
+  end
+
+  defp initial_contribution_value(_entries, _year), do: 0.0
+
+  defp synthetic_start_date(year) when is_binary(year) and year != "ALL" do
+    case Integer.parse(year) do
+      {year_int, ""} -> Date.new!(year_int, 1, 1)
+      _ -> nil
+    end
+  end
+
+  defp synthetic_start_date(_year), do: nil
 
   defp filter_start_date(time_range) do
     reference_date = Date.utc_today()
@@ -484,24 +468,60 @@ defmodule TamayotchiWeb.ProviderController do
     end
   end
 
-  defp parse_date(date) when is_binary(date) do
-    case Date.from_iso8601(date) do
-      {:ok, parsed_date} -> parsed_date
-      _ -> nil
-    end
-  end
-
-  defp parse_date(_date), do: nil
-
-  defp numeric_amount(amount) when is_integer(amount), do: amount * 1.0
-  defp numeric_amount(amount) when is_float(amount), do: amount
-  defp numeric_amount(_amount), do: 0.0
-
   defp svg_float(value) when is_float(value), do: :erlang.float_to_binary(value, decimals: 2)
   defp svg_float(value) when is_integer(value), do: Integer.to_string(value)
 
-  defp split_entries(entries) do
-    {Enum.reject(entries, & &1.year_end?), Enum.filter(entries, & &1.year_end?)}
+  defp compound_entries_for_chart(entries, _time_range, year)
+       when is_binary(year) and year != "ALL" do
+    case Integer.parse(year) do
+      {year_int, ""} ->
+        snapshots = PortfolioAnalytics.year_end_snapshots(entries)
+        selected_year_snapshots(snapshots, year_int)
+
+      _ ->
+        entries
+        |> PortfolioAnalytics.year_end_snapshots()
+        |> Enum.map(&Map.put(&1, :amount, &1.end_value))
+    end
+  end
+
+  defp compound_entries_for_chart(entries, time_range, "ALL") do
+    entries
+    |> PortfolioAnalytics.year_end_snapshots()
+    |> Enum.map(&Map.put(&1, :amount, &1.end_value))
+    |> filter_by_period(time_range, "ALL")
+  end
+
+  defp annual_growth_rows(entries) do
+    entries
+    |> PortfolioAnalytics.year_end_snapshots()
+    |> Enum.reverse()
+  end
+
+  defp selected_year_snapshots(snapshots, year) do
+    current = Enum.find(snapshots, &(&1.year == year))
+    previous = snapshots |> Enum.filter(&(&1.year < year)) |> List.last()
+
+    case current do
+      nil ->
+        []
+
+      snapshot ->
+        start_date = Date.new!(year, 1, 1)
+        start_amount = if previous, do: previous.end_value, else: 0.0
+
+        [
+          %{
+            snapshot
+            | date: Date.to_iso8601(start_date),
+              date_obj: start_date,
+              amount: start_amount,
+              end_value: start_amount
+          }
+          |> Map.put(:compound_start?, true),
+          Map.put(snapshot, :amount, snapshot.end_value)
+        ]
+    end
   end
 
   defp provider_breakdown(_entries, _providers, false), do: []
