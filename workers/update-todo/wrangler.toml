@@ -1,0 +1,10 @@
+name = "update-todo"
+main = "build/worker/shim.mjs"
+compatibility_date = "2026-08-26"
+
+[build]
+command = "cargo install -q worker-build --version 0.8.5 --locked && worker-build --release"
+watch_dir = ["src"]
+
+[vars]
+DROPBOX_PATH = "/TODO.json"

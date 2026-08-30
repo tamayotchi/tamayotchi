@@ -1,0 +1,30 @@
+[package]
+name = "update-todo"
+version = "0.1.0"
+edition = "2024"
+description = "A Cloudflare Worker that adds Telegram messages to an Omado todo file in Dropbox"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+base64 = "0.22"
+console_error_panic_hook = "0.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+url = "2"
+worker = "0.8.5"
+worker-macros = "0.8.5"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+# Do not enable `strip`: wasm-bindgen 0.2.125+ needs the externref table that
+# Cargo currently strips from workers-rs release builds.
+
+# wasm-opt currently cannot process every WebAssembly feature emitted by recent Rust versions.
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false

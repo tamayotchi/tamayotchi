@@ -1,0 +1,16 @@
+{
+  "name": "update-todo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Add Telegram messages to an Omado todo file in Dropbox",
+  "license": "MIT",
+  "scripts": {
+    "build": "worker-build --release",
+    "check": "cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "devDependencies": {
+    "wrangler": "^4.126.0"
+  }
+}
