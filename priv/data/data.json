@@ -323,6 +323,10 @@
       {
         "date": "2026-10-05",
         "amount": 1000
+      },
+      {
+        "date": "2026-11-11",
+        "amount": 1600
       }
     ],
     "currencyCode": "USD"
